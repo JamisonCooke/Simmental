@@ -3,3 +3,12 @@
 ################################################################################
 
 /.vs
+/Simmental/.vs/Simmental
+/Simmental/bin/Debug/net5.0-windows
+/Simmental/obj
+/Simmental.Game/bin/Debug/net5.0
+/Simmental.Game/obj
+/Simmental.UI/bin/Debug/net5.0
+/Simmental.UI/obj
+/Simmental.UI.WinForm/bin/Debug/net5.0-windows
+/Simmental.UI.WinForm/obj

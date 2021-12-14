@@ -1,0 +1,44 @@
+﻿==============================
+== Simmental TO DO
+==============================
+
+[ ] Move Character Description to a dialog box (remove from left)
+[X] Add inventory to Character Description panel
+[ ] Add Status effects (i.e, poisened)
+[X] Zoom in/out
+[X] Add Actions Panel -- i.e., (The Orc hit you with a battleaxe causing 22 points damange)
+[ ] Rename Description to "Designer" and add menu item to display/hide it and dock left
+[x] Move Character tab to a pop out (ctl+i)
+
+Handle ground inventory
+[x] Step on ground inventory, list them on the UI w/ description
+[x] Allow pickup inventory item
+[x] Allow drop inventory item
+
+[X] Add Design Mode -- so description panel is hidden otherwise,
+    and selection only works in design mode
+    View -> Design Mode   (menu item that checks on/off)
+
+[ ] Better graphics
+
+[ ] Monster mechanics -- attacking / sentry mode / noticing
+[x] Orc cannot walk through walls
+[ ] Concept of larger objects (i.e. container objects)
+[ ] Damage types with resistances and vulernabilities
+[ ] Weapon proficiencies
+
+Attacking
+[x] Run into monster to attack
+[x] Add Primary and Second Weapon to UI
+[x] Mouse clicks to primary and secondary attacks
+[ ] Special mouse click for menu of items to attack with, including primary/secondary
+[ ] Show monster description on hover
+
+Light Sources
+[X] Have yellow circular light around main character
+[X] Map not visited yet is grayed out
+[X] Map within light is solid and clear
+[X] Previously visited non-RPCs are dim when not in light
+[X] Items and npcs out of sight are not rendered
+[ ] Multiple light sources
+
