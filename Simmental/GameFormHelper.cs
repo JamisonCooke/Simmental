@@ -38,7 +38,7 @@ namespace Simmental
 
             if (RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out int i, out int j))
             {
-                var victim = Game.NPC.FirstOrDefault(m => m.Position.i == i && m.Position.j == j);
+                var victim = Game.Wayfinder[i, j].NPCs.FirstOrDefault();
                 if (victim == null) return;
 
                 if (Game.Player.SecondaryWeapon == null)
@@ -50,7 +50,7 @@ namespace Simmental
                 var rangedWeapon = Game.Player.Inventory.RangedWeapons.FirstOrDefault(w => w.RangedWeaponType == Game.Player.SecondaryWeapon.RangedWeaponType);
                 if (rangedWeapon == null)
                 {
-                    Game.LogMessage($"You do not have the right ammo to fire your weapon. You will need {Game.Player.SecondaryWeapon.RangedWeaponType}");
+                    Game.LogMessage($"You do not have the right ammo to fire your weapon. You will need {Game.Player.SecondaryWeapon.RangedWeaponType}", true);
                     return;
                 }
 
@@ -138,12 +138,17 @@ namespace Simmental
         private void CompleteTurn(bool updateInventory)
         {
             Game.NPCTurn();
-            this.SetMessages(CompileMessages());
+            UpdateMessages();
             Game.CompleteTurn();
             UpdateInfoPanel(updateInventory);
 
             KeepCameraOnPlayer();
             GamePictureBox.Refresh();
+        }
+
+        public void UpdateMessages()
+        {
+            this.SetMessages(CompileMessages());
         }
 
         public string CompileMessages()

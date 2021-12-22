@@ -33,6 +33,8 @@ namespace Simmental.Game.Engine
         private static Random _random = new Random();
         public static Random Random => _random;
 
+        public Action UpdateMessages { get; set; }
+
         public void InitalizeRandom()
         {
             Wayfinder = new Wayfinder();
@@ -171,10 +173,12 @@ namespace Simmental.Game.Engine
         private List<IMessage> _messages = new List<IMessage>();
         private int _turnNo = 0;
 
-        public void LogMessage(string message)
+        public void LogMessage(string message, bool displayNow = false)
         {
             var m = new Message(message, TurnNo);
             _messages.Add(m);
+            if (displayNow && UpdateMessages is not null)
+                UpdateMessages();
         }
 
         public List<IMessage> GetMessages(int startTurnNo, int endTurnNo, int maxTurns = int.MaxValue)

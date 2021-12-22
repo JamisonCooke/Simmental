@@ -78,6 +78,7 @@ namespace Simmental
             _gameFormHelper.RenderHelper = new Simmental.UI.WinForm.Render.RenderHelper();
             _gameFormHelper.SetMessages = UpdateMessageText;
             _gameFormHelper.UpdateInfoPanel = UpdateInfoPanel;
+            _gameFormHelper.Game.UpdateMessages = _gameFormHelper.UpdateMessages;
 
             UpdateMessageText(_gameFormHelper.CompileMessages());
             UpdateInfoPanel(true);
@@ -202,7 +203,7 @@ namespace Simmental
             {
                 inventoryContextMenu.Items.Clear();
 
-                var victim = Game.NPC.FirstOrDefault(m => m.Position.i == i && m.Position.j == j);
+                var victim = Game.Wayfinder[i, j].NPCs.FirstOrDefault();
                 if (victim == null) return;
 
                 //inventoryContextMenu.Items.Add("Player", null, (s, e) => MoveInventory(clickedOnItem, Player.Inventory));

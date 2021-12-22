@@ -14,7 +14,8 @@ namespace Simmental.UI
         void InitalizeRandom();
         void NPCTurn();
         IDesigner Designer { get; }
-        void LogMessage(string message);
+        void LogMessage(string message, bool displayNow = false);
+        Action UpdateMessages { get; set; }
         List<IMessage> GetMessages(int startTurnNo, int turnNumber, int maxTurns);
         void CompleteTurn();
         int TurnNo { get;  }
