@@ -15,6 +15,8 @@ namespace Simmental.Game.Map
         public TileEnum TileType { get; set; }
         public IInventory Inventory { get; } = new Inventory();
         public TileAttributeEnum TileAttribute { get; set; }
+        public int LightLevel { get; set; } 
+        public int DefaultLightLevel { get; set; }
         public bool Seen { get; set; }
 
         public List<ICharacter> NPCs { get; } = new List<ICharacter>();

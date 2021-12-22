@@ -40,7 +40,14 @@ Light Sources
 [X] Map within light is solid and clear
 [X] Previously visited non-RPCs are dim when not in light
 [X] Items and npcs out of sight are not rendered
-[ ] Multiple light sources
+
+Multiple List sources
+[X] Add .LightLevel (0-100) to Tiles, DefaultLightLevel (For night and day)
+[X] Create ILight interface: w/ Brightness & distance
+[X] Create items that implement ILight-- i.e., Torch & Lantern
+[ ] Add Laterns & torches to players & Orcs
+[ ] Before render, set all Tile.LightLevel to DefaultLightLevel, find all light sources, shine light sources in Tiles
+[ ] When rendering, make sure Tile.LightLevel is not considered if something opaque blocks the player from the tile
 
 NPC Mechanics
 [ ] Pheremones
