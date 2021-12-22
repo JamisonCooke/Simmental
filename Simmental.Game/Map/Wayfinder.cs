@@ -130,5 +130,21 @@ namespace Simmental.Game.Map
             // Well, it must be visible!
             return true;
         }
+
+        /// <summary>
+        /// Moves an ICharacter from his/her existing position to a new position, updating
+        /// the Tile.NPCs list at the same time
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="moveTo"></param>
+        public void Move(ICharacter character, Position moveTo)
+        {
+            var fromTile = this[character.Position];
+            if (fromTile.NPCs.Contains(character))
+                fromTile.NPCs.Remove(character);
+            this[moveTo].NPCs.Add(character);
+            
+            character.SetPositionInternal(moveTo);
+        }
     }
 }

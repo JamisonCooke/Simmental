@@ -15,7 +15,8 @@
         int Strength { get; set; }
         int Wisdom { get; set; }
         int AC { get; set; }
-        Position Position { get; set; }
+        Position Position { get; }
+        void SetPositionInternal(Position position);
         RaceEnum Race { get;}
         void ExecuteTurn(IGame game);
         IInventory Inventory { get; }

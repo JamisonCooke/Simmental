@@ -7,6 +7,7 @@ namespace Simmental.UI
     public interface IGame
     {
         List<ICharacter> NPC { get; }
+        List<IExecuteTurn> RequiresATurn { get; }
         ICharacter Player { get; }
         IWayfinder Wayfinder { get; }
 

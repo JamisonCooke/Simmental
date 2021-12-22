@@ -12,6 +12,7 @@ using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using Simmental.Game.Characters.Tasks;
 
 namespace Simmental.Game.Engine
 {
@@ -23,7 +24,8 @@ namespace Simmental.Game.Engine
         public ICharacter Player { get; private set; }
 
         public List<ICharacter> NPC { get; private set; }
-
+        public List<IExecuteTurn> RequiresATurn { get; private set; } = new List<IExecuteTurn>();
+        
         public IDesigner Designer { get; private set; } = new Design.Designer();
 
         public int TurnNo => _turnNo;
@@ -65,9 +67,13 @@ namespace Simmental.Game.Engine
             orc1.PrimaryWeapon = axe;
             orc1.Name = "Angry Orc";
             orc1.HP = 25;
-            orc1.Position.i = 10;
-            orc1.Position.j = 10;
+            this.Wayfinder.Move(orc1, new Position(10, 10));
+            orc1.Tasks.Add(new AttackPlayer());
             NPC.Add(orc1);
+
+            //// Create a new orc portal            
+            var orcPortal = new MonsterPortal(this, RaceEnum.Orc, 10, 4, 10, new Position(6, 6));
+            this.RequiresATurn.Add(orcPortal);
 
             this.Designer.TopLeft = new Position(2, 2);
             this.Designer.BottomRight = new Position(5, 3);
@@ -76,9 +82,17 @@ namespace Simmental.Game.Engine
 
         public void NPCTurn()
         {
+            // Give all the NPCs a chance to do their thing
             foreach (var npc in this.NPC)
             {
                 npc.ExecuteTurn(this);
+            }
+
+            // and any special items
+            var turnList = new List<IExecuteTurn>(this.RequiresATurn);
+            foreach(IExecuteTurn executeTurn in turnList)
+            {
+                executeTurn.ExecuteTurn(this);
             }
 
         }

@@ -17,6 +17,8 @@ namespace Simmental.Game.Map
         public TileAttributeEnum TileAttribute { get; set; }
         public bool Seen { get; set; }
 
+        public List<ICharacter> NPCs { get; } = new List<ICharacter>();
+
         /// <summary>
         /// Returns true if the passed bit(s) are all set om TileAttribute
         /// </summary>

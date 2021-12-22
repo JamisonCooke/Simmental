@@ -14,6 +14,7 @@ namespace Simmental.UI
         TileAttributeEnum TileAttribute { get; set; }
         bool HasAttribute(TileAttributeEnum tileAttributeEnum);
         bool Seen { get; set; }
+        List<ICharacter> NPCs { get; }
 
     }
 }

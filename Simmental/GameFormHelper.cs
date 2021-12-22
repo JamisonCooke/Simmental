@@ -68,10 +68,8 @@ namespace Simmental
             int i, j;
             if (RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out i, out j))
             {
-                this.Game.Designer.TopLeft.i = i;
-                this.Game.Designer.TopLeft.j = j;
-                this.Game.Designer.BottomRight.i = i;
-                this.Game.Designer.BottomRight.j = j;
+                this.Game.Designer.TopLeft = new Position(i, j);
+                this.Game.Designer.BottomRight = new Position(i, j);
                 GamePictureBox.Refresh();
             }
         }
@@ -85,8 +83,7 @@ namespace Simmental
             int i, j;
             if (RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out i, out j))
             {
-                this.Game.Designer.BottomRight.i = i;
-                this.Game.Designer.BottomRight.j = j;
+                this.Game.Designer.BottomRight = new Position(i, j);
                 GamePictureBox.Refresh();
             }
         }
@@ -96,26 +93,28 @@ namespace Simmental
             ICharacter npc = null;
 
             // Someone pressed a key on the form!
+            int i = Game.Player.Position.i;
+            int j = Game.Player.Position.j;
             switch (keyCode)
             {
                 case Keys.W:
-                    if (CanWalkOn(Game.Player.Position.i, Game.Player.Position.j - 1, out npc))
-                        Game.Player.Position.j--;
+                    if (CanWalkOn(i, j - 1, out npc))
+                        j--;
                     break;
 
                 case Keys.S:
-                    if (CanWalkOn(Game.Player.Position.i, Game.Player.Position.j + 1, out npc))
-                        Game.Player.Position.j++;
+                    if (CanWalkOn(i, j + 1, out npc))
+                        j++;
                     break;
 
                 case Keys.A:
-                    if (CanWalkOn(Game.Player.Position.i - 1, Game.Player.Position.j, out npc))
-                        Game.Player.Position.i--;
+                    if (CanWalkOn(i - 1, j, out npc))
+                        i--;
                     break;
 
                 case Keys.D:
-                    if (CanWalkOn(Game.Player.Position.i + 1, Game.Player.Position.j, out npc))
-                        Game.Player.Position.i++;
+                    if (CanWalkOn(i + 1, j, out npc))
+                        i++;
                     break;
                 case Keys.Space:
                     break; //Give the monsters a free turn
@@ -123,6 +122,8 @@ namespace Simmental
                 default:    // Runs when no above cases are hit
                     return;
             }
+            Game.Wayfinder.Move(Game.Player, new Position(i, j));
+
             if (npc != null)
             {
                 //Attack the npc!
@@ -223,17 +224,13 @@ namespace Simmental
                 return false;
 
             // Check the NPC's if they are on the (i,j) coordinate
-            foreach(var monster in Game.NPC)
-            {
-                if (monster.Position.i == i && monster.Position.j == j)
-                {
-                    npc = monster;
-                    return false;
-                }
-            }
-
-
             var tile = Game.Wayfinder[i, j];
+
+            foreach (var monster in tile.NPCs)
+            {   
+                npc = monster;
+                return false;
+            }
 
             return (tile.TileAttribute & TileAttributeEnum.CanWalkOn) == TileAttributeEnum.CanWalkOn;
         }

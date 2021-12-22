@@ -1,4 +1,5 @@
-﻿using Simmental.Game.Items;
+﻿using Simmental.Game.Characters.Tasks;
+using Simmental.Game.Items;
 using Simmental.Game.Map;
 using Simmental.UI;
 using System;
@@ -13,7 +14,7 @@ namespace Simmental.Game.Characters
     /// Represents the base / common aspects for both the main character and the RPC's
     /// </summary>
     [Serializable]
-    public abstract class BaseCharacter : ICharacter
+    public abstract class BaseCharacter : ICharacter, IExecuteTurn
     {
         /// <summary>
         /// Name of the character
@@ -29,7 +30,7 @@ namespace Simmental.Game.Characters
         public int Charisma { get; set; }
         public int Wisdom { get; set; }
         public int AC { get; set; }
-        public Position Position { get; set; } = new Position();
+        public Position Position { get; private set; } = new Position();
         public IWeapon PrimaryWeapon { get; set; }
         public IWeapon SecondaryWeapon { get; set; }
         //public IItem Armor { get; set; }
@@ -41,8 +42,13 @@ namespace Simmental.Game.Characters
         
         public virtual void ExecuteTurn(IGame game)
         {
-            
+            foreach (var task in Tasks)
+            {
+                if (task.ExecuteTask(game, this))
+                    break;
+            }
         }
+
         
         public IInventory Inventory { get; } = new Inventory();
 
@@ -56,11 +62,18 @@ namespace Simmental.Game.Characters
         protected ElementEnum _elementallyImmune = ElementEnum.Normal;
         protected ElementEnum _elementallyVulnerable = ElementEnum.Normal;
 
+        public List<ITask> Tasks = new List<ITask>();
+
         public int GetMaxHP()
         {
             return 50;
         }
-        
+
+        void ICharacter.SetPositionInternal(Position position)
+        {
+            this.Position = position;
+        }
+
         /// <summary>
         /// Attacks the main player
         /// </summary>
@@ -129,8 +142,13 @@ namespace Simmental.Game.Characters
         private void Killed(IGame game, ICharacter deceased)
         {
             Corpse corpse = new Corpse($"Dead {deceased.Name}", "Stinky Corpse", deceased);
-            game.Wayfinder[deceased.Position].Inventory.Add(corpse);
+            var tile = game.Wayfinder[deceased.Position];
+            tile.Inventory.Add(corpse);
+            if (tile.NPCs.Contains(deceased))
+                tile.NPCs.Remove(deceased);
+
             game.NPC.Remove(deceased);
+            
         }
 
     }

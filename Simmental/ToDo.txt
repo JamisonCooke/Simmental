@@ -42,3 +42,9 @@ Light Sources
 [X] Items and npcs out of sight are not rendered
 [ ] Multiple light sources
 
+NPC Mechanics
+[ ] Pheremones
+[ ] Monster coordinations
+[ ] Guard Function
+[ ] Seek and Destroy Function
+

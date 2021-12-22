@@ -5,15 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simmental.Game.Characters
+namespace Simmental.Game.Characters.Tasks
 {
     [Serializable]
-    public class Orc : BaseCharacter
+    internal class Wander : ITask
     {
-        public override RaceEnum Race
+        public bool ExecuteTask(IGame game, ICharacter character)
         {
-            get { return RaceEnum.Orc; }
+            return false;
         }
-
     }
 }

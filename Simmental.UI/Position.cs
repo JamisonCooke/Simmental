@@ -14,12 +14,12 @@ namespace Simmental.UI
         /// <summary>
         /// Tile location across the x-axis
         /// </summary>
-        public int i { get; set; }
+        public int i { get; }
 
         /// <summary>
         /// Tile location across the y-axis
         /// </summary>
-        public int j { get; set; }
+        public int j { get; }
 
         /// <summary>
         /// Empty constructor
