@@ -10,6 +10,7 @@ namespace Simmental.UI
     {
         int Brightness { get; set; }
         int Distance { get; set; }
+        bool IsLit { get; set; }
 
     }
 }

@@ -13,5 +13,7 @@ namespace Simmental.UI
         string Description { get; }
         // IWeaponAttributes WeaponAttributes { get; }
         int Count { get; set; }
+
+        IEnumerable<(string menuText, Action menuAction)> GetMenuItems(IGame game);
     }
 }

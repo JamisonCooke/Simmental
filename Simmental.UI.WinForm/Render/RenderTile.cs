@@ -31,7 +31,7 @@ namespace Simmental.UI.WinForm.Render
 
             _graphics.DrawRectangle(pen, rectangle);
             _graphics.FillRectangle(new SolidBrush(GetColorForTile(tile.TileType)), rectangle);
-            if (isVisible)
+            if (isVisible && tile.LightLevel > 0)
             {
                 foreach (var item in tile.Inventory.Items)
                 {

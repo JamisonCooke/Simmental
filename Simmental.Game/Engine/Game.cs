@@ -54,7 +54,7 @@ namespace Simmental.Game.Engine
             Player.Inventory.Add(dagger);
             Player.PrimaryWeapon = dagger;
 
-            var lantern = new LightSource("Lantern", "Trusty old lantern", 85, 10);
+            var lantern = new LightSource("Lantern", "Trusty old lantern", 85, 10, true);
             Player.Inventory.Add(lantern);
 
             var crossbow = new ProjectileLauncher("Crossbow", "Strong Crossbow, fires bolts", "bolt", new DamageRoll(1, 12, ElementEnum.Normal));
@@ -73,7 +73,7 @@ namespace Simmental.Game.Engine
             var axe = new MeleeWeapon("Ugly Axe", "A really ugly axe.", new DamageRoll(1, 12, ElementEnum.Normal));
              
             orc1.Inventory.Add(axe);
-            orc1.Inventory.Add(new LightSource("Torch", "a Stick with fabric and tar fixed at the end", 70, 7));
+            orc1.Inventory.Add(new LightSource("Torch", "a Stick with fabric and tar fixed at the end", 70, 7, true));
             orc1.PrimaryWeapon = axe;
             orc1.Name = "Angry Orc";
             orc1.HP = 25;
@@ -258,7 +258,8 @@ namespace Simmental.Game.Engine
                 // Return light sources
                 if (item is ILightSource lightSource)
                 {
-                    yield return lightSource;
+                    if (lightSource.IsLit)
+                        yield return lightSource;
                 }
                 if (item is IInventory nestedInventory)
                 {

@@ -42,5 +42,10 @@ namespace Simmental.Game.Items
             else
                 return $"{_name} x{Count}";
         }
+
+        public virtual IEnumerable<(string menuText, Action menuAction)> GetMenuItems(IGame game)
+        {
+            yield break;
+        }
     }
 }

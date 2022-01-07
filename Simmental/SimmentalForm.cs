@@ -420,7 +420,24 @@ namespace Simmental
                 inventoryContextMenu.Items.Add("Use as Secondary", null, (s, e) => WieldWeaponSecondary(clickedOnItem));
             }
 
+            foreach((string menuText, Action menuAction) in clickedOnItem.Item.GetMenuItems(Game))
+            {
+                inventoryContextMenu.Items.Add(menuText, null, (s, e) => ActionRefresh(clickedOnItem.Item.GetFullName() + ": " + menuText, menuAction));
+
+            }
+
             inventoryContextMenu.Show(Cursor.Position);
+        }
+
+        private void ActionRefresh(string text, Action action)
+        {
+            Game.LogMessage(text);
+            action();
+
+            Game.CompleteTurn();
+            mapPictureBox.Refresh();
+            UpdateInfoPanel(true);
+            UpdateMessageText(_gameFormHelper.CompileMessages());
         }
 
         /// <summary>

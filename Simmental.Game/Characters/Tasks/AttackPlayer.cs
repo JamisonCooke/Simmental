@@ -19,7 +19,7 @@ namespace Simmental.Game.Characters.Tasks
                 character.Attack(game, game.Player, character.PrimaryWeapon);
             }
 
-            if (game.Wayfinder.IsVisible(game.Player.Position, character.Position))
+            if (game.Wayfinder.IsVisible(game.Player.Position, character.Position, 20))
                 _lastSeen = new Position(game.Player.Position);
 
             if (_lastSeen == null)
