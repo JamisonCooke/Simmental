@@ -69,6 +69,20 @@ namespace Simmental.Game.Map
             }
         }
 
+        public bool IsVisible(Position from, Position to, int maxDistance)
+        {
+            // First -- check if it's close enough
+            var d = Math.Sqrt(Math.Pow(to.i - from.i, 2) + Math.Pow(to.j - from.j, 2));
+            if (d > maxDistance)
+                return false;
+
+            if (d == 0)
+                return !this[to].HasAttribute(TileAttributeEnum.Opaque);
+
+            return IsVisible(from, to);
+        }
+
+
         /// <summary>
         /// Returns true if there is line of sight between from and to, which can't be further than maxDistance
         /// </summary>
@@ -76,16 +90,8 @@ namespace Simmental.Game.Map
         /// <param name="to"></param>
         /// <param name="maxDistance"></param>
         /// <returns></returns>
-        public bool IsVisible(Position from, Position to, int maxDistance)
+        public bool IsVisible(Position from, Position to)
         {
-            // First -- check if it's close enough
-            var d = Math.Sqrt(Math.Pow(to.i - from.i, 2) + Math.Pow(to.j - from.j,  2));
-            if (d > maxDistance)
-                return false;
-
-            if (d == 0)
-                return (this[to.i, to.j].TileAttribute & TileAttributeEnum.Opaque) == TileAttributeEnum.Opaque;
-
             // Second -- Check all the tiles inbetween to see if any of them are non-transparent
             // We are using y = mx + b to find the line between them (in our case j = mi + b).
             double m = 0;  // default to 0
@@ -145,6 +151,50 @@ namespace Simmental.Game.Map
             this[moveTo].NPCs.Add(character);
             
             character.SetPositionInternal(moveTo);
+        }
+
+        public void ApplyLightSources(IGame game)
+        {
+            // Set all (visible) tiles to their default light level
+            for (int i = this.CameraI; i < this.CameraWidth + this.CameraI; i++)
+            {
+                for (int j = this.CameraJ; j < this.CameraHeight + this.CameraJ; j++)
+                {
+                    var tile = this[i, j];
+                    if (tile != null)
+                        tile.LightLevel = tile.DefaultLightLevel;
+                }
+            }
+
+            // Apply light sources to all tiles
+            foreach ((ILightSource lightSource, Position p) in game.GetLightSources())
+            {
+                ApplyLightSource(game, p, lightSource);
+            }
+        }
+
+        private void ApplyLightSource(IGame game, Position p, ILightSource lightSource)
+        {
+            // Loop over all the tiles the light source can reach--
+            // and check if that tile IsVisible() and if so, add in the light
+
+            for (int i = p.i - lightSource.Distance; i <= p.i + lightSource.Distance; i++)
+            {
+                for (int j = p.j - lightSource.Distance; j <= p.j + lightSource.Distance; j++)
+                {
+                    var tile = this[i, j];
+                    if (tile != null)
+                    {
+                        if (IsVisible(p, new Position(i, j), lightSource.Distance))
+                        {
+                            tile.LightLevel += lightSource.Brightness;
+                            if (tile.LightLevel > 100)
+                                tile.LightLevel = 100;
+                        } 
+                    }
+                }
+            }
+
         }
     }
 }

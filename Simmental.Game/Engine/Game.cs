@@ -13,6 +13,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using Simmental.Game.Characters.Tasks;
+using System.Xml.Serialization;
 
 namespace Simmental.Game.Engine
 {
@@ -33,7 +34,9 @@ namespace Simmental.Game.Engine
         private static Random _random = new Random();
         public static Random Random => _random;
 
-        public Action UpdateMessages { get; set; }
+        [NonSerialized]
+        private Action _updateMessages = null;
+        public Action UpdateMessages { get { return _updateMessages; } set { _updateMessages = value; } }
 
         public void InitalizeRandom()
         {
@@ -51,6 +54,9 @@ namespace Simmental.Game.Engine
             Player.Inventory.Add(dagger);
             Player.PrimaryWeapon = dagger;
 
+            var lantern = new LightSource("Lantern", "Trusty old lantern", 85, 10);
+            Player.Inventory.Add(lantern);
+
             var crossbow = new ProjectileLauncher("Crossbow", "Strong Crossbow, fires bolts", "bolt", new DamageRoll(1, 12, ElementEnum.Normal));
             var basicbolt = new RangedWeapon("Basic Bolt", "Can Be fired from crossbows",20, 4, ElementEnum.Fire, "bolt");
             var arrows = new RangedWeapon("Arrows", "Can Be fired from a bows", 20, 4, ElementEnum.Normal, "arrow");
@@ -65,7 +71,9 @@ namespace Simmental.Game.Engine
 
             var orc1 = helper.GenerateRandom(RaceEnum.Orc);
             var axe = new MeleeWeapon("Ugly Axe", "A really ugly axe.", new DamageRoll(1, 12, ElementEnum.Normal));
+             
             orc1.Inventory.Add(axe);
+            orc1.Inventory.Add(new LightSource("Torch", "a Stick with fabric and tar fixed at the end", 70, 7));
             orc1.PrimaryWeapon = axe;
             orc1.Name = "Angry Orc";
             orc1.HP = 25;
@@ -214,7 +222,54 @@ namespace Simmental.Game.Engine
 
         public void CompleteTurn()
         {
+
             _turnNo++;
+            this.Wayfinder.ApplyLightSources(this);
         }
+
+        public IEnumerable<(ILightSource LightSource, Position Position)> GetLightSources()
+        {
+
+            // Return the players light sources
+            foreach(ILightSource l in GetLightSourcesFromInventory(this.Player.Inventory))
+                yield return (l, this.Player.Position);
+
+            foreach (var npc in this.NPC)
+            {
+                foreach (ILightSource l in GetLightSourcesFromInventory(npc.Inventory))
+                    yield return (l, npc.Position);
+            }
+
+            for (int i = 0; i < this.Wayfinder.Width; i++)
+            {
+                for (int j = 0; j < this.Wayfinder.Height; j++)
+                {
+                    foreach (ILightSource l in GetLightSourcesFromInventory(this.Wayfinder[i, j].Inventory))
+                        yield return (l, new Position(i, j));
+                }
+            }
+
+        }
+
+        private IEnumerable<ILightSource> GetLightSourcesFromInventory(IInventory inventory)
+        {
+            foreach(var item in inventory.Items)
+            {
+                // Return light sources
+                if (item is ILightSource lightSource)
+                {
+                    yield return lightSource;
+                }
+                if (item is IInventory nestedInventory)
+                {
+                    foreach(var l2 in GetLightSourcesFromInventory(nestedInventory))
+                    {
+                        yield return l2;
+                    }
+                }
+            }
+        }
+
+
     }
 }

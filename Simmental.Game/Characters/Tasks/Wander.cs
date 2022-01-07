@@ -12,6 +12,7 @@ namespace Simmental.Game.Characters.Tasks
     {
         public bool ExecuteTask(IGame game, ICharacter character)
         {
+
             return false;
         }
     }

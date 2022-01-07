@@ -17,7 +17,6 @@ namespace Simmental.UI.WinForm.Render
 
         private static void Render(IWayfinder wayfinder, Graphics g, Position playerPosition)
         {
-            
             var renderTile = new RenderTile(g);
             var renderHelper = new RenderHelper();
 
@@ -27,7 +26,7 @@ namespace Simmental.UI.WinForm.Render
                 {
                     ITile tile = wayfinder[i, j];
                     Rectangle rectangle = renderHelper.GetTileRect(wayfinder,  i, j);
-                    bool isVisible = wayfinder.IsVisible(new Position(i, j), playerPosition, 10);
+                    bool isVisible = wayfinder.IsVisible(new Position(i, j), playerPosition);
                     if (tile != null)
                     {
                         if (!tile.Seen && isVisible)

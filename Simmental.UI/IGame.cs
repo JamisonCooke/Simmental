@@ -20,6 +20,7 @@ namespace Simmental.UI
         void CompleteTurn();
         int TurnNo { get;  }
         static Random Random { get; }
+        IEnumerable<(ILightSource LightSource, Position Position)> GetLightSources();
 
     }
 

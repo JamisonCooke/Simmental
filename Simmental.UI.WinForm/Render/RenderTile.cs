@@ -41,7 +41,10 @@ namespace Simmental.UI.WinForm.Render
 
             if (isVisible)
             {
-                using (var brush = new SolidBrush(Color.FromArgb(20, 255, 255, 0)))
+                const int brightLevel = 40;     // when tile.LightLevel = 100
+                const int darkLevel = 5;        // when tile.LightLevel = 0
+                int alpha = (int)((brightLevel - darkLevel) * (tile.LightLevel/100.0) + darkLevel);
+                using (var brush = new SolidBrush(Color.FromArgb(alpha, 255, 255, 0)))
                     _graphics.FillRectangle(brush, rectangle);
 
             }

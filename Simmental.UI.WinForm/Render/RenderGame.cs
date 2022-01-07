@@ -19,7 +19,7 @@ namespace Simmental.UI.WinForm.Render
 
             foreach (ICharacter npc in game.NPC)
             {
-                if (game.Wayfinder.IsVisible(game.Player.Position, npc.Position, 10))
+                if (game.Wayfinder.IsVisible(game.Player.Position, npc.Position))
                     renderCharacter.Render(game.Wayfinder, npc, graphics);
             }
 

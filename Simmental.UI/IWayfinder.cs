@@ -19,7 +19,8 @@
         int TilePixelWidth { get; set; }
         int TilePixelHeight { get; set; }
 
-        bool IsVisible(Position from, Position to, int maxDistance);
+        bool IsVisible(Position from, Position to);
         void Move(ICharacter character, Position moveTo);
+        void ApplyLightSources(IGame game);
     }
 }

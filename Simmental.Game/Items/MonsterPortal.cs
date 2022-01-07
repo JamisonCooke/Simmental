@@ -70,6 +70,7 @@ namespace Simmental.Game.Items
             game.Wayfinder.Move(monster, _position);
             monster.Tasks.Add(new AttackPlayer());
             monster.Tasks.Add(new Wander());
+            monster.Inventory.Add(new LightSource("Torch", "a Stick with fabric and tar fixed at the end", 70, 7));
             game.NPC.Add(monster);
 
         }

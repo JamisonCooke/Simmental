@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Simmental.Game.Items
 {
+    [Serializable]
     public class LightSource : ItemBase, ILightSource
     {
         public LightSource(string name, string description, int brightness, int distance)
