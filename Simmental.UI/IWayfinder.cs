@@ -21,6 +21,7 @@
 
         bool IsVisible(Position from, Position to);
         bool IsVisible(Position from, Position to, int maxDistance);
+        bool CanSee(Position from, Position to, int maxDistance);
         void Move(ICharacter character, Position moveTo);
         void ApplyLightSources(IGame game);
     }

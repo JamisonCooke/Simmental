@@ -82,8 +82,11 @@ namespace Simmental.Game.Engine
             NPC.Add(orc1);
 
             //// Create a new orc portal            
-            var orcPortal = new MonsterPortal(this, RaceEnum.Orc, 10, 4, 10, new Position(6, 6));
-            this.RequiresATurn.Add(orcPortal);
+            if (true)
+            {
+                var orcPortal = new MonsterPortal(this, RaceEnum.Orc, 10, 4, 10, new Position(6, 6));
+                this.RequiresATurn.Add(orcPortal);
+            }
 
             this.Designer.TopLeft = new Position(2, 2);
             this.Designer.BottomRight = new Position(5, 3);

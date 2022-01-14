@@ -137,6 +137,19 @@ namespace Simmental.Game.Map
             return true;
         }
 
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="maxDistance"></param>
+        /// <returns></returns>
+        public bool CanSee(Position from, Position to, int maxDistance)
+        {
+            if (IsVisible(from, to, maxDistance))
+            {
+                if (this[to].LightLevel > 0)
+                    return true;
+            }
+            return false;
+        }
         /// <summary>
         /// Moves an ICharacter from his/her existing position to a new position, updating
         /// the Tile.NPCs list at the same time

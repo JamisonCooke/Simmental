@@ -1,4 +1,5 @@
-﻿using Simmental.UI;
+﻿using Simmental.Game.Map;
+using Simmental.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,46 +12,32 @@ namespace Simmental.Game.Characters.Tasks
     internal class AttackPlayer : ITask
     {
         int _turnCount = 0;
-        Position _lastSeen = null;
+        Pathfinder _pathfinder;
+
         public bool ExecuteTask(IGame game, ICharacter character)
         {
             if (game.Player.Position.AdjacentTo(character.Position))
             {
                 character.Attack(game, game.Player, character.PrimaryWeapon);
+                return true;
             }
 
-            if (game.Wayfinder.IsVisible(game.Player.Position, character.Position, 20))
-                _lastSeen = new Position(game.Player.Position);
+            if (game.Wayfinder.CanSee(character.Position, game.Player.Position, 20))
+                _pathfinder = new Pathfinder(game.Wayfinder, character.Position, game.Player.Position);
 
-            if (_lastSeen == null)
+            if (_pathfinder == null)
                 return false;
+
             _turnCount++;
             if (_turnCount % 3 != 0)
-                return false;
+                return true;
 
-            int i = character.Position.i;
-            int j = character.Position.j;
+            _pathfinder.Move();
+            game.Wayfinder.Move(character, _pathfinder.CurrentPosition);
+            if (_pathfinder.Complete)
+                _pathfinder = null;
 
-            if (_lastSeen.i < i)
-                i--;
-            else if (_lastSeen.i > i)
-                i++;
-            if (_lastSeen.j < j)
-                j--;
-            else if (_lastSeen.j > j)
-                j++;
-
-            Position newPosition = new Position(i, j);
-
-            // Only move forward to the new position, if we can walk on the destination square && we are not on the player's square
-            if (game.Wayfinder[newPosition].HasAttribute(TileAttributeEnum.CanWalkOn) && !newPosition.EqualTo(game.Player.Position))
-                game.Wayfinder.Move(character, newPosition);
-
-            if (_lastSeen.i == character.Position.i && _lastSeen.j == character.Position.j)
-                _lastSeen = null;
-        
-
-            return false;
+            return _pathfinder != null;
         }
     }
 }
