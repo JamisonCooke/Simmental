@@ -14,8 +14,9 @@ namespace Simmental.Game.Map
 
         private class AStarTile 
         {
-            public int i { get; set; }
-            public int j { get; set; }
+            public int i { get; }
+            public int j { get; }
+            public Position Position { get; }
             public int Cost { get; set; }
             public double Distance { get; set; }
             public double CostDistance => Cost + Distance;
@@ -25,6 +26,7 @@ namespace Simmental.Game.Map
             {
                 this.i = i;
                 this.j = j;
+                this.Position = new Position(i, j);
                 if (fromTile != null)
                     this.Cost = fromTile.Cost + 1;
 
@@ -102,49 +104,49 @@ namespace Simmental.Game.Map
         
         private Position[] RunAStarAlogithm(Position from, Position to)
         {
-            var activeTiles = new List<AStarTile>();
-            var visitedTiles = new List<AStarTile>();
+            var activeTiles = new Dictionary<Position, AStarTile>();
+            var visitedTiles = new HashSet<Position>();
             var start = new AStarTile(null, from.i, from.j, to);
-            activeTiles.Add(start);
+            activeTiles.Add(start.Position, start);
 
             AStarTile finalTile = null;
 
             while(activeTiles.Count > 0)
             {
-                // Get the next tile to check -- it will have the lowest .CostDistance
-                var checkTile = activeTiles.OrderBy(x => x.CostDistance).First();
-                //var checkTile = activeTiles.Min(x => x.CostDistance)
+                // Find the smallest CostDistance in the activeTiles
+                AStarTile checkTile = null;     // O(n)
+                foreach(var activeTile in activeTiles.Values)
+                {
+                    if (checkTile == null || activeTile.CostDistance < checkTile.CostDistance)
+                        checkTile = activeTile;
+                }
 
                 // See if we reached our destination. If so, set finalTile, and get out of the loop
-                if (checkTile.i == to.i && checkTile.j == to.j)
+                if (checkTile.Position.Equals(to))
                 {
                     finalTile = checkTile;
                     break;
                 }
 
                 // Move the tile from active to visited -- so we never consider it again
-                visitedTiles.Add(checkTile);
-                activeTiles.Remove(checkTile);
+                visitedTiles.Add(checkTile.Position);
+                activeTiles.Remove(checkTile.Position);
 
                 // Fetch all the positions we could move to and add them
-                var newTiles = GetWalkableTiles(checkTile);
+                var newTiles = GetWalkableTiles(checkTile, visitedTiles);
                 foreach (var tile in newTiles)
                 {
-                    // If the tile is already in visited, ignore it
-                    if (visitedTiles.Any(x => x.i == tile.i && x.j == tile.j))
-                        continue;
-
-                    // If the tile is already in activeTiles and has a smaller CostDistance, replace it
-                    var oldTile = activeTiles.FirstOrDefault(x => x.i == tile.i && x.j == tile.j);
-                    if (oldTile != null && tile.Cost < oldTile.Cost)
+                    // If the tile is already in activeTiles and has a smaller CostDistance, replace i
+                    if (activeTiles.TryGetValue(tile.Position, out var aStarTile))
                     {
-                        activeTiles.Remove(oldTile);
-                        activeTiles.Add(tile);
+                        if (tile.Cost < aStarTile.Cost)
+                        {
+                            activeTiles[tile.Position] = tile;
+                        }
                     }
-                    else if (oldTile == null)
+                    else
                     {
-                        // Otherwise, add it to activeTiles
-                        activeTiles.Add(tile);
+                        activeTiles[tile.Position] = tile;
                     }
                 }
             }
@@ -171,7 +173,7 @@ namespace Simmental.Game.Map
         /// </summary>
         /// <param name="tile"></param>
         /// <returns></returns>
-        private List<AStarTile> GetWalkableTiles(AStarTile tile)
+        private List<AStarTile> GetWalkableTiles(AStarTile tile, HashSet<Position> visitedTiles)
         {
             var result = new List<AStarTile>();
 
@@ -183,6 +185,11 @@ namespace Simmental.Game.Map
             {
                 for (int dj = -1; dj <= 1; dj++)
                 {
+                    // Don't include tiles we've visited before
+                    if (visitedTiles.Contains(new Position(di, dj)))
+                        continue;
+
+                    // Create it if it's 'CanWalkOn' and not tiles i,j
                     if (CreateAStar(tile, tile.i + di, tile.j + dj, out aStarTile))
                         result.Add(aStarTile);
                 }

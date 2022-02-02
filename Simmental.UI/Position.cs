@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Simmental.UI
 {
     [Serializable]
-    public class Position
+    public class Position : IEquatable<Position>
     {
 
         /// <summary>
@@ -54,9 +54,27 @@ namespace Simmental.UI
             return Math.Abs(this.i - position.i) <= 1 && Math.Abs(this.j - position.j) <= 1;
         }
 
-        public bool EqualTo(Position position)
+        public override bool Equals(object obj)
         {
-            return position.i == this.i && position.j == this.j;
+            if (obj is Position p)
+                return Equals(p);
+            else
+                return false;
+        }
+
+        public bool Equals(Position p)
+        {
+            return p.i == this.i && p.j == this.j;
+        }
+
+        public override int GetHashCode()
+        {
+            return j * 1000003 + i;
+        }
+
+        public override string ToString()
+        {
+            return $"{i}, {j}";
         }
 
     }

@@ -49,6 +49,13 @@ Multiple Light sources
 [X] Before render, set all Tile.LightLevel to DefaultLightLevel, find all light sources, shine light sources in Tiles
 [x] When rendering, make sure Tile.LightLevel is not considered if something opaque blocks the player from the tile
 
+Designer+
+[ ] Add pencil tool
+[ ] Eyedropper tool
+[ ] Redisgn tile color dropdown()
+[ ] Flood Bucket Feature
+[ ] Easy Npc adding
+
 NPC Mechanics
 [ ] Pheremones
 [ ] Monster coordinations
@@ -60,6 +67,7 @@ NPC Mechanics
   HOURS (assume 2 hours unless denoted otherwise)
 ***************************************************
 Fri 1/14 - 
-
+Fri 1/21 - 1, 45
+Wens 2/2 - 1 hr
 
 
