@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Simmental.Game.Items
@@ -46,6 +47,24 @@ namespace Simmental.Game.Items
         public virtual IEnumerable<(string menuText, Action menuAction)> GetMenuItems(IGame game)
         {
             yield break;
+        }
+
+        public virtual string SerializationInfo()
+        {
+            // ie., _Axe,Nasty Orc Axe,1
+            // return $"{_name},{_description},{Count}";
+            return JsonSerializer.Serialize(this);
+        }
+
+        public static ItemBase Deserialize(string info)
+        {
+
+            //string[] infoParts = info.Split(",");
+            //ItemBase result = new ItemBase(infoParts[0], infoParts[1], int.Parse(infoParts[2]);
+            //return result;
+
+            return JsonSerializer.Deserialize<ItemBase>(info);
+            
         }
     }
 }

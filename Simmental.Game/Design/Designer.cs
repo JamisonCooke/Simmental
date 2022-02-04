@@ -13,6 +13,8 @@ namespace Simmental.Game.Design
         public Position TopLeft { get; set; }
         public Position BottomRight { get; set; }
 
+        public bool HighlightRange { get; set; }
+
         public IEnumerable<ITile> SelectedTiles(IWayfinder wayfinder)
         {
             int fromI = (TopLeft.i < BottomRight.i) ? TopLeft.i : BottomRight.i;

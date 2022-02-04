@@ -55,6 +55,7 @@ Designer+
 [ ] Redisgn tile color dropdown()
 [ ] Flood Bucket Feature
 [ ] Easy Npc adding
+[ ] Existing selection mode -- add cut/paste
 
 NPC Mechanics
 [ ] Pheremones
@@ -69,5 +70,5 @@ NPC Mechanics
 Fri 1/14 - 
 Fri 1/21 - 1, 45
 Wens 2/2 - 1 hr
-
+Fri 2/4 - 1 40
 

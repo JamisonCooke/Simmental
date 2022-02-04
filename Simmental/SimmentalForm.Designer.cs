@@ -30,7 +30,13 @@ namespace Simmental
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimmentalForm));
             this.designerPanel = new System.Windows.Forms.Panel();
+            this.tileDesignerToolstrip = new System.Windows.Forms.ToolStrip();
+            this.designerEyeDropper = new System.Windows.Forms.ToolStripButton();
+            this.designerRangeSelector = new System.Windows.Forms.ToolStripButton();
+            this.designerPen = new System.Windows.Forms.ToolStripButton();
+            this.designerFloodFill = new System.Windows.Forms.ToolStripButton();
             this.OpaqueCheckBox = new System.Windows.Forms.CheckBox();
             this.KillCheckBox = new System.Windows.Forms.CheckBox();
             this.FlyCheckBox = new System.Windows.Forms.CheckBox();
@@ -71,6 +77,7 @@ namespace Simmental
             this.inventoryContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.moveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.designerPanel.SuspendLayout();
+            this.tileDesignerToolstrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.zoomTrackBar)).BeginInit();
@@ -84,6 +91,7 @@ namespace Simmental
             this.designerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.designerPanel.BackColor = System.Drawing.Color.White;
+            this.designerPanel.Controls.Add(this.tileDesignerToolstrip);
             this.designerPanel.Controls.Add(this.OpaqueCheckBox);
             this.designerPanel.Controls.Add(this.KillCheckBox);
             this.designerPanel.Controls.Add(this.FlyCheckBox);
@@ -97,10 +105,72 @@ namespace Simmental
             this.designerPanel.Visible = false;
             this.designerPanel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.descriptionPanel_PreviewKeyDown);
             // 
+            // tileDesignerToolstrip
+            // 
+            this.tileDesignerToolstrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.designerEyeDropper,
+            this.designerRangeSelector,
+            this.designerPen,
+            this.designerFloodFill});
+            this.tileDesignerToolstrip.Location = new System.Drawing.Point(0, 0);
+            this.tileDesignerToolstrip.Name = "tileDesignerToolstrip";
+            this.tileDesignerToolstrip.Size = new System.Drawing.Size(200, 25);
+            this.tileDesignerToolstrip.TabIndex = 5;
+            this.tileDesignerToolstrip.Text = "toolStrip1";
+            // 
+            // designerEyeDropper
+            // 
+            this.designerEyeDropper.CheckOnClick = true;
+            this.designerEyeDropper.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.designerEyeDropper.Image = ((System.Drawing.Image)(resources.GetObject("designerEyeDropper.Image")));
+            this.designerEyeDropper.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.designerEyeDropper.Name = "designerEyeDropper";
+            this.designerEyeDropper.Size = new System.Drawing.Size(23, 22);
+            this.designerEyeDropper.Text = "toolStripButton1";
+            this.designerEyeDropper.ToolTipText = "Style Selector";
+            this.designerEyeDropper.Click += new System.EventHandler(this.designerEyeDropper_Click);
+            // 
+            // designerRangeSelector
+            // 
+            this.designerRangeSelector.Checked = true;
+            this.designerRangeSelector.CheckOnClick = true;
+            this.designerRangeSelector.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.designerRangeSelector.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.designerRangeSelector.Image = ((System.Drawing.Image)(resources.GetObject("designerRangeSelector.Image")));
+            this.designerRangeSelector.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.designerRangeSelector.Name = "designerRangeSelector";
+            this.designerRangeSelector.Size = new System.Drawing.Size(23, 22);
+            this.designerRangeSelector.Text = "toolStripButton2";
+            this.designerRangeSelector.ToolTipText = "Range Selector";
+            this.designerRangeSelector.Click += new System.EventHandler(this.designerRangeSelector_Click);
+            // 
+            // designerPen
+            // 
+            this.designerPen.CheckOnClick = true;
+            this.designerPen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.designerPen.Image = ((System.Drawing.Image)(resources.GetObject("designerPen.Image")));
+            this.designerPen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.designerPen.Name = "designerPen";
+            this.designerPen.Size = new System.Drawing.Size(23, 22);
+            this.designerPen.Text = "toolStripButton3";
+            this.designerPen.ToolTipText = "Pencil ";
+            this.designerPen.Click += new System.EventHandler(this.designerPen_Click);
+            // 
+            // designerFloodFill
+            // 
+            this.designerFloodFill.CheckOnClick = true;
+            this.designerFloodFill.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.designerFloodFill.Image = ((System.Drawing.Image)(resources.GetObject("designerFloodFill.Image")));
+            this.designerFloodFill.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.designerFloodFill.Name = "designerFloodFill";
+            this.designerFloodFill.Size = new System.Drawing.Size(23, 22);
+            this.designerFloodFill.Text = "Paint Bucket";
+            this.designerFloodFill.Click += new System.EventHandler(this.designerFloodFill_Click);
+            // 
             // OpaqueCheckBox
             // 
             this.OpaqueCheckBox.AutoSize = true;
-            this.OpaqueCheckBox.Location = new System.Drawing.Point(42, 219);
+            this.OpaqueCheckBox.Location = new System.Drawing.Point(42, 346);
             this.OpaqueCheckBox.Name = "OpaqueCheckBox";
             this.OpaqueCheckBox.Size = new System.Drawing.Size(79, 19);
             this.OpaqueCheckBox.TabIndex = 4;
@@ -112,7 +182,7 @@ namespace Simmental
             // KillCheckBox
             // 
             this.KillCheckBox.AutoSize = true;
-            this.KillCheckBox.Location = new System.Drawing.Point(42, 196);
+            this.KillCheckBox.Location = new System.Drawing.Point(42, 323);
             this.KillCheckBox.Name = "KillCheckBox";
             this.KillCheckBox.Size = new System.Drawing.Size(88, 19);
             this.KillCheckBox.TabIndex = 3;
@@ -124,7 +194,7 @@ namespace Simmental
             // FlyCheckBox
             // 
             this.FlyCheckBox.AutoSize = true;
-            this.FlyCheckBox.Location = new System.Drawing.Point(42, 171);
+            this.FlyCheckBox.Location = new System.Drawing.Point(42, 298);
             this.FlyCheckBox.Name = "FlyCheckBox";
             this.FlyCheckBox.Size = new System.Drawing.Size(84, 19);
             this.FlyCheckBox.TabIndex = 3;
@@ -136,7 +206,7 @@ namespace Simmental
             // WalkCheckBox
             // 
             this.WalkCheckBox.AutoSize = true;
-            this.WalkCheckBox.Location = new System.Drawing.Point(42, 146);
+            this.WalkCheckBox.Location = new System.Drawing.Point(42, 273);
             this.WalkCheckBox.Name = "WalkCheckBox";
             this.WalkCheckBox.Size = new System.Drawing.Size(95, 19);
             this.WalkCheckBox.TabIndex = 3;
@@ -154,7 +224,7 @@ namespace Simmental
             "Water",
             "Wall",
             "Wood"});
-            this.tileTypeComboBox.Location = new System.Drawing.Point(33, 66);
+            this.tileTypeComboBox.Location = new System.Drawing.Point(22, 244);
             this.tileTypeComboBox.Name = "tileTypeComboBox";
             this.tileTypeComboBox.Size = new System.Drawing.Size(154, 23);
             this.tileTypeComboBox.TabIndex = 2;
@@ -167,9 +237,9 @@ namespace Simmental
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 15);
+            this.label1.Size = new System.Drawing.Size(80, 15);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Designer";
+            this.label1.Text = "Tile Designer";
             // 
             // mapPictureBox
             // 
@@ -214,32 +284,32 @@ namespace Simmental
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "&Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(120, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveAsToolStripMenuItem.Text = "Save &As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // reloadToolStripMenuItem
             // 
             this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reloadToolStripMenuItem.Text = "&Reload";
             // 
             // viewToolStripMenuItem
@@ -271,14 +341,14 @@ namespace Simmental
             // 
             this.designerToolStripMenuItem.Name = "designerToolStripMenuItem";
             this.designerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.designerToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.designerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.designerToolStripMenuItem.Text = "Designer";
             this.designerToolStripMenuItem.Click += new System.EventHandler(this.designerToolStripMenuItem_Click);
             // 
             // mapResetToolStripMenuItem
             // 
             this.mapResetToolStripMenuItem.Name = "mapResetToolStripMenuItem";
-            this.mapResetToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.mapResetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.mapResetToolStripMenuItem.Text = "Map &Reset";
             this.mapResetToolStripMenuItem.Click += new System.EventHandler(this.mapResetToolStripMenuItem_Click);
             // 
@@ -524,6 +594,8 @@ namespace Simmental
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SimmentalForm_KeyDown);
             this.designerPanel.ResumeLayout(false);
             this.designerPanel.PerformLayout();
+            this.tileDesignerToolstrip.ResumeLayout(false);
+            this.tileDesignerToolstrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -579,6 +651,11 @@ namespace Simmental
         private System.Windows.Forms.ToolStripMenuItem moveToToolStripMenuItem;
         private System.Windows.Forms.Label SecondaryWeaponLabel;
         private System.Windows.Forms.Label PrimaryWeaponLabel;
+        private System.Windows.Forms.ToolStrip tileDesignerToolstrip;
+        private System.Windows.Forms.ToolStripButton designerEyeDropper;
+        private System.Windows.Forms.ToolStripButton designerRangeSelector;
+        private System.Windows.Forms.ToolStripButton designerPen;
+        private System.Windows.Forms.ToolStripButton designerFloodFill;
     }
 }
 

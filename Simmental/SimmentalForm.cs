@@ -24,6 +24,17 @@ namespace Simmental
         ICharacter Player => _gameFormHelper.Game.Player;
         IWayfinder Wayfinder => _gameFormHelper.Game.Wayfinder;
 
+        private enum DesignerMode
+        {
+            Pencil,
+            Range,
+            EyeDropper,
+            Bucket
+        }
+
+        private DesignerMode _designerMode = DesignerMode.Range;
+        private DesignerMode _priorDesignerMode = DesignerMode.Range;
+
 
         public SimmentalForm()
         {
@@ -53,10 +64,9 @@ namespace Simmental
             wisdomTextBox.Text = c.Wisdom.ToString();
             charismaTextBox.Text = c.Charisma.ToString();
             */
-            AlignDesignerPanel(false);
-
             InitializeGame();
 
+            AlignDesignerPanel(false);
         }
 
         private void InitializeGame(bool hardreset = false)
@@ -187,7 +197,7 @@ namespace Simmental
 
         private void mapPictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if (designerPanel.Visible)
+            if (_designerMode == DesignerMode.Range)
                 _gameFormHelper.DesignerMouseDown(e.X, e.Y);
             else if (e.Button == MouseButtons.Left)
                 _gameFormHelper.PrimaryClick(e.X, e.Y);
@@ -227,7 +237,7 @@ namespace Simmental
             
             //bool isVisible = _gameFormHelper.Game.Wayfinder.IsVisible(_gameFormHelper.Game.Player.Position, to, 10);
             //this.Text = $"({i},{j}) {isVisible}";
-            if (e.Button == MouseButtons.Left && designerPanel.Visible)
+            if (e.Button == MouseButtons.Left && _designerMode == DesignerMode.Range)
                 _gameFormHelper.DesignerMouseMove(e.X, e.Y);
         }
 
@@ -237,7 +247,7 @@ namespace Simmental
         {
             _updatingUI = true;
 
-            if (designerPanel.Visible)
+            if (_designerMode == DesignerMode.Range)
                 _gameFormHelper.DesignerMouseUp(e.X, e.Y);
 
             ITile tile = _gameFormHelper.FindCommonTileProperties();
@@ -248,10 +258,11 @@ namespace Simmental
                 tileTypeComboBox.Text = tile.TileType.ToString();
 
             var att = tile.TileAttribute;
-            WalkCheckBox.Checked = (att & TileAttributeEnum.CanWalkOn) == TileAttributeEnum.CanWalkOn;
-            FlyCheckBox.Checked = (att & TileAttributeEnum.CanFlyOver) == TileAttributeEnum.CanFlyOver;
-            KillCheckBox.Checked = (att & TileAttributeEnum.WillKillYou) == TileAttributeEnum.WillKillYou;
-            OpaqueCheckBox.Checked = (att & TileAttributeEnum.Opaque) == TileAttributeEnum.Opaque;
+
+            WalkCheckBox.Checked = tile.HasAttribute(TileAttributeEnum.CanWalkOn);
+            FlyCheckBox.Checked = tile.HasAttribute(TileAttributeEnum.CanFlyOver);
+            KillCheckBox.Checked = tile.HasAttribute(TileAttributeEnum.WillKillYou);
+            OpaqueCheckBox.Checked = tile.HasAttribute(TileAttributeEnum.Opaque);
             
 
             _updatingUI = false;
@@ -262,10 +273,13 @@ namespace Simmental
         {
             if (_updatingUI) return;
 
-            // grass, stone, water, wall, wood
-            if (Enum.TryParse<TileEnum>(tileTypeComboBox.Text, out TileEnum tileEnum))
+            if (_designerMode == DesignerMode.Range)
             {
-                _gameFormHelper.DesignerUpdateTiles(tileEnum);
+                // grass, stone, water, wall, wood
+                if (Enum.TryParse<TileEnum>(tileTypeComboBox.Text, out TileEnum tileEnum))
+                {
+                    _gameFormHelper.DesignerUpdateTiles(tileEnum);
+                }
             }
         }
 
@@ -324,7 +338,8 @@ namespace Simmental
                 att |= TileAttributeEnum.Opaque;
             }
 
-            _gameFormHelper.DesignerUpdateAttribute(att);
+            if (_designerMode == DesignerMode.Range)
+                _gameFormHelper.DesignerUpdateAttribute(att);
         }
 
         private void SimmentalForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -347,15 +362,22 @@ namespace Simmental
 
         private void AlignDesignerPanel(bool isAvailable)
         {
+            bool refresh = false;
+
             int panelWidth = isAvailable ? designerPanel.Width : 0;
 
             designerToolStripMenuItem.Checked = isAvailable;
             designerPanel.Visible = isAvailable;
+            refresh = Game.Designer.HighlightRange != isAvailable && (_designerMode == DesignerMode.Range);
+            Game.Designer.HighlightRange = isAvailable && (_designerMode == DesignerMode.Range);
 
             vScrollBar1.Left = this.ClientSize.Width - vScrollBar1.Width - panelWidth;
             mapPanel.Width = this.ClientSize.Width - vScrollBar1.Width - mapPanel.Left - panelWidth;
             mapPictureBox.Width = mapPanel.Width;
             hScrollBar1.Width = this.ClientSize.Width - vScrollBar1.Width - hScrollBar1.Left - panelWidth;
+
+            if (refresh)
+                mapPictureBox.Refresh();
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -545,6 +567,55 @@ namespace Simmental
 
         private void tileInventory_MouseUp(object sender, MouseEventArgs e)
         {
+        }
+
+        private void UnselectedAllDesignerModes(bool highlightRange = false)
+        {
+            if (Game.Designer.HighlightRange != highlightRange)
+            {
+                Game.Designer.HighlightRange = highlightRange;
+                mapPictureBox.Refresh();
+            }
+
+            foreach (var item in tileDesignerToolstrip.Items)
+            {
+                if (item is ToolStripButton button)
+                    button.Checked = false;
+            }
+        }
+
+        private void designerEyeDropper_Click(object sender, EventArgs e)
+        {
+            UnselectedAllDesignerModes();
+            designerEyeDropper.Checked = true;
+            _designerMode = DesignerMode.EyeDropper;
+        }
+
+        private void designerRangeSelector_Click(object sender, EventArgs e)
+        {
+            UnselectedAllDesignerModes(true);
+            designerRangeSelector.Checked = true;
+
+            _designerMode = DesignerMode.Range;
+            _priorDesignerMode = _designerMode;
+        }
+
+        private void designerPen_Click(object sender, EventArgs e)
+        {
+            UnselectedAllDesignerModes();
+            designerPen.Checked = true;
+
+            _designerMode = DesignerMode.Pencil;
+            _priorDesignerMode = _designerMode;
+        }
+
+        private void designerFloodFill_Click(object sender, EventArgs e)
+        {
+            UnselectedAllDesignerModes();
+            designerFloodFill.Checked = true;
+
+            _designerMode = DesignerMode.Bucket;
+            _priorDesignerMode = _designerMode;
         }
     }
 }

@@ -23,7 +23,8 @@ namespace Simmental.UI.WinForm.Render
                     renderCharacter.Render(game.Wayfinder, npc, graphics);
             }
 
-            HighlightSelectedRanged(game, graphics);
+            if (game.Designer.HighlightRange)
+                HighlightSelectedRanged(game, graphics);
         }
 
         /// <summary>
