@@ -198,11 +198,16 @@ namespace Simmental
         private void mapPictureBox_MouseDown(object sender, MouseEventArgs e)
         {
             if (_designerMode == DesignerMode.Range)
-                _gameFormHelper.DesignerMouseDown(e.X, e.Y);
+                _gameFormHelper.RangeMouseDown(e.X, e.Y);
+            else if (_designerMode == DesignerMode.EyeDropper)
+                UseEyedropper(e.X, e.Y);
+            else if (_designerMode == DesignerMode.Pencil)
+                ApplyDesignerPen(e.X, e.Y);
             else if (e.Button == MouseButtons.Left)
                 _gameFormHelper.PrimaryClick(e.X, e.Y);
             else if (e.Button == MouseButtons.Right)
                 RightMouseClickMonster(e.X, e.Y);
+            
 
 
         }
@@ -214,59 +219,101 @@ namespace Simmental
                 inventoryContextMenu.Items.Clear();
 
                 var victim = Game.Wayfinder[i, j].NPCs.FirstOrDefault();
-                if (victim == null) return;
-
-                //inventoryContextMenu.Items.Add("Player", null, (s, e) => MoveInventory(clickedOnItem, Player.Inventory));
-                
-                    
-                    
+                if (victim == null) return;     
                 inventoryContextMenu.Show(Cursor.Position);
             }
         }
 
+        private ITile UseEyedropper(int x, int y)
+        {
+            if (_gameFormHelper.RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out int i, out int j))
+            {
+                ITile tile = Game.Wayfinder[i, j];
+                SetDesignerTileProperties(tile);
+                return tile;
+            }
+            return null;
+        }
         private void mapPictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            //int i, j;
-            //_gameFormHelper.RenderHelper.GetTileIndex(_gameFormHelper.Game.Wayfinder, e.X, e.Y, out i, out j);
-            //var to = new Position(i, j);
-            
-            //if (e.Button == MouseButtons.Right)
-            //{
-            //    int stopMe = 12;
-            //}
-            
-            //bool isVisible = _gameFormHelper.Game.Wayfinder.IsVisible(_gameFormHelper.Game.Player.Position, to, 10);
-            //this.Text = $"({i},{j}) {isVisible}";
             if (e.Button == MouseButtons.Left && _designerMode == DesignerMode.Range)
-                _gameFormHelper.DesignerMouseMove(e.X, e.Y);
+                _gameFormHelper.RangeMouseMove(e.X, e.Y);
+            if (e.Button == MouseButtons.Left && _designerMode == DesignerMode.EyeDropper)
+                UseEyedropper(e.X, e.Y);
+            if (e.Button == MouseButtons.Left && _designerMode == DesignerMode.Pencil)
+                ApplyDesignerPen(e.X, e.Y);
         }
 
         private bool _updatingUI = false;
 
         private void mapPictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            _updatingUI = true;
-
             if (_designerMode == DesignerMode.Range)
-                _gameFormHelper.DesignerMouseUp(e.X, e.Y);
+            {
+                _gameFormHelper.RangeMouseUp(e.X, e.Y);
+                ITile tile = _gameFormHelper.FindCommonTileProperties();
+                SetDesignerTileProperties(tile);
+            }
+            else if (_designerMode == DesignerMode.EyeDropper)
+            {
+                if (_priorDesignerMode == DesignerMode.Range)
+                {
+                    ITile tile = UseEyedropper(e.X, e.Y);
+                    _gameFormHelper.ApplyTileToRange(tile);
+                    mapPictureBox.Refresh();
+                }
 
-            ITile tile = _gameFormHelper.FindCommonTileProperties();
+                // Switch back to prior mode!
+                _designerMode = _priorDesignerMode;
+                ApplyDesignerModeToToolbar();
+            }  
+        }
+
+        private void ApplyDesignerModeToToolbar()
+        {
+            // Make sure the checked toolbar icons match _designerMode
+            // TODO: Need to fix name cosistency 
+            designerEyeDropper.Checked = (_designerMode == DesignerMode.EyeDropper);
+            designerRangeSelector.Checked = (_designerMode == DesignerMode.Range);
+            designerFloodFill.Checked = (_designerMode == DesignerMode.Bucket);
+            designerPen.Checked = (_designerMode == DesignerMode.Pencil);
+
+        }
+
+        private void ApplyDesignerPen(int x, int y)
+        {
+            // Applies the settings in the checkboxes / dropdowns to the tiles TileAttributes and TileStyle 
+            if (_gameFormHelper.RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out int i, out int j))
+            {
+                ITile tile = Wayfinder[i, j];
+                tile.TileAttribute = GetDesignerControlAtts();
+                if (Enum.TryParse<TileEnum>(tileTypeComboBox.Text, out TileEnum tileEnum))
+                {
+                    if (tile.TileType != tileEnum)
+                    {
+                        tile.TileType = tileEnum;
+                        _gameFormHelper.RefreshTile(mapPictureBox.CreateGraphics(), i, j);
+                    }
+                    
+                }
+            }
+        }
+
+        private void SetDesignerTileProperties(ITile tile)
+        {
+            _updatingUI = true;
 
             if (tile.TileType == TileEnum.None)
                 tileTypeComboBox.Text = "";
             else
                 tileTypeComboBox.Text = tile.TileType.ToString();
 
-            var att = tile.TileAttribute;
-
             WalkCheckBox.Checked = tile.HasAttribute(TileAttributeEnum.CanWalkOn);
             FlyCheckBox.Checked = tile.HasAttribute(TileAttributeEnum.CanFlyOver);
             KillCheckBox.Checked = tile.HasAttribute(TileAttributeEnum.WillKillYou);
             OpaqueCheckBox.Checked = tile.HasAttribute(TileAttributeEnum.Opaque);
-            
 
             _updatingUI = false;
-
         }
 
         private void tileTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -319,6 +366,15 @@ namespace Simmental
         {
             if (_updatingUI) return;
 
+            if (_designerMode == DesignerMode.Range)
+            {
+                TileAttributeEnum att = GetDesignerControlAtts();
+                _gameFormHelper.DesignerUpdateAttribute(att);
+            }
+        }
+
+        private TileAttributeEnum GetDesignerControlAtts()
+        {
             TileAttributeEnum att = TileAttributeEnum.None;
 
             if (WalkCheckBox.Checked)
@@ -337,9 +393,7 @@ namespace Simmental
             {
                 att |= TileAttributeEnum.Opaque;
             }
-
-            if (_designerMode == DesignerMode.Range)
-                _gameFormHelper.DesignerUpdateAttribute(att);
+            return att;
         }
 
         private void SimmentalForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -368,8 +422,13 @@ namespace Simmental
 
             designerToolStripMenuItem.Checked = isAvailable;
             designerPanel.Visible = isAvailable;
-            refresh = Game.Designer.HighlightRange != isAvailable && (_designerMode == DesignerMode.Range);
-            Game.Designer.HighlightRange = isAvailable && (_designerMode == DesignerMode.Range);
+
+            bool newHighlightRange = isAvailable && ((_designerMode == DesignerMode.Range) || (_priorDesignerMode == DesignerMode.Range));
+            if (newHighlightRange != Game.Designer.HighlightRange)
+            {
+                refresh = true;
+                Game.Designer.HighlightRange = newHighlightRange;
+            }
 
             vScrollBar1.Left = this.ClientSize.Width - vScrollBar1.Width - panelWidth;
             mapPanel.Width = this.ClientSize.Width - vScrollBar1.Width - mapPanel.Left - panelWidth;
@@ -586,7 +645,9 @@ namespace Simmental
 
         private void designerEyeDropper_Click(object sender, EventArgs e)
         {
-            UnselectedAllDesignerModes();
+            var showSelectedRange = _priorDesignerMode == DesignerMode.Range;
+            UnselectedAllDesignerModes(showSelectedRange);
+
             designerEyeDropper.Checked = true;
             _designerMode = DesignerMode.EyeDropper;
         }

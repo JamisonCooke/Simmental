@@ -50,8 +50,8 @@ Multiple Light sources
 [x] When rendering, make sure Tile.LightLevel is not considered if something opaque blocks the player from the tile
 
 Designer+
-[ ] Add pencil tool
-[ ] Eyedropper tool
+[x] Add pencil tool
+[x] Eyedropper tool
 [ ] Redisgn tile color dropdown()
 [ ] Flood Bucket Feature
 [ ] Easy Npc adding
@@ -71,4 +71,4 @@ Fri 1/14 -
 Fri 1/21 - 1, 45
 Wens 2/2 - 1 hr
 Fri 2/4 - 1 40
-
+Sat 2/5 - 3

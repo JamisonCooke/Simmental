@@ -33,6 +33,12 @@ namespace Simmental
             renderer.Render(Game, graphics);
         }
 
+        public void RefreshTile(Graphics graphics, int i, int j)
+        {
+            RenderGame renderer = new RenderGame();
+            renderer.RenderTile(Game, graphics, i, j);
+        }
+
         public void PrimaryClick(int x, int y)
         {
 
@@ -62,7 +68,7 @@ namespace Simmental
 
 
 
-        public void DesignerMouseDown(int x, int y)
+        public void RangeMouseDown(int x, int y)
         {
 
             int i, j;
@@ -73,12 +79,12 @@ namespace Simmental
                 GamePictureBox.Refresh();
             }
         }
-        public void DesignerMouseMove(int x, int y)
+        public void RangeMouseMove(int x, int y)
         {
-            DesignerMouseUp(x, y);
+            RangeMouseUp(x, y);
 
         }
-        public void DesignerMouseUp(int x, int y)
+        public void RangeMouseUp(int x, int y)
         {
             int i, j;
             if (RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out i, out j))
@@ -306,6 +312,18 @@ namespace Simmental
                 return firstTile;
 
             return result;
+        }
+
+        public void ApplyTileToRange(ITile copyTile)
+        {
+            if (copyTile == null)
+                return;
+
+            foreach (var tile in Game.Designer.SelectedTiles(Game.Wayfinder))
+            {
+                tile.TileType = copyTile.TileType;
+                tile.TileAttribute = copyTile.TileAttribute;
+            }
         }
 
         public void ZoomUI(int value)

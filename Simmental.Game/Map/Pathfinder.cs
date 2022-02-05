@@ -110,9 +110,16 @@ namespace Simmental.Game.Map
             activeTiles.Add(start.Position, start);
 
             AStarTile finalTile = null;
+            int tryCount = 0;
 
             while(activeTiles.Count > 0)
             {
+                if (++tryCount > 100000)
+                {
+                    // TODO: Fix infinite loop error correctly for AStar Alogirthm
+                    break;
+                }
+
                 // Find the smallest CostDistance in the activeTiles
                 AStarTile checkTile = null;     // O(n)
                 foreach(var activeTile in activeTiles.Values)

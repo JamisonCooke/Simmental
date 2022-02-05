@@ -27,6 +27,12 @@ namespace Simmental.UI.WinForm.Render
                 HighlightSelectedRanged(game, graphics);
         }
 
+        public void RenderTile(IGame game, Graphics graphics, int i, int j)
+        {
+            var renderWayfinder = new RenderWayfinder(game.Wayfinder, graphics, game.Player.Position, i, j);
+        
+        }
+
         /// <summary>
         /// Draw a light transparent box over the designed range
         /// </summary>
