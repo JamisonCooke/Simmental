@@ -67,28 +67,6 @@ namespace Simmental.Game.Map
         }
 
 
-        public void MoveLame()
-        {
-
-            int i = CurrentPosition.i;
-            int j = CurrentPosition.j;
-
-            if (To.i < i)
-                i--;
-            else if (To.i > i)
-                i++;
-            if (To.j < j)
-                j--;
-            else if (To.j > j)
-                j++;
-
-            Position newPosition = new Position(i, j);
-
-            // Only move forward to the new position, if we can walk on the destination square && we are not on the player's square
-            if (Wayfinder[newPosition].HasAttribute(TileAttributeEnum.CanWalkOn))
-                CurrentPosition = newPosition;
-        }
-
         private void MoveAStar()
         {
             if (_steps == null)
@@ -110,16 +88,9 @@ namespace Simmental.Game.Map
             activeTiles.Add(start.Position, start);
 
             AStarTile finalTile = null;
-            int tryCount = 0;
 
             while(activeTiles.Count > 0)
             {
-                if (++tryCount > 100000)
-                {
-                    // TODO: Fix infinite loop error correctly for AStar Alogirthm
-                    break;
-                }
-
                 // Find the smallest CostDistance in the activeTiles
                 AStarTile checkTile = null;     // O(n)
                 foreach(var activeTile in activeTiles.Values)
@@ -193,7 +164,7 @@ namespace Simmental.Game.Map
                 for (int dj = -1; dj <= 1; dj++)
                 {
                     // Don't include tiles we've visited before
-                    if (visitedTiles.Contains(new Position(di, dj)))
+                    if (visitedTiles.Contains(new Position(tile.i + di, tile.j + dj)))
                         continue;
 
                     // Create it if it's 'CanWalkOn' and not tiles i,j

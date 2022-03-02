@@ -29,7 +29,7 @@ namespace Simmental.UI.WinForm.Render
             // We can draw our tile based on what it looks like into the rectanle
             Pen pen = new Pen(GetColorForTile(tile.TileType));
 
-            _graphics.DrawRectangle(pen, rectangle);
+            //_graphics.DrawRectangle(pen, rectangle);
             _graphics.FillRectangle(new SolidBrush(GetColorForTile(tile.TileType)), rectangle);
             if (isVisible && tile.LightLevel > 0)
             {

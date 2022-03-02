@@ -67,8 +67,10 @@ NPC Mechanics
 ***************************************************
   HOURS (assume 2 hours unless denoted otherwise)
 ***************************************************
-Fri 1/14 - 
+Fri 1/14 - 2
 Fri 1/21 - 1, 45
 Wens 2/2 - 1 hr
 Fri 2/4 - 1 40
 Sat 2/5 - 3
+Tue 2/22 - 1
+Wens 3/2 - 1
