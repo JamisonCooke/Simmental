@@ -11,8 +11,11 @@ namespace Simmental.Game.Map
     {
         public static void Execute(IGame game, Position startPosition, TileAttributeEnum targetAttribute, TileEnum targetType)
         {
-            var activeTiles = new Queue<Position>();
-            activeTiles.Enqueue(startPosition);
+            var doList = new List<ICommandBase>();
+            var undoList = new List<ICommandBase>();
+
+            var activeTiles = new HashSet<Position>();
+            activeTiles.Add(startPosition);
             var matchAttribute = game.Wayfinder[startPosition].TileAttribute;
             var matchType = game.Wayfinder[startPosition].TileType;
             if (matchAttribute == targetAttribute && matchType == targetType)
@@ -20,16 +23,21 @@ namespace Simmental.Game.Map
 
             while (activeTiles.Count > 0)
             {
-                var p = activeTiles.Dequeue();
-                var tile = game.Wayfinder[p];
+                var p = activeTiles.FirstOrDefault();
+                activeTiles.Remove(p);
 
-                var addTiles = GetWalkableTiles(game, p, matchAttribute, matchType);
-                foreach(var t in addTiles)
-                    activeTiles.Enqueue(t);
-                
+                var tile = game.Wayfinder[p];
                 tile.TileAttribute = targetAttribute;
                 tile.TileType = targetType;
+
+                var addTiles = GetWalkableTiles(game, p, matchAttribute, matchType);
+
+
+                foreach (var t in addTiles)
+                    activeTiles.Add(t);
             }
+
+            game.CommandManager.ExecuteCommand(doList, undoList);
         }
 
         private static List<Position> GetWalkableTiles(IGame game, Position tile, TileAttributeEnum matchAttribute, TileEnum matchType)

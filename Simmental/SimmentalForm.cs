@@ -203,12 +203,27 @@ namespace Simmental
                 UseEyedropper(e.X, e.Y);
             else if (_designerMode == DesignerMode.Pencil)
                 ApplyDesignerPen(e.X, e.Y);
+            else if (_designerMode == DesignerMode.Bucket)
+                ApplyBucket(e.X, e.Y);
             else if (e.Button == MouseButtons.Left)
                 _gameFormHelper.PrimaryClick(e.X, e.Y);
             else if (e.Button == MouseButtons.Right)
                 RightMouseClickMonster(e.X, e.Y);
             
 
+
+        }
+
+        private void ApplyBucket(int x, int y)
+        {
+            if (_gameFormHelper.RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out int i, out int j))
+            {
+                if (Enum.TryParse<TileEnum>(tileTypeComboBox.Text, out TileEnum tileEnum))
+                {
+                    FloodFill.Execute(Game, new Position(i, j), GetDesignerControlAtts(), tileEnum);
+                    mapPictureBox.Refresh();
+                }
+            }
 
         }
 
@@ -677,6 +692,18 @@ namespace Simmental
 
             _designerMode = DesignerMode.Bucket;
             _priorDesignerMode = _designerMode;
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _gameFormHelper.Game.CommandManager.Undo();
+            mapPictureBox.Refresh();
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _gameFormHelper.Game.CommandManager.Redo();
+            mapPictureBox.Refresh();
         }
     }
 }

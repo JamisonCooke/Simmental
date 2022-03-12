@@ -53,9 +53,10 @@ Designer+
 [x] Add pencil tool
 [x] Eyedropper tool
 [ ] Redisgn tile color dropdown()
-[ ] Flood Bucket Feature
+[x] Flood Bucket Feature
 [ ] Easy Npc adding
 [ ] Existing selection mode -- add cut/paste
+[ ] Undo Tool
 
 NPC Mechanics
 [ ] Pheremones
@@ -74,3 +75,6 @@ Fri 2/4 - 1 40
 Sat 2/5 - 3
 Tue 2/22 - 1
 Wens 3/2 - 1
+****PAID****
+Friday 3/11 45 min
+Sat 3/12 2, 10

@@ -14,6 +14,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using Simmental.Game.Characters.Tasks;
 using System.Xml.Serialization;
+using Simmental.Game.Command;
 
 namespace Simmental.Game.Engine
 {
@@ -26,6 +27,19 @@ namespace Simmental.Game.Engine
 
         public List<ICharacter> NPC { get; private set; }
         public List<IExecuteTurn> RequiresATurn { get; private set; } = new List<IExecuteTurn>();
+        
+        [NonSerialized]
+        private CommandManager _commandManager;
+        public ICommandManager CommandManager 
+        { 
+            get
+            {
+                if (_commandManager == null)        // just in time invocation
+                    _commandManager = new CommandManager(this);
+
+                return _commandManager;
+            }
+        }
         
         public IDesigner Designer { get; private set; } = new Design.Designer();
 
