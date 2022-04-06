@@ -27,5 +27,15 @@ namespace Simmental.Game.Command
                 tile.TileAttribute = _tileAttribute;
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is UpdateTile t)
+            {
+                return t._position == this._position && t._tileType == this._tileType && t._tileAttribute == this._tileAttribute;
+
+            }
+            return false;
+        }
     }
 }

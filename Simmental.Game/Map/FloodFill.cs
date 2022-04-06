@@ -1,4 +1,5 @@
-﻿using Simmental.UI;
+﻿using Simmental.Game.Command;
+using Simmental.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace Simmental.Game.Map
                 activeTiles.Remove(p);
 
                 var tile = game.Wayfinder[p];
+
+                // Add do & undo commands in case they use Ctl+Z and Ctl+Y
+                doList.Add(new UpdateTile(p, targetType, targetAttribute));
+                undoList.Add(new UpdateTile(p, matchType, matchAttribute));
+
                 tile.TileAttribute = targetAttribute;
                 tile.TileType = targetType;
 

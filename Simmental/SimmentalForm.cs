@@ -13,6 +13,7 @@ using Simmental.UI.WinForm.Render;
 using Simmental.Game.Map;
 using System.IO;
 using Simmental.Helper;
+using Simmental.Game.Command;
 
 namespace Simmental
 {
@@ -297,10 +298,15 @@ namespace Simmental
 
         private void ApplyDesignerPen(int x, int y)
         {
+            var doList = new List<ICommandBase>();
+            var undoList = new List<ICommandBase>();
             // Applies the settings in the checkboxes / dropdowns to the tiles TileAttributes and TileStyle 
             if (_gameFormHelper.RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out int i, out int j))
             {
                 ITile tile = Wayfinder[i, j];
+
+                var undoUpdateTile = new UpdateTile(new Position(i, j), tile.TileType, tile.TileAttribute);
+                undoList.Add(undoUpdateTile);
                 tile.TileAttribute = GetDesignerControlAtts();
                 if (Enum.TryParse<TileEnum>(tileTypeComboBox.Text, out TileEnum tileEnum))
                 {
@@ -311,6 +317,12 @@ namespace Simmental
                     }
                     
                 }
+                // Takes the changes to tile and adds them to the dolist
+                var doUpdateTile = new UpdateTile(new Position(i, j), tile.TileType, tile.TileAttribute);
+                doList.Add(doUpdateTile);
+
+                if (!doUpdateTile.Equals(undoUpdateTile))
+                    Game.CommandManager.ExecuteCommand(doList, undoList);
             }
         }
 

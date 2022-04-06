@@ -67,6 +67,17 @@ namespace Simmental.UI
             return p.i == this.i && p.j == this.j;
         }
 
+        public static bool operator ==(Position p1, Position p2)
+        {
+            return p1.Equals(p2);
+        }
+
+        public static bool operator !=(Position p1, Position p2)
+        {
+            return !p1.Equals(p2);
+        }
+
+
         public override int GetHashCode()
         {
             return j * 1000003 + i;
