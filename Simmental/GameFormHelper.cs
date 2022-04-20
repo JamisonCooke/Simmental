@@ -1,4 +1,5 @@
-﻿using Simmental.UI;
+﻿using Simmental.Game.Command;
+using Simmental.UI;
 using Simmental.UI.WinForm.Render;
 using System;
 using System.Collections.Generic;
@@ -258,22 +259,47 @@ namespace Simmental
         /// Update every selected tile and change the tileType to the passed tileEnum
         /// </summary>
         /// <param name="tileEnum"></param>
-        public void DesignerUpdateTiles(TileEnum tileEnum)
+        public void DesignerUpdateTiles(TileEnum tileType)
         {
-            foreach (var tile in Game.Designer.SelectedTiles(Game.Wayfinder))
-            {
-                    tile.TileType = tileEnum;
-            }
-            GamePictureBox.Refresh();
+            var doList = new List<ICommandBase>();
+            var undoList = new List<ICommandBase>();
 
+            foreach (var position in Game.Designer.SelectedPositions(Game.Wayfinder))
+            {
+                var tile = Game.Wayfinder[position];
+                if (tileType == tile.TileType)
+                    continue;
+
+                doList.Add(new UpdateTile(position, tileType, tile.TileAttribute));
+                undoList.Add(new UpdateTile(position, tile.TileType, tile.TileAttribute));
+            }
+
+            if (doList.Count > 0)
+                Game.CommandManager.ExecuteCommand(doList, undoList);
+
+
+            GamePictureBox.Refresh();
         }
 
-        public void DesignerUpdateAttribute(TileAttributeEnum tileAttributes)
+        public void DesignerUpdateAttribute(TileAttributeEnum tileAttribute)
         {
-            foreach (var tile in Game.Designer.SelectedTiles(Game.Wayfinder))
+            var doList = new List<ICommandBase>();
+            var undoList = new List<ICommandBase>();
+
+            foreach (var position in Game.Designer.SelectedPositions(Game.Wayfinder))
             {
-                tile.TileAttribute = tileAttributes;
+                var tile = Game.Wayfinder[position];
+                if (tileAttribute == tile.TileAttribute)
+                    continue;
+
+                doList.Add(new UpdateTile(position, tile.TileType, tileAttribute));
+                undoList.Add(new UpdateTile(position, tile.TileType, tile.TileAttribute));
             }
+
+            if (doList.Count > 0)
+                Game.CommandManager.ExecuteCommand(doList, undoList);
+
+
             GamePictureBox.Refresh();
         }
 
@@ -319,11 +345,21 @@ namespace Simmental
             if (copyTile == null)
                 return;
 
-            foreach (var tile in Game.Designer.SelectedTiles(Game.Wayfinder))
+            var doList = new List<ICommandBase>();
+            var undoList = new List<ICommandBase>();
+
+            foreach (var position in Game.Designer.SelectedPositions(Game.Wayfinder))
             {
-                tile.TileType = copyTile.TileType;
-                tile.TileAttribute = copyTile.TileAttribute;
+                var tile = Game.Wayfinder[position];
+                if (copyTile.TileType == tile.TileType && copyTile.TileAttribute == tile.TileAttribute)
+                    continue;
+
+                doList.Add(new UpdateTile(position, copyTile.TileType, copyTile.TileAttribute));
+                undoList.Add(new UpdateTile(position, tile.TileType, tile.TileAttribute));
             }
+
+            if (doList.Count > 0)
+                Game.CommandManager.ExecuteCommand(doList, undoList);
         }
 
         public void ZoomUI(int value)

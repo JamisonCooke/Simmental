@@ -30,6 +30,22 @@ namespace Simmental.Game.Design
                 }
             }
         }
+        public IEnumerable<Position> SelectedPositions(IWayfinder wayfinder)
+        {
+            int fromI = Math.Min(TopLeft.i, BottomRight.i);
+            int toI = Math.Max(TopLeft.i, BottomRight.i);
+            int fromJ = (TopLeft.j < BottomRight.j) ? TopLeft.j : BottomRight.j;
+            int toJ = (TopLeft.j > BottomRight.j) ? TopLeft.j : BottomRight.j;
+
+            for (int i = fromI; i <= toI; i++)
+            {
+                for (int j = fromJ; j <= toJ; j++)
+                {
+                    yield return new Position(i, j);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Swap numbers n1 and n2 (by reference)

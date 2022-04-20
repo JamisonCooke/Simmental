@@ -203,7 +203,7 @@ namespace Simmental
             else if (_designerMode == DesignerMode.EyeDropper)
                 UseEyedropper(e.X, e.Y);
             else if (_designerMode == DesignerMode.Pencil)
-                ApplyDesignerPen(e.X, e.Y);
+                StartDesignerPen(e.X, e.Y);
             else if (_designerMode == DesignerMode.Bucket)
                 ApplyBucket(e.X, e.Y);
             else if (e.Button == MouseButtons.Left)
@@ -267,8 +267,7 @@ namespace Simmental
             if (_designerMode == DesignerMode.Range)
             {
                 _gameFormHelper.RangeMouseUp(e.X, e.Y);
-                ITile tile = _gameFormHelper.FindCommonTileProperties();
-                SetDesignerTileProperties(tile);
+                UpdateDesignerControls();
             }
             else if (_designerMode == DesignerMode.EyeDropper)
             {
@@ -283,6 +282,20 @@ namespace Simmental
                 _designerMode = _priorDesignerMode;
                 ApplyDesignerModeToToolbar();
             }  
+            else if (e.Button == MouseButtons.Left && _designerMode == DesignerMode.Pencil) 
+            {
+                EndDesignerPen();
+            }
+        }
+
+        private void UpdateDesignerControls()
+        {
+            // No need to do this if the designer is not open
+            if (!designerToolStripMenuItem.Checked)
+                return;
+
+            ITile tile = _gameFormHelper.FindCommonTileProperties();
+            SetDesignerTileProperties(tile);
         }
 
         private void ApplyDesignerModeToToolbar()
@@ -295,35 +308,45 @@ namespace Simmental
             designerPen.Checked = (_designerMode == DesignerMode.Pencil);
 
         }
+        List<ICommandBase> _doList;
+        List<ICommandBase> _undoList;
 
+        private void StartDesignerPen(int x, int y)
+        {
+            _doList = new();
+            _undoList = new();
+            ApplyDesignerPen(x, y);
+        }
         private void ApplyDesignerPen(int x, int y)
         {
-            var doList = new List<ICommandBase>();
-            var undoList = new List<ICommandBase>();
+            var penAtt = GetDesignerControlAtts();
+            var penTileType = GetDesignerTileType();
+
             // Applies the settings in the checkboxes / dropdowns to the tiles TileAttributes and TileStyle 
-            if (_gameFormHelper.RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out int i, out int j))
-            {
-                ITile tile = Wayfinder[i, j];
+            int i, j;   // Convert (x,y) to (i,j)
+            if (!_gameFormHelper.RenderHelper.GetTileIndex(Game.Wayfinder, x, y, out i, out j))
+                return;
 
-                var undoUpdateTile = new UpdateTile(new Position(i, j), tile.TileType, tile.TileAttribute);
-                undoList.Add(undoUpdateTile);
-                tile.TileAttribute = GetDesignerControlAtts();
-                if (Enum.TryParse<TileEnum>(tileTypeComboBox.Text, out TileEnum tileEnum))
-                {
-                    if (tile.TileType != tileEnum)
-                    {
-                        tile.TileType = tileEnum;
-                        _gameFormHelper.RefreshTile(mapPictureBox.CreateGraphics(), i, j);
-                    }
-                    
-                }
-                // Takes the changes to tile and adds them to the dolist
-                var doUpdateTile = new UpdateTile(new Position(i, j), tile.TileType, tile.TileAttribute);
-                doList.Add(doUpdateTile);
+            ITile tile = Wayfinder[i, j];
+                
+            // See if it's already set
+            if (tile.TileType == penTileType && tile.TileAttribute == penAtt)
+                return;
 
-                if (!doUpdateTile.Equals(undoUpdateTile))
-                    Game.CommandManager.ExecuteCommand(doList, undoList);
-            }
+            _doList.Add(new UpdateTile(new Position(i, j), penTileType, penAtt));
+            _undoList.Add(new UpdateTile(new Position(i, j), tile.TileType, tile.TileAttribute));
+
+            // Update the tile based on what was picked in the designer popout
+            tile.TileAttribute = penAtt;
+            tile.TileType = penTileType;
+
+            // Repaint the one cell
+            _gameFormHelper.RefreshTile(mapPictureBox.CreateGraphics(), i, j);
+        }
+
+        private void EndDesignerPen()
+        {
+            Game.CommandManager.ExecuteCommand(_doList, _undoList);
         }
 
         private void SetDesignerTileProperties(ITile tile)
@@ -421,6 +444,16 @@ namespace Simmental
                 att |= TileAttributeEnum.Opaque;
             }
             return att;
+        }
+
+        private TileEnum GetDesignerTileType()
+        {
+            TileEnum tileEnum = TileEnum.None;
+
+            // Parse the text in the combobox that says "Water" or "Grass" or whatever...
+            Enum.TryParse<TileEnum>(tileTypeComboBox.Text, out tileEnum);
+            
+            return tileEnum;
         }
 
         private void SimmentalForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -710,12 +743,14 @@ namespace Simmental
         {
             _gameFormHelper.Game.CommandManager.Undo();
             mapPictureBox.Refresh();
+            UpdateDesignerControls();
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _gameFormHelper.Game.CommandManager.Redo();
             mapPictureBox.Refresh();
+            UpdateDesignerControls();
         }
     }
 }

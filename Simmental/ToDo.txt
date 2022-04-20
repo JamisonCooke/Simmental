@@ -56,7 +56,7 @@ Designer+
 [x] Flood Bucket Feature
 [ ] Easy Npc adding
 [ ] Existing selection mode -- add cut/paste
-[ ] Undo Tool
+[X] Undo Tool
 
 NPC Mechanics
 [ ] Pheremones
@@ -64,6 +64,9 @@ NPC Mechanics
 [ ] Guard Function
 [ ] Seek and Destroy Function
 
+Technical Debt
+[ ] Refactor TileAttribute and TileType into a single class and rename for better understanding
+[ ] Stop doing commands CommandManager.Execute already does (pen, bucket)
 
 ***************************************************
   HOURS (assume 2 hours unless denoted otherwise)
@@ -79,3 +82,6 @@ Wens 3/2 - 1
 Friday 3/11 45 min
 Sat 3/12 2, 10
 Wens 4/6 90 min
+Thur 4/7 1 hr
+Fri 4/8 1 hr, 30 min
+****PAID??****
