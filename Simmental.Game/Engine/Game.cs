@@ -85,7 +85,12 @@ namespace Simmental.Game.Engine
 
             var orc1 = helper.GenerateRandom(RaceEnum.Orc);
             var axe = new MeleeWeapon("Ugly Axe", "A really ugly axe.", new DamageRoll(1, 12, ElementEnum.Normal));
-             
+
+            //var axe2 = new MeleeWeapon("Ugly Axe, 1d12, A really ugly axe");
+            //var axe2 = Item.FactoryCreate("w: Ugly Axe, 1d12, A really ugly axe");
+            // var errorText = Item.TryParse("w Ugly Axe, 1d12, A really ugly axe"); // "Missing a : as the second character"
+            //string itemCode =  axe2.GetItemCode();
+
             orc1.Inventory.Add(axe);
             orc1.Inventory.Add(new LightSource("Torch", "a Stick with fabric and tar fixed at the end", 70, 7, true));
             orc1.PrimaryWeapon = axe;

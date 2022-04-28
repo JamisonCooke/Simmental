@@ -198,17 +198,22 @@ namespace Simmental
 
         private void mapPictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if (_designerMode == DesignerMode.Range)
-                _gameFormHelper.RangeMouseDown(e.X, e.Y);
-            else if (_designerMode == DesignerMode.EyeDropper)
-                UseEyedropper(e.X, e.Y);
-            else if (_designerMode == DesignerMode.Pencil)
-                StartDesignerPen(e.X, e.Y);
-            else if (_designerMode == DesignerMode.Bucket)
-                ApplyBucket(e.X, e.Y);
-            else if (e.Button == MouseButtons.Left)
+            if (designerToolStripMenuItem.Checked)
+            {
+                if (_designerMode == DesignerMode.Range)
+                    _gameFormHelper.RangeMouseDown(e.X, e.Y);
+                else if (_designerMode == DesignerMode.EyeDropper)
+                    UseEyedropper(e.X, e.Y);
+                else if (_designerMode == DesignerMode.Pencil)
+                    StartDesignerPen(e.X, e.Y);
+                else if (_designerMode == DesignerMode.Bucket)
+                    ApplyBucket(e.X, e.Y);
+                return;
+            }
+
+            if (e.Button == MouseButtons.Left)
                 _gameFormHelper.PrimaryClick(e.X, e.Y);
-            else if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right)
                 RightMouseClickMonster(e.X, e.Y);
             
 
