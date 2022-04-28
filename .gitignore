@@ -12,3 +12,7 @@
 /Simmental.UI/obj
 /Simmental.UI.WinForm/bin/Debug/net5.0-windows
 /Simmental.UI.WinForm/obj
+/Simmental/bin/Debug/net6.0-windows
+/Simmental.Game/bin/Debug/net6.0
+/Simmental.UI/bin/Debug/net6.0
+/Simmental.UI.WinForm/bin/Debug/net6.0-windows
