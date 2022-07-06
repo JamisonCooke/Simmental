@@ -14,7 +14,7 @@ namespace Simmental.UI.WinForm.Render
             int tileWidth = wayfinder.TilePixelWidth;
             int tileHeight = wayfinder.TilePixelHeight;
 
-            Rectangle rectangle = new Rectangle((i - wayfinder.CameraI) * tileWidth, (j - wayfinder.CameraJ) * tileHeight, tileWidth, tileHeight);
+                Rectangle rectangle = new Rectangle((i - wayfinder.CameraI) * tileWidth, (j - wayfinder.CameraJ) * tileHeight, tileWidth, tileHeight);
             return rectangle;
         }
         public bool GetTileIndex(IWayfinder wayfinder, int x, int y, out int i, out int j)
