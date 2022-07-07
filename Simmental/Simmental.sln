@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simmental", "Simmental.csproj", "{CCD85EE8-C88D-4CD8-8F93-B8C24895F39B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simmental.Game", "..\Simmental.Game\Simmental.Game.csproj", "{CD052F95-E989-4458-A6DA-2CCC534384EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simmental.Game", "..\Simmental.Game\Simmental.Game.csproj", "{CD052F95-E989-4458-A6DA-2CCC534384EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simmental.UI", "..\Simmental.UI\Simmental.UI.csproj", "{699EE9C3-9E42-403B-9889-77A49A36EA45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simmental.UI", "..\Simmental.UI\Simmental.UI.csproj", "{699EE9C3-9E42-403B-9889-77A49A36EA45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simmental.UI.WinForm", "..\Simmental.UI.WinForm\Simmental.UI.WinForm.csproj", "{EB1B7933-6267-4904-81E3-75A2759909CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simmental.UI.WinForm", "..\Simmental.UI.WinForm\Simmental.UI.WinForm.csproj", "{EB1B7933-6267-4904-81E3-75A2759909CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simmental.Tests", "..\Simmental.Tests\Simmental.Tests.csproj", "{83418076-D13F-4B48-8A3D-FF5FE3F221DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{EB1B7933-6267-4904-81E3-75A2759909CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB1B7933-6267-4904-81E3-75A2759909CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB1B7933-6267-4904-81E3-75A2759909CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83418076-D13F-4B48-8A3D-FF5FE3F221DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83418076-D13F-4B48-8A3D-FF5FE3F221DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83418076-D13F-4B48-8A3D-FF5FE3F221DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83418076-D13F-4B48-8A3D-FF5FE3F221DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

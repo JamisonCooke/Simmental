@@ -16,3 +16,5 @@
 /Simmental.Game/bin/Debug/net6.0
 /Simmental.UI/bin/Debug/net6.0
 /Simmental.UI.WinForm/bin/Debug/net6.0-windows
+/Simmental.Tests/bin/Debug/net6.0
+/Simmental.Tests/obj

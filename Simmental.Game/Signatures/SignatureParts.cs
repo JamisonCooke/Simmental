@@ -14,7 +14,30 @@ public class SignatureParts
     /// <param name="signatureText"></param>
     public SignatureParts(string signatureText)
     {
+        List<string> p = new List<string>();
+        string[] parts = signatureText.Split(",");
+        foreach (string part in parts)
+        {            
+            p.Add(part.Trim());
+        }
 
+        string p0 = p[0];
+        // p0.IndexOf('(') return 12
+        // p0.Substring(12, 1) returns "(";
+        // p0.Substring(13, 2) returns "mw";
+        //       012345678 1 2345
+        // p[0]: Short Sword (mw)
+        int lp = p0.IndexOf('(');
+        int rp = p0.IndexOf(')');
+        var stamp = p0.Substring(lp + 1, rp - lp - 1);
+        
+        // SignatureFactory.IsValidStamp(stamp)
+
+        // remove the signature stamp in ()'s from p[0]
+        SignatureStamp = stamp;
+        p[0] = p0.Substring(0, lp - 1).Trim();
+
+        _parts = p.ToArray();
     }
 
     // var parts = new SignatureParts(typeof MeleeWeapon, name, description, damageRoll);
@@ -35,14 +58,41 @@ public class SignatureParts
     {
         get
         {
-            return "text";
+            return _parts[index];
         }        
+    }
+
+    /// <summary>
+    /// Returns the full signature based on the SignatureStamp and the _parts[]
+    /// </summary>
+    /// <returns></returns>
+    public string ToSignature()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        // Always get the name w/ the signature stamp
+        sb.Append($"{_parts[0]} ({SignatureStamp})");
+
+        // Loop over the rest of the paramters and comma delimit them on the end
+        bool firstTime = true;
+        foreach(string part in _parts)
+        {
+            if (firstTime)
+            {
+                firstTime = false;
+                continue;
+            }
+
+            sb.Append(", ");
+            sb.Append(part);
+        }
+
+        return sb.ToString();
     }
 
     public IDamageRoll ToDamageRoll(int index)
     {
-        return new DamageRoll(1, 1, ElementEnum.Normal);
+        return new DamageRoll(_parts[index]);
     }
-
 
 }

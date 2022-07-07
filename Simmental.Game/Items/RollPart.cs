@@ -8,7 +8,7 @@ using Simmental.UI;
 namespace Simmental.Game.Items
 {
     [Serializable]    
-    internal class RollPart
+    public class RollPart
     {
 
         public int NumberOfRolls { get; private set; }
@@ -22,9 +22,29 @@ namespace Simmental.Game.Items
             Element = element;
         }
 
+        public RollPart(string rollText)
+        {
+            FromString(rollText);
+        }
+
         public override string ToString()
         {
             return $"{NumberOfRolls}d{DiceMax}{ElementLetter(Element)}";
+        }
+
+        public void FromString(string rollText)
+        {
+            // Example: 2d6  or  2d20F
+            // Char.IsLetter("sample string", 7)
+            int dPos = rollText.IndexOf('d');
+            var numberOfRollsText = rollText.Substring(0, dPos);
+            NumberOfRolls = int.Parse(numberOfRollsText);
+            string lastChar = rollText.Substring(rollText.Length - 1, 1);
+            Element = ElementFromLetter(lastChar);
+
+            int elementLength = (Element == ElementEnum.Normal) ? 0 : 1;
+            var diceMaxText = rollText.Substring(dPos + 1, rollText.Length - elementLength - (dPos + 1));
+            DiceMax = int.Parse(diceMaxText);
         }
 
         public static string ElementLetter(ElementEnum element)
@@ -36,6 +56,18 @@ namespace Simmental.Game.Items
                 case ElementEnum.Lightning: return "L";
                 case ElementEnum.Poison: return "P";
                 default: return "";
+            }
+        }
+
+        public static ElementEnum ElementFromLetter(string letter)
+        {
+            switch (letter)
+            {
+                case "F": return ElementEnum.Fire;
+                case "I": return ElementEnum.Ice;
+                case "L": return ElementEnum.Lightning;
+                case "P": return ElementEnum.Poison;
+                default: return ElementEnum.Normal;
             }
         }
 

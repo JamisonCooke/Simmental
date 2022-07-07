@@ -22,6 +22,11 @@ namespace Simmental.Game.Items
             AddRoll(numberOfRolls, diceMax, element);
         }
 
+        public DamageRoll(string rollDescription)
+        {
+            FromRollDescription(rollDescription);
+        }
+
         public int DamageBonus { get; set; }
 
         public ElementEnum DamageType
@@ -59,14 +64,35 @@ namespace Simmental.Game.Items
 
             return string.Join(" + ", _damageRolls) + DamageBonus.ToString(" +#; -#;#");
 
-            //string result = "";
-            //foreach (var roll in _damageRolls)
-            //{
-            //    if (result != "") result += " + ";
-            //    result += roll.ToString();
-            //}
+        }
 
-            //return result + DamageBonus.ToString(" +#; -#;");;
+        public void FromRollDescription(string rollDescription)
+        {
+            // 2d6
+            // 2d6 + 1d20
+            // 2d6 + 1d20 +5    "2d6", "1d20 +5"  <-- from split
+            // 2d6 + 1d20 -1
+
+            var betterDamageRolls = new List<RollPart>();
+            foreach (var text in rollDescription.Split(" + "))
+            {
+                // Handle a DamageBonus tacked on the end
+                var damageBonusPosition = text.IndexOf(" +");
+                if (damageBonusPosition < 0)
+                    damageBonusPosition = text.IndexOf(" -");
+                if (damageBonusPosition >= 0)
+                {
+                    DamageBonus = int.Parse(text.Substring(damageBonusPosition));
+                    var rollPartText = text.Substring(0, damageBonusPosition);
+                    betterDamageRolls.Add(new RollPart(rollPartText));
+                }
+                else
+                {
+                    
+                    betterDamageRolls.Add(new RollPart(text));
+                }
+           }
+            _damageRolls = betterDamageRolls;
         }
 
 
