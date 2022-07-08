@@ -19,7 +19,7 @@ public class SignatureFactory
         _stampToType["l"] = typeof(LightSource);
         _stampToType["portal"] = typeof(MonsterPortal);
         _stampToType["p"] = typeof(Potion);
-        _stampToType["pj"] = typeof(ProjectileLauncher);
+        _stampToType["pl"] = typeof(ProjectileLauncher);
         _stampToType["rw"] = typeof(RangedWeapon);
 
         _typeToStamp = new();

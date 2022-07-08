@@ -17,7 +17,11 @@ namespace Simmental.Game.Items
             RangedWeaponType = rangedWeaponType;
         }
 
+        public ProjectileLauncher(SignatureParts sp)
+            :this (sp[0], sp[1], sp[2], sp.ToDamageRoll(3))
+        {
 
+        }
 
         public IDamageRoll DamageRoll { get; private set; }
 
@@ -34,7 +38,8 @@ namespace Simmental.Game.Items
 
         public string GetSignature()
         {
-            throw new NotImplementedException();
+            var sp = new SignatureParts(typeof(ProjectileLauncher), Name, Description, RangedWeaponType, DamageRoll.ToString());
+            return sp.ToSignature();
         }
     }
 }
