@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Simmental.Game.Items
 {
     [Serializable]
-    public class ProjectileLauncher: ItemBase, IWeapon 
+    public class ProjectileLauncher: ItemBase, IWeapon, ISignature
     {
         public ProjectileLauncher(string name, string description,string rangedWeaponType, IDamageRoll damageRoll)
            : base(name, description)
@@ -16,6 +16,8 @@ namespace Simmental.Game.Items
             DamageRoll = damageRoll;
             RangedWeaponType = rangedWeaponType;
         }
+
+
 
         public IDamageRoll DamageRoll { get; private set; }
 
@@ -28,6 +30,11 @@ namespace Simmental.Game.Items
         public override string GetFullName()
         {
             return base.GetFullName() + " " + DamageRoll.GetRollDescription();
+        }
+
+        public string GetSignature()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -111,6 +111,9 @@ namespace Simmental.Game.Items
 
             return totalDamage;
         }
-
+        public override string ToString()
+        {
+            return GetRollDescription();
+        }
     }
 }

@@ -14,6 +14,5 @@ namespace Simmental.UI
         Ice = 2,
         Lightning = 4,
         Poison = 8,
-
     }
 }

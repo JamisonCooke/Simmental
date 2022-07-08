@@ -26,8 +26,8 @@ namespace Simmental.Tests.Signature
             Assert.AreEqual("Short Sword", mw.Name);
             Assert.AreEqual("2d8", mw.DamageRoll.GetRollDescription());
 
-            var sig2 = sp.ToSignature();
-            Assert.AreEqual(signature, sig2);
+            //var sig2 = sp.ToSignature();
+            Assert.AreEqual(signature, mw.GetSignature());
 
         }
     }

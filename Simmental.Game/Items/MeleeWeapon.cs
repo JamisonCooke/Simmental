@@ -34,5 +34,7 @@ namespace Simmental.Game.Items
         {
             return base.GetFullName() + " " + DamageRoll.GetRollDescription();
         }
+
+
     }
 }

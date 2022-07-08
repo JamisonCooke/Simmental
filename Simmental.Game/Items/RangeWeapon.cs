@@ -8,7 +8,7 @@ using Simmental.UI;
 namespace Simmental.Game.Items
 {
     [Serializable]
-    public class RangedWeapon : ItemBase, IRangedWeapon
+    public class RangedWeapon : ItemBase, IRangedWeapon, ISignature
     {
         public int DamageBonus { get; set; }
         public ElementEnum Element { get; set; }
@@ -19,15 +19,30 @@ namespace Simmental.Game.Items
         /// </summary>
         public string RangedWeaponType { get; set; }
 
+        public string GetSignature()
+        {
+            // ToDo: Add custom formatting per ISignature Type
+            // Arrow [12] (rw)
+            // string formatString = "{Name} [{Count}] (rw), {Count.ToString(" +#; -#;#")} ";
+
+            var sp = new SignatureParts(typeof(RangedWeapon), Name, Description, Count.ToString(), DamageBonus.ToString(), Element.ToString(), RangedWeaponType);
+            // var x = Enum.Parse(typeof(ElementEnum), "Fire");
+            return sp.ToString();
+        }
 
         public RangedWeapon() { }
         public RangedWeapon(string name, string description, int count, int damageBonus, ElementEnum element, string rangedWeaponType)
             : base(name, description, count)
         {
+            // Arrow (rw), Grisly Arrow, 12, 5, F, bolt
+            
             DamageBonus = damageBonus;
             Element = element;
             RangedWeaponType = rangedWeaponType;
         }
+        public RangedWeapon(SignatureParts sp)
+            : this(sp[0], sp[1], int.Parse(sp[2]), int.Parse(sp[3]), sp.ToElement(4), sp[5]) 
+        { }
 
         public override string GetFullName()
         {

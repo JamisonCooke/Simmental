@@ -49,7 +49,7 @@ public class SignatureParts
     public SignatureParts(Type type, params string[] textParts)
     {
         this.SignatureStamp = SignatureFactory.StampFromType(type);
-
+        _parts = textParts;
     }
 
     public string SignatureStamp { get; set; }
@@ -90,9 +90,19 @@ public class SignatureParts
         return sb.ToString();
     }
 
+    public override string ToString()
+    {
+        return ToSignature();
+    }
+
     public IDamageRoll ToDamageRoll(int index)
     {
         return new DamageRoll(_parts[index]);
+    }
+
+    public ElementEnum ToElement(int index)
+    {
+        return (ElementEnum) Enum.Parse(typeof(ElementEnum), _parts[index]);
     }
 
 }
