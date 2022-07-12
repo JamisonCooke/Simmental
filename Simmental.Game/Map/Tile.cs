@@ -21,6 +21,8 @@ namespace Simmental.Game.Map
 
         public List<ICharacter> NPCs { get; } = new List<ICharacter>();
 
+
+
         /// <summary>
         /// Returns true if the passed bit(s) are all set om TileAttribute
         /// </summary>
@@ -30,5 +32,8 @@ namespace Simmental.Game.Map
         {
             return (this.TileAttribute & tileAttributeEnum) == tileAttributeEnum;
         }
+
+
+       
     }
 }

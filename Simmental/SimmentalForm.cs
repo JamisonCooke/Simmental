@@ -301,6 +301,9 @@ namespace Simmental
 
             ITile tile = _gameFormHelper.FindCommonTileProperties();
             SetDesignerTileProperties(tile);
+
+            // 
+            tileInventoryTextBox.Text = tile.Inventory.GetInventorySignatures();            
         }
 
         private void ApplyDesignerModeToToolbar()
@@ -756,6 +759,19 @@ namespace Simmental
             _gameFormHelper.Game.CommandManager.Redo();
             mapPictureBox.Refresh();
             UpdateDesignerControls();
+        }
+
+        private void tileInventoryApplyButton_Click(object sender, EventArgs e)
+        {
+            // Take the text from the textbox, create the inventory items with it, then add to the floor
+            ITile tile = _gameFormHelper.FindCommonTileProperties();
+
+            //string errorMessage = tile.SetInventorySignatures("Box (c), Golden Box\n  Long Sword (mw), Rusty sword, 2d10+2");
+            string errorMessage = tile.Inventory.SetInventorySignatures(tileInventoryTextBox.Text);
+
+            //if (!string.IsNullOrEmpty(errorMessage))
+            //    Show(errorMessage);
+
         }
     }
 }

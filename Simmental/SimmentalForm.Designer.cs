@@ -56,6 +56,8 @@ namespace Simmental
             this.adminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.designerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -76,8 +78,9 @@ namespace Simmental
             this.label5 = new System.Windows.Forms.Label();
             this.inventoryContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.moveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tileInventoryTextBox = new System.Windows.Forms.TextBox();
+            this.tileInventoryApplyButton = new System.Windows.Forms.Button();
             this.designerPanel.SuspendLayout();
             this.tileDesignerToolstrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).BeginInit();
@@ -93,6 +96,9 @@ namespace Simmental
             this.designerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.designerPanel.BackColor = System.Drawing.Color.White;
+            this.designerPanel.Controls.Add(this.tileInventoryApplyButton);
+            this.designerPanel.Controls.Add(this.tileInventoryTextBox);
+            this.designerPanel.Controls.Add(this.label7);
             this.designerPanel.Controls.Add(this.tileDesignerToolstrip);
             this.designerPanel.Controls.Add(this.OpaqueCheckBox);
             this.designerPanel.Controls.Add(this.KillCheckBox);
@@ -345,16 +351,32 @@ namespace Simmental
             // 
             this.designerToolStripMenuItem.Name = "designerToolStripMenuItem";
             this.designerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.designerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.designerToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.designerToolStripMenuItem.Text = "Designer";
             this.designerToolStripMenuItem.Click += new System.EventHandler(this.designerToolStripMenuItem_Click);
             // 
             // mapResetToolStripMenuItem
             // 
             this.mapResetToolStripMenuItem.Name = "mapResetToolStripMenuItem";
-            this.mapResetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.mapResetToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.mapResetToolStripMenuItem.Text = "Map &Reset";
             this.mapResetToolStripMenuItem.Click += new System.EventHandler(this.mapResetToolStripMenuItem_Click);
+            // 
+            // undoToolStripMenuItem
+            // 
+            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
+            this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.undoToolStripMenuItem.Text = "&Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
+            // 
+            // redoToolStripMenuItem
+            // 
+            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+            this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.redoToolStripMenuItem.Text = "&Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
             // 
             // vScrollBar1
             // 
@@ -422,7 +444,6 @@ namespace Simmental
             this.characterPanel.Controls.Add(this.messagesTextBox);
             this.characterPanel.Controls.Add(this.zoomTrackBar);
             this.characterPanel.Controls.Add(this.mapPanel);
-            this.characterPanel.Cursor = System.Windows.Forms.Cursors.Default;
             this.characterPanel.Location = new System.Drawing.Point(1, 27);
             this.characterPanel.Name = "characterPanel";
             this.characterPanel.Size = new System.Drawing.Size(231, 450);
@@ -487,7 +508,6 @@ namespace Simmental
             | System.Windows.Forms.AnchorStyles.Left)));
             this.messagesTextBox.BackColor = System.Drawing.Color.White;
             this.messagesTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.messagesTextBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.messagesTextBox.Location = new System.Drawing.Point(6, 69);
             this.messagesTextBox.Multiline = true;
             this.messagesTextBox.Name = "messagesTextBox";
@@ -577,21 +597,36 @@ namespace Simmental
             this.moveToToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.moveToToolStripMenuItem.Text = "Move To";
             // 
-            // undoToolStripMenuItem
+            // label7
             // 
-            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.undoToolStripMenuItem.Text = "&Undo";
-            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 35);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(95, 15);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Items on ground";
             // 
-            // redoToolStripMenuItem
+            // tileInventoryTextBox
             // 
-            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.redoToolStripMenuItem.Text = "&Redo";
-            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
+            this.tileInventoryTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tileInventoryTextBox.Location = new System.Drawing.Point(12, 53);
+            this.tileInventoryTextBox.Multiline = true;
+            this.tileInventoryTextBox.Name = "tileInventoryTextBox";
+            this.tileInventoryTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tileInventoryTextBox.Size = new System.Drawing.Size(175, 143);
+            this.tileInventoryTextBox.TabIndex = 7;
+            // 
+            // tileInventoryApplyButton
+            // 
+            this.tileInventoryApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tileInventoryApplyButton.Location = new System.Drawing.Point(112, 202);
+            this.tileInventoryApplyButton.Name = "tileInventoryApplyButton";
+            this.tileInventoryApplyButton.Size = new System.Drawing.Size(75, 23);
+            this.tileInventoryApplyButton.TabIndex = 8;
+            this.tileInventoryApplyButton.Text = "Apply";
+            this.tileInventoryApplyButton.UseVisualStyleBackColor = true;
+            this.tileInventoryApplyButton.Click += new System.EventHandler(this.tileInventoryApplyButton_Click);
             // 
             // SimmentalForm
             // 
@@ -678,6 +713,9 @@ namespace Simmental
         private System.Windows.Forms.ToolStripButton designerFloodFill;
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
+        private System.Windows.Forms.TextBox tileInventoryTextBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button tileInventoryApplyButton;
     }
 }
 

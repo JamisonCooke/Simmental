@@ -59,10 +59,11 @@ Designer+
 [X] Undo Tool
 
 Signature Support -- Idea: You can describe an item in D&D style text for the designer
-[ ] Implement SignatureFactory
-[ ] Handle containers 
+[X] Implement SignatureFactory
+[X] Handle containers 
 [ ] Handle Entire format better than a comma delimited list (i.e., Descriptions)
 [ ] Add Error handling when the format of the signature is incorrect: ie., Short Sword )mw(, Ugly sword
+[ ] Have IItem implement ISignature
 
 
 NPC Mechanics
@@ -100,3 +101,4 @@ Thur 7/7 2.5 hrs
 Fri 7/87 2 hr
 ****PAID****
 Mon 7/11 3 hr
+Tues 7/12 3.5 hr

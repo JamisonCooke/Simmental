@@ -13,5 +13,7 @@ namespace Simmental.UI
         IEnumerable<IItem> Items { get; }
         IEnumerable<IRangedWeapon> RangedWeapons { get; }
         IEnumerable<IWeapon> Weapons { get; }
+        string GetInventorySignatures();
+        string SetInventorySignatures(string text);
     }
 }

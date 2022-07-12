@@ -38,6 +38,44 @@ public class SignatureFactory
         return _typeToStamp[type];
     }
 
+    public IEnumerable<ISignature> CreateMultiple(string signatureText)
+    {
+        // Sword (mw), Rusty 2d8
+        // Box (c), Ruby covered box
+        //   Sword2 (mw), Rusty 2d8
+        // Sword3 (mw), Rusty 2d8
+
+        // Sword (mw), Rusty 2d8\nBox (c), Ruby covered box\n  Sword2 (mw), Rusty 2d8\nSword3 (mw), Rusty 2d8
+        // Convert it to:  "\n " -> "\t "
+        // Sword (mw), Rusty 2d8\nBox (c), Ruby covered box\t  Sword2 (mw), Rusty 2d8\nSword3 (mw), Rusty 2d8
+
+        string tweakedSignatures = signatureText.Replace("\n ", "\t ");
+        var signatures = tweakedSignatures.Split("\n");
+        
+        foreach(var signature in signatures)
+        {
+            yield return Create(signature.Replace("\t ", "\n "));
+        }
+
+    }
+
+    public static string GetMultilineSignature(IEnumerable<ISignature> items)
+    {
+        string result = "";
+        
+        foreach(var signature in items)
+        {
+            if (result.Length > 0)
+                result += "\n";
+                
+            result += signature.GetSignature();
+
+        }
+
+        return result;
+
+    }
+
     /// <summary>
     /// Creates class instances and supports compound signatures for containers
     /// </summary>
@@ -86,7 +124,13 @@ public class SignatureFactory
         //    "  Box (c), Cheap cardboard box\n" +
         //    "    Short Sword (mw), Rusty sword you picked up somewhere, 2d8";
 
-        if (item is Container container)
+
+        //    "Tile Inventory (ti)";
+        //    "  Short Sword (mw), Rusty sword you picked up somewhere, 2d8";
+        //    "  Short Sword (mw), Rusty sword you picked up somewhere, 2d8";
+
+
+        if (item is IInventory container)
         {
             foreach(var i in container.Items)
             {

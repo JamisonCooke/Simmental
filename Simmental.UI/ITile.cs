@@ -18,6 +18,6 @@ namespace Simmental.UI
         bool HasAttribute(TileAttributeEnum tileAttributeEnum);
         bool Seen { get; set; }
         List<ICharacter> NPCs { get; }
-
+        
     }
 }

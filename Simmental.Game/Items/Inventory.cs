@@ -51,7 +51,34 @@ namespace Simmental.Game.Items
                 }
             }
         }
+        public string GetInventorySignatures()
+        {
+            // Convert _items into a list of ISignature
+            List<ISignature> signatureItems = new();
+            foreach(var item in _items)
+            {
+                if (item is ISignature signature)
+                    signatureItems.Add(signature);
+            }
 
+            return SignatureFactory.GetMultilineSignature(signatureItems);
+            // return "";
+        }
+        public string SetInventorySignatures(string text)
+        {
+            var sf = new SignatureFactory();
+            string errorMessage = "";
+
+            var created = sf.CreateMultiple(text);
+            _items.Clear();
+            foreach(var item in created)
+            {
+                if (item is IItem item1)
+                    _items.Add(item1);
+            }
+
+            return errorMessage;
+        }
 
     }
 }

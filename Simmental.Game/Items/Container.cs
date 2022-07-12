@@ -76,6 +76,14 @@ namespace Simmental.Game.Items
                 }
             }
         }
+        public string GetInventorySignatures()
+        {
+            throw new NotImplementedException();
+        }
+        public string SetInventorySignatures(string text)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
