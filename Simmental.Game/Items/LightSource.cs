@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Simmental.Game.Items
 {
     [Serializable]
-    public class LightSource : ItemBase, ILightSource
+    public class LightSource : ItemBase, ILightSource, ISignature
     {
         public LightSource(string name, string description, int brightness, int distance, bool isLit)
             : base(name, description)
@@ -17,6 +17,10 @@ namespace Simmental.Game.Items
             Distance = distance;
             IsLit = isLit;
         }
+
+        public LightSource(SignatureParts sp) 
+            : this(sp[0], sp[1], int.Parse(sp[2]), int.Parse(sp[3]), bool.Parse(sp[4]))
+        { }
 
         public int Brightness { get; set; }
         public int Distance { get; set; }
@@ -47,5 +51,11 @@ namespace Simmental.Game.Items
             IsLit = false;
         }
 
+        public string GetSignature()
+        {
+            var sp = new SignatureParts(typeof(LightSource), Name, Description, Brightness.ToString(), Distance.ToString(), IsLit.ToString());
+
+            return sp.ToSignature();
+        }
     }
 }

@@ -58,6 +58,13 @@ Designer+
 [ ] Existing selection mode -- add cut/paste
 [X] Undo Tool
 
+Signature Support -- Idea: You can describe an item in D&D style text for the designer
+[ ] Implement SignatureFactory
+[ ] Handle containers 
+[ ] Handle Entire format better than a comma delimited list (i.e., Descriptions)
+[ ] Add Error handling when the format of the signature is incorrect: ie., Short Sword )mw(, Ugly sword
+
+
 NPC Mechanics
 [ ] Pheremones
 [ ] Monster coordinations
@@ -84,9 +91,12 @@ Sat 3/12 2, 10
 Wens 4/6 90 min
 Thur 4/7 1 hr
 Fri 4/8 1 hr, 30 min
-****PAID??****
+****PAID****
 Wens 2 hr
 Thur 4/28 1 hr
 Fri 4/29 1 hr
 Wens 7/6 2 hr
 Thur 7/7 2.5 hrs
+Fri 7/87 2 hr
+****PAID****
+Mon 7/11 3 hr

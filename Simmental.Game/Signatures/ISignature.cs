@@ -9,7 +9,8 @@ public interface ISignature
     // a SignatureParts. 
     // public class Foo : ISignature 
     // {
-    //    public Foo(SignatureParts) { ... }
+    //    public Foo(SignatureParts sp)
+    //        : this(sp[0], sp[1], sp[2] ...) {}
     //    public string GetSignature() { ... }
     // }
 

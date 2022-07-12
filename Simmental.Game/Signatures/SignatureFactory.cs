@@ -38,6 +38,107 @@ public class SignatureFactory
         return _typeToStamp[type];
     }
 
+    /// <summary>
+    /// Creates class instances and supports compound signatures for containers
+    /// </summary>
+    /// <param name="signatureText"></param>
+    /// <returns></returns>
+    public ISignature Create(string signatureText)
+    {
+        string[] lines = signatureText.Split('\n');
+        
+        // Should contain the last container found at each depth
+        Container[] levels = new Container[lines.Length];
+        ISignature result = null;
+
+        foreach(string signature in lines)
+        {
+            if (string.IsNullOrEmpty(signature))        // Ignore blank lines
+                continue;
+
+            int depth = IndentationDepth(signature);
+            var item = CreateSingle(signature.Trim());
+            if (result == null) result = item;      // First guy is what we're returning
+
+            // Remember to cast item to IItem before container.add
+            if (item is Container container)
+                levels[depth] = container;
+
+            if (depth > 0)
+                levels[depth - 1].Add((IItem)item);
+
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Return the GetSignature() from the item, with nested GetSignatures() under it (delimited by /n) if item is a container
+    /// </summary>
+    /// <param name="backpack"></param>
+    /// <returns></returns>
+    public static string GetMultilineSignature(ISignature item, string indentationPrefix = "  ")
+    {
+
+        string result = item.GetSignature();
+
+        //string signature = "Backpack (c), Leather Backpack\n" +
+        //    "  Box (c), Cheap cardboard box\n" +
+        //    "    Short Sword (mw), Rusty sword you picked up somewhere, 2d8";
+
+        if (item is Container container)
+        {
+            foreach(var i in container.Items)
+            {
+                if (i is ISignature signature)
+                    result += "\n" + indentationPrefix + GetMultilineSignature(signature, indentationPrefix + "  ");
+                
+            }
+        }
+
+        return result;
+
+    }
+
+    /// <summary>
+    /// Returns how deep the text is indented using two space indentation. For example
+    /// '  Text' is level 1, '    Text' is level 2, and 'Text' is level 0.
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
+    public int IndentationDepth(string text)
+    {
+        int i = 0;
+        while (i < text.Length)
+        {
+            if (text[i] == ' ')
+                i++;
+            else
+                return i / 2;
+        }
+
+        throw new Exception($"Blank or invalid Signature: '{text}'.");
+    }
+
+
+
+    public ISignature CreateSingle(string signatureText)
+    {
+        // Example of a abstract factory (GoF)
+        var sp = new SignatureParts(signatureText);
+
+        switch(sp.SignatureStamp)
+        {
+            case "mw": return new MeleeWeapon(sp);
+            case "c":  return new Container(sp);
+            case "l":  return new LightSource(sp);
+            case "pl": return new ProjectileLauncher(sp);
+            case "rw": return new RangedWeapon(sp);
+            
+            default:   return null;
+        }       
+    }
+
 
 
 }

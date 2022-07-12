@@ -8,11 +8,24 @@ using Simmental.UI;
 namespace Simmental.Game.Items
 {
     [Serializable]
-    public class Container : ItemBase, IInventory
+    public class Container : ItemBase, IInventory, ISignature
     {
+        // ToDo: In SignatureFactory, support items inside of a container
+        // Backpack (c), Ugly leather backpack
+        //   Short sword (mw), Rusty sword, 1d4
+        //   Arrow (pw), 
+        //   Wallet (c)
+        //     100 Gold note ($)
+        //     Drivers License (id)
+        //   Bolt (pw)
 
         public Container(string name, string description)
             : base(name, description)
+        {
+        }
+
+        public Container(SignatureParts sp)
+            :this(sp[0], sp[1])
         {
         }
 
@@ -29,6 +42,13 @@ namespace Simmental.Game.Items
         {
             _items.Remove(item);
         }
+
+        public string GetSignature()
+        {
+            var sp = new SignatureParts(typeof(Container), Name, Description);
+            return sp.ToSignature();
+        }
+
         public IEnumerable<IRangedWeapon> RangedWeapons
         {
             get
