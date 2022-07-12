@@ -45,7 +45,7 @@ namespace Simmental.Game.Items
 
         public string GetSignature()
         {
-            var sp = new SignatureParts(typeof(Container), Name, Description);
+            var sp = new SignatureParts(this.GetType(), Name, Description);
             return sp.ToSignature();
         }
 

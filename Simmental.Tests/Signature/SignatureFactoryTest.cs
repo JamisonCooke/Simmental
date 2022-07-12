@@ -81,7 +81,7 @@ namespace Simmental.Tests.Signature
         [Test]
         public void MultiCreateDepth3()
         {
-            string signature = "Backpack (c), Leather Backpack\n" +
+            string signature = "Bobpack (xx), Leather Backpack\n" +
                 "  Box (c), Cheap cardboard box\n" +
                 "    Short Sword (mw), Rusty sword you picked up somewhere, 2d8";
 

@@ -131,6 +131,7 @@ public class SignatureFactory
         {
             case "mw": return new MeleeWeapon(sp);
             case "c":  return new Container(sp);
+            case "xx": return new Corpse(sp);
             case "l":  return new LightSource(sp);
             case "pl": return new ProjectileLauncher(sp);
             case "rw": return new RangedWeapon(sp);
