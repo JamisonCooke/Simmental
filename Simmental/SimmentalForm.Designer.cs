@@ -32,6 +32,9 @@ namespace Simmental
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimmentalForm));
             this.designerPanel = new System.Windows.Forms.Panel();
+            this.tileInventoryApplyButton = new System.Windows.Forms.Button();
+            this.tileInventoryTextBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.tileDesignerToolstrip = new System.Windows.Forms.ToolStrip();
             this.designerEyeDropper = new System.Windows.Forms.ToolStripButton();
             this.designerRangeSelector = new System.Windows.Forms.ToolStripButton();
@@ -78,9 +81,6 @@ namespace Simmental
             this.label5 = new System.Windows.Forms.Label();
             this.inventoryContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.moveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tileInventoryTextBox = new System.Windows.Forms.TextBox();
-            this.tileInventoryApplyButton = new System.Windows.Forms.Button();
             this.designerPanel.SuspendLayout();
             this.tileDesignerToolstrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).BeginInit();
@@ -112,6 +112,39 @@ namespace Simmental
             this.designerPanel.TabIndex = 1;
             this.designerPanel.Visible = false;
             this.designerPanel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.descriptionPanel_PreviewKeyDown);
+            // 
+            // tileInventoryApplyButton
+            // 
+            this.tileInventoryApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tileInventoryApplyButton.Location = new System.Drawing.Point(112, 202);
+            this.tileInventoryApplyButton.Name = "tileInventoryApplyButton";
+            this.tileInventoryApplyButton.Size = new System.Drawing.Size(75, 23);
+            this.tileInventoryApplyButton.TabIndex = 8;
+            this.tileInventoryApplyButton.TabStop = false;
+            this.tileInventoryApplyButton.Text = "Apply";
+            this.tileInventoryApplyButton.UseVisualStyleBackColor = true;
+            this.tileInventoryApplyButton.Click += new System.EventHandler(this.tileInventoryApplyButton_Click);
+            // 
+            // tileInventoryTextBox
+            // 
+            this.tileInventoryTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tileInventoryTextBox.Location = new System.Drawing.Point(12, 53);
+            this.tileInventoryTextBox.Multiline = true;
+            this.tileInventoryTextBox.Name = "tileInventoryTextBox";
+            this.tileInventoryTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tileInventoryTextBox.Size = new System.Drawing.Size(175, 143);
+            this.tileInventoryTextBox.TabIndex = 7;
+            this.tileInventoryTextBox.TabStop = false;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 35);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(95, 15);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Items on ground";
             // 
             // tileDesignerToolstrip
             // 
@@ -596,37 +629,6 @@ namespace Simmental
             this.moveToToolStripMenuItem.Name = "moveToToolStripMenuItem";
             this.moveToToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.moveToToolStripMenuItem.Text = "Move To";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 35);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(95, 15);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Items on ground";
-            // 
-            // tileInventoryTextBox
-            // 
-            this.tileInventoryTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tileInventoryTextBox.Location = new System.Drawing.Point(12, 53);
-            this.tileInventoryTextBox.Multiline = true;
-            this.tileInventoryTextBox.Name = "tileInventoryTextBox";
-            this.tileInventoryTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tileInventoryTextBox.Size = new System.Drawing.Size(175, 143);
-            this.tileInventoryTextBox.TabIndex = 7;
-            // 
-            // tileInventoryApplyButton
-            // 
-            this.tileInventoryApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tileInventoryApplyButton.Location = new System.Drawing.Point(112, 202);
-            this.tileInventoryApplyButton.Name = "tileInventoryApplyButton";
-            this.tileInventoryApplyButton.Size = new System.Drawing.Size(75, 23);
-            this.tileInventoryApplyButton.TabIndex = 8;
-            this.tileInventoryApplyButton.Text = "Apply";
-            this.tileInventoryApplyButton.UseVisualStyleBackColor = true;
-            this.tileInventoryApplyButton.Click += new System.EventHandler(this.tileInventoryApplyButton_Click);
             // 
             // SimmentalForm
             // 

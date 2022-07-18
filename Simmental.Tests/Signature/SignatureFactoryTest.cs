@@ -62,7 +62,7 @@ namespace Simmental.Tests.Signature
         [Test]
         public void MultiCreateDepth2()
         {
-            string signature = "Backpack (c), Leather Backpack\n" +
+            string signature = "Backpack (c), Leather Backpack\r\n" +
                 "  Short Sword (mw), Rusty sword you picked up somewhere, 2d8";
 
             var sf = new SignatureFactory();
@@ -81,8 +81,8 @@ namespace Simmental.Tests.Signature
         [Test]
         public void MultiCreateDepth3()
         {
-            string signature = "Bobpack (xx), Leather Backpack\n" +
-                "  Box (c), Cheap cardboard box\n" +
+            string signature = "Bobpack (xx), Leather Backpack\r\n" +
+                "  Box (c), Cheap cardboard box\r\n" +
                 "    Short Sword (mw), Rusty sword you picked up somewhere, 2d8";
 
             var sf = new SignatureFactory();
@@ -96,14 +96,14 @@ namespace Simmental.Tests.Signature
         public void MultiCreateDepth4()
         {
             string signature = 
-                "Backpack (c), Leather Backpack\n" +
-                "  Box (c), Cheap cardboard box\n" +
-                "    Short Sword (mw), Rusty sword you picked up somewhere, 2d8\n" +
-                "    Long Sword (mw), Fancy sword, 2d8\n" +
-                "  Russian Doll (c), Red russian doll\n" +
-                "    Nested Russian Doll (c), doll\n" +
-                "      Another Nested Russian Doll (c), doll\n" +
-                "        Dagger Sword (mw), What are those russians hiding?, 2d8\n" +
+                "Backpack (c), Leather Backpack\r\n" +
+                "  Box (c), Cheap cardboard box\r\n" +
+                "    Short Sword (mw), Rusty sword you picked up somewhere, 2d8\r\n" +
+                "    Long Sword (mw), Fancy sword, 2d8\r\n" +
+                "  Russian Doll (c), Red russian doll\r\n" +
+                "    Nested Russian Doll (c), doll\r\n" +
+                "      Another Nested Russian Doll (c), doll\r\n" +
+                "        Dagger Sword (mw), What are those russians hiding?, 2d8\r\n" +
                 "    Excessive Dust (c), Dustin in there" +
                 "";
 
@@ -114,6 +114,21 @@ namespace Simmental.Tests.Signature
             Assert.AreEqual(signature, multiLineSignature);
         }
 
+        [Test]
+        public void CreateMultipleFromSignatures()
+        {
+            var sf = new SignatureFactory();
+            
+            // Signatures like you'd find in the designer-- 
+            string signature = "Sword (mw), Rusty, 2d8\r\nBox (c), Ruby covered box\r\n  Sword2 (mw), Rusty, 2d8\r\nSword3 (mw), Rusty, 2d8";
+            var items = sf.CreateMultiple(signature);
+
+            var f = items.First();
+
+            string newSig = SignatureFactory.GetMultilineSignature(items);
+
+            Assert.AreEqual(signature, newSig);
+        }
 
     }
 }

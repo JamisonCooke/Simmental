@@ -48,15 +48,17 @@ public class SignatureFactory
         // Sword (mw), Rusty 2d8\nBox (c), Ruby covered box\n  Sword2 (mw), Rusty 2d8\nSword3 (mw), Rusty 2d8
         // Convert it to:  "\n " -> "\t "
         // Sword (mw), Rusty 2d8\nBox (c), Ruby covered box\t  Sword2 (mw), Rusty 2d8\nSword3 (mw), Rusty 2d8
+        List<ISignature> result = new();
 
-        string tweakedSignatures = signatureText.Replace("\n ", "\t ");
-        var signatures = tweakedSignatures.Split("\n");
+        string tweakedSignatures = signatureText.Replace($"{Environment.NewLine} ", "\t ");
+        var signatures = tweakedSignatures.Split(Environment.NewLine);
         
         foreach(var signature in signatures)
         {
-            yield return Create(signature.Replace("\t ", "\n "));
+            result.Add(Create(signature.Replace("\t ", $"{Environment.NewLine} ")));
         }
-
+        
+        return result;
     }
 
     public static string GetMultilineSignature(IEnumerable<ISignature> items)
@@ -66,10 +68,9 @@ public class SignatureFactory
         foreach(var signature in items)
         {
             if (result.Length > 0)
-                result += "\n";
-                
-            result += signature.GetSignature();
+                result += Environment.NewLine;
 
+            result += GetMultilineSignature(signature);
         }
 
         return result;
@@ -83,7 +84,7 @@ public class SignatureFactory
     /// <returns></returns>
     public ISignature Create(string signatureText)
     {
-        string[] lines = signatureText.Split('\n');
+        string[] lines = signatureText.Split(Environment.NewLine);
         
         // Should contain the last container found at each depth
         Container[] levels = new Container[lines.Length];
@@ -135,7 +136,7 @@ public class SignatureFactory
             foreach(var i in container.Items)
             {
                 if (i is ISignature signature)
-                    result += "\n" + indentationPrefix + GetMultilineSignature(signature, indentationPrefix + "  ");
+                    result += Environment.NewLine + indentationPrefix + GetMultilineSignature(signature, indentationPrefix + "  ");
                 
             }
         }
