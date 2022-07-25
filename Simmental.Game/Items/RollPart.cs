@@ -47,6 +47,50 @@ namespace Simmental.Game.Items
             DiceMax = int.Parse(diceMaxText);
         }
 
+        /// <summary>
+        /// Returns a human readable error message if the rollText is bad, or blank if it's ok
+        /// </summary>
+        /// <param name="rollText"></param>
+        /// <returns></returns>
+        public static string ValidateRollPart(string rollText)
+        {
+            //
+            int dPos = rollText.IndexOf('d');
+            if (dPos == -1) return $"'{rollText}' is missing a d.";
+
+            //
+            var numberOfRollsText = rollText.Substring(0, dPos);
+            if (!int.TryParse(numberOfRollsText, out int i))
+            {
+                return $"'{numberOfRollsText}' in '{rollText}' needs to be a number.";
+            } 
+            else if (i <= 0)
+            {
+                return $"'{numberOfRollsText}' in '{rollText}' needs to be a positive number.";
+            }
+
+            //
+
+            string lastChar = rollText.Substring(rollText.Length - 1, 1);
+            var element = ElementFromLetter(lastChar);
+
+            int elementLength = (element == ElementEnum.Normal) ? 0 : 1;
+            var diceMaxText = rollText.Substring(dPos + 1, rollText.Length - elementLength - (dPos + 1));
+            if (!int.TryParse(diceMaxText, out int j))
+            {
+                return $"'{diceMaxText}' in '{rollText}' needs to be a number.";
+            }
+            else if (j <= 0)
+            {
+                return $"'{diceMaxText}' in '{rollText}' needs to be a positive number.";
+            }
+
+
+            // Valid
+            return string.Empty;
+
+        }
+
         public static string ElementLetter(ElementEnum element)
         {
             switch(element)

@@ -20,8 +20,16 @@ namespace Simmental.Game.Items
             : this(sp[0], sp[1], sp.ToDamageRoll(2))
         { }
 
+        public static string GetSignatureFormat()
+        {
+            return "Name,Description,DamageRoll:DamageRoll";
+        }
+
         public string GetSignature()
         {
+            // Valid signature for a MeleeWeapon:
+            // [Name] (mw), [Description], [DamageRoll]
+
             var sp = new SignatureParts(typeof(MeleeWeapon), Name, Description, DamageRoll.ToString());
             return sp.ToString();
         }

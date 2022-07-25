@@ -19,7 +19,7 @@ namespace Simmental.Game.Items
         }
 
         public LightSource(SignatureParts sp) 
-            : this(sp[0], sp[1], int.Parse(sp[2]), int.Parse(sp[3]), bool.Parse(sp[4]))
+            : this(name: sp[0], description: sp[1], brightness: sp.ToInt(2), distance: sp.ToInt(3), isLit: sp.ToBool(4))
         { }
 
         public int Brightness { get; set; }

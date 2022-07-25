@@ -66,11 +66,54 @@ namespace Simmental.Game.Items
 
         }
 
+        public static string ValidateDamageRoll(string rollDescription)
+        {
+            string errorMessage = "";
+
+            foreach (var text in rollDescription.Split(" + "))
+            {
+                // Handle a DamageBonus tacked on the end
+                var damageBonusPosition = text.IndexOf(" +");
+                if (damageBonusPosition < 0)
+                    damageBonusPosition = text.IndexOf(" -");
+
+                if (damageBonusPosition >= 0)
+                {
+                    string damageBonusText = text.Substring(damageBonusPosition);
+                    if (!int.TryParse(damageBonusText, out int i))
+                    {
+                        errorMessage = $"'{damageBonusText}' in '{text}' needs to be a number.";
+                    }
+                    else
+                    {
+                        var rollPartText = text.Substring(0, damageBonusPosition);
+                        errorMessage = RollPart.ValidateRollPart(rollPartText);
+                    }
+                }
+                else
+                {
+                    errorMessage = RollPart.ValidateRollPart(text);
+                }
+
+                // Format the last error into a pretty error and return
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    if (text == rollDescription)
+                        return errorMessage;
+
+                    return $"'{text}' in '{rollDescription}' is invalid: {errorMessage}";
+                }
+
+            }
+
+            return string.Empty;
+        }
+
         public void FromRollDescription(string rollDescription)
         {
             // 2d6
             // 2d6 + 1d20
-            // 2d6 + 1d20 +5    "2d6", "1d20 +5"  <-- from split
+            // 2d6F + 1d20 +5    "2d6", "1d20 +5"  <-- from split
             // 2d6 + 1d20 -1
 
             var betterDamageRolls = new List<RollPart>();

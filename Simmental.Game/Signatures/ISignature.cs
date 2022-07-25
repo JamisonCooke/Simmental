@@ -14,4 +14,8 @@ public interface ISignature
     //    public string GetSignature() { ... }
     // }
 
+    // Class should also implement GetSignatureFormat as a static-- (can't require in an interface)
+    // public static string GetSignatureFormat()
+
+
 }

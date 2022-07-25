@@ -33,6 +33,11 @@ public class SignatureFactory
         return _stampToType[stamp];
     }
 
+    public static bool IsValidStamp(string stamp)
+    {
+        return _stampToType.ContainsKey(stamp);
+    }
+
     public static string StampFromType(Type type)
     {
         return _typeToStamp[type];
@@ -185,6 +190,43 @@ public class SignatureFactory
         }       
     }
 
+    public string GetSignatureFormat(string signatureStamp)
+    {
+        switch (signatureStamp)
+        {
+            case "mw": return MeleeWeapon.GetSignatureFormat();
+            //case "c": return new Container.GetSignatureFormat();
+            //case "xx": return new Corpse.GetSignatureFormat();
+            //case "l": return new LightSource.GetSignatureFormat();
+            //case "pl": return new ProjectileLauncher.GetSignatureFormat();
+            //case "rw": return new RangedWeapon.GetSignatureFormat();
+
+
+            default: return null;
+        }
+    }
+
+    public string ValidateSignature(string signatureText)
+    {
+        var sp = new SignatureParts(signatureText);
+        if (string.IsNullOrEmpty(sp.SignatureStamp))
+        {
+            // We are missing a signature stamp! This is the only error we can report
+            return $"Missing item stamp. Must have parens like (s) before the first comma, where s is: {string.Join(", ", _stampToType.Keys)}.";
+        }
+        if (!IsValidStamp(sp.SignatureStamp))
+        {
+            // We have an invalid signature stamp!
+            return $"Invalid item stamp '{sp.SignatureStamp}'. Expected: { string.Join(", ", _stampToType.Keys)}. ";
+        }
+
+
+        string signatureFormat = GetSignatureFormat(sp.SignatureStamp);
+        sp.SetSignatureFormat(signatureFormat);
+
+        return sp.GetErrorText();
+
+    }
 
 
 }
