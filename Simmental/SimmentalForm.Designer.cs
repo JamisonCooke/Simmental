@@ -81,6 +81,7 @@ namespace Simmental
             this.label5 = new System.Windows.Forms.Label();
             this.inventoryContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.moveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inventoryErrorLabel = new System.Windows.Forms.Label();
             this.designerPanel.SuspendLayout();
             this.tileDesignerToolstrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).BeginInit();
@@ -96,6 +97,7 @@ namespace Simmental
             this.designerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.designerPanel.BackColor = System.Drawing.Color.White;
+            this.designerPanel.Controls.Add(this.inventoryErrorLabel);
             this.designerPanel.Controls.Add(this.tileInventoryApplyButton);
             this.designerPanel.Controls.Add(this.tileInventoryTextBox);
             this.designerPanel.Controls.Add(this.label7);
@@ -211,7 +213,7 @@ namespace Simmental
             // OpaqueCheckBox
             // 
             this.OpaqueCheckBox.AutoSize = true;
-            this.OpaqueCheckBox.Location = new System.Drawing.Point(42, 346);
+            this.OpaqueCheckBox.Location = new System.Drawing.Point(32, 380);
             this.OpaqueCheckBox.Name = "OpaqueCheckBox";
             this.OpaqueCheckBox.Size = new System.Drawing.Size(79, 19);
             this.OpaqueCheckBox.TabIndex = 4;
@@ -223,7 +225,7 @@ namespace Simmental
             // KillCheckBox
             // 
             this.KillCheckBox.AutoSize = true;
-            this.KillCheckBox.Location = new System.Drawing.Point(42, 323);
+            this.KillCheckBox.Location = new System.Drawing.Point(32, 357);
             this.KillCheckBox.Name = "KillCheckBox";
             this.KillCheckBox.Size = new System.Drawing.Size(88, 19);
             this.KillCheckBox.TabIndex = 3;
@@ -235,7 +237,7 @@ namespace Simmental
             // FlyCheckBox
             // 
             this.FlyCheckBox.AutoSize = true;
-            this.FlyCheckBox.Location = new System.Drawing.Point(42, 298);
+            this.FlyCheckBox.Location = new System.Drawing.Point(32, 332);
             this.FlyCheckBox.Name = "FlyCheckBox";
             this.FlyCheckBox.Size = new System.Drawing.Size(84, 19);
             this.FlyCheckBox.TabIndex = 3;
@@ -247,7 +249,7 @@ namespace Simmental
             // WalkCheckBox
             // 
             this.WalkCheckBox.AutoSize = true;
-            this.WalkCheckBox.Location = new System.Drawing.Point(42, 273);
+            this.WalkCheckBox.Location = new System.Drawing.Point(32, 307);
             this.WalkCheckBox.Name = "WalkCheckBox";
             this.WalkCheckBox.Size = new System.Drawing.Size(95, 19);
             this.WalkCheckBox.TabIndex = 3;
@@ -265,7 +267,7 @@ namespace Simmental
             "Water",
             "Wall",
             "Wood"});
-            this.tileTypeComboBox.Location = new System.Drawing.Point(22, 244);
+            this.tileTypeComboBox.Location = new System.Drawing.Point(12, 278);
             this.tileTypeComboBox.Name = "tileTypeComboBox";
             this.tileTypeComboBox.Size = new System.Drawing.Size(154, 23);
             this.tileTypeComboBox.TabIndex = 2;
@@ -630,6 +632,14 @@ namespace Simmental
             this.moveToToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.moveToToolStripMenuItem.Text = "Move To";
             // 
+            // inventoryErrorLabel
+            // 
+            this.inventoryErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.inventoryErrorLabel.Location = new System.Drawing.Point(12, 228);
+            this.inventoryErrorLabel.Name = "inventoryErrorLabel";
+            this.inventoryErrorLabel.Size = new System.Drawing.Size(175, 47);
+            this.inventoryErrorLabel.TabIndex = 9;
+            // 
             // SimmentalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -718,6 +728,7 @@ namespace Simmental
         private System.Windows.Forms.TextBox tileInventoryTextBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button tileInventoryApplyButton;
+        private System.Windows.Forms.Label inventoryErrorLabel;
     }
 }
 

@@ -62,8 +62,9 @@ Signature Support -- Idea: You can describe an item in D&D style text for the de
 [X] Implement SignatureFactory
 [X] Handle containers 
 [ ] Handle Entire format better than a comma delimited list (i.e., Descriptions)
-[ ] Add Error handling when the format of the signature is incorrect: ie., Short Sword )mw(, Ugly sword
+[x] Add Error handling when the format of the signature is incorrect: ie., Short Sword )mw(, Ugly sword
 [ ] Have IItem implement ISignature
+[ ] Give SignatureFormat at top of editor box based on what line the | is on.
 
 
 NPC Mechanics
@@ -105,3 +106,4 @@ Tues 7/12 3.5 hr
 Wen 7/13 1.5
 Mon 7/22 2
 Mon 7/25 3
+Tue 7/26 2.5

@@ -67,8 +67,11 @@ namespace Simmental.Game.Items
         public string SetInventorySignatures(string text)
         {
             var sf = new SignatureFactory();
-            string errorMessage = "";
-
+            string errorMessage = sf.ValidateMultipleSignatures(text);
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                return errorMessage;
+            }
             var created = sf.CreateMultiple(text);
             _items.Clear();
             foreach(var item in created)
@@ -77,7 +80,7 @@ namespace Simmental.Game.Items
                     _items.Add(item1);
             }
 
-            return errorMessage;
+            return "";
         }
 
     }

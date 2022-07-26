@@ -303,7 +303,8 @@ namespace Simmental
             SetDesignerTileProperties(tile);
 
             // 
-            tileInventoryTextBox.Text = tile.Inventory.GetInventorySignatures();            
+            tileInventoryTextBox.Text = tile.Inventory.GetInventorySignatures();
+            inventoryErrorLabel.Text = "";
         }
 
         private void ApplyDesignerModeToToolbar()
@@ -774,8 +775,7 @@ namespace Simmental
 
             string errorMessage = tile.Inventory.SetInventorySignatures(tileInventoryTextBox.Text);
 
-            //if (!string.IsNullOrEmpty(errorMessage))
-            //    Show(errorMessage);
+            inventoryErrorLabel.Text = errorMessage;
 
         }
     }

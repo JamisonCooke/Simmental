@@ -206,6 +206,20 @@ public class SignatureFactory
         }
     }
 
+    public string ValidateMultipleSignatures(string signatureText)
+    {
+        int lineNumber = 0;
+        foreach (string signature in signatureText.Split(Environment.NewLine))
+        {
+            lineNumber++;
+            string errors = ValidateSignature(signature.Trim());
+            if (!string.IsNullOrEmpty(errors))
+                return $"{lineNumber}: {errors}";
+
+        }
+        return "";
+    }
+
     public string ValidateSignature(string signatureText)
     {
         var sp = new SignatureParts(signatureText);
