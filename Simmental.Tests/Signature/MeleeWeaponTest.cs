@@ -41,13 +41,25 @@ namespace Simmental.Tests.Signature
 
             Assert.AreEqual(expectedError, errorMessage);
         }
+        
+        [Test]
+        public void MeleeBlankDamageRoll()
+        {
+            string signatureText = "Short Sword (mw), Rusty sword you picked up somewhere,";
+            string expectedError = "DamageRoll: Missing value";
+
+            var sf = new SignatureFactory();
+            string errorMessage = sf.ValidateSignature(signatureText);
+
+            Assert.AreEqual(expectedError, errorMessage);
+        }
 
         [Test]
         public void MeleeErrorBadDamageRoll()
         {
             // Should be 2d8, not 2r8
             string signatureText = "Short Sword (mw), Rusty sword you picked up somewhere, 2r8";
-            string expectedError = "'2r8' is missing a d.";
+            string expectedError = "DamageRoll: '2r8' is missing a d.";
 
             var sf = new SignatureFactory();
             string errorMessage = sf.ValidateSignature(signatureText);

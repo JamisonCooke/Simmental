@@ -122,11 +122,10 @@ public class SignatureParts
             if (string.IsNullOrEmpty(part.Value) && !string.IsNullOrEmpty(part.Name))
                 errorList.Add($"{part.Name}: Missing value");
 
-
             if (string.IsNullOrEmpty(part.Name))
                 errorList.Add($"Too many paramaters. Unexpected: {part.Value}");
             
-            if (part.Type == typeof(DamageRoll))
+            if (part.Type == typeof(DamageRoll) && !string.IsNullOrEmpty(part.Value))
             {
                 string damageRollError = DamageRoll.ValidateDamageRoll(part.Value);
                 if (!string.IsNullOrEmpty(damageRollError))
