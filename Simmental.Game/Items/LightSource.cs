@@ -22,6 +22,10 @@ namespace Simmental.Game.Items
             : this(name: sp[0], description: sp[1], brightness: sp.ToInt(2), distance: sp.ToInt(3), isLit: sp.ToBool(4))
         { }
 
+        public static string GetSignatureFormat()
+        {
+            return "Name,Description,Brightness:Int32,Distance:Int32,IsLit:Boolean";
+        }
         public int Brightness { get; set; }
         public int Distance { get; set; }
         public bool IsLit { get; set; }

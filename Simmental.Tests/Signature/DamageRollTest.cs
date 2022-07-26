@@ -24,5 +24,23 @@ namespace Simmental.Tests.Signature
             Assert.AreEqual(damageRollDescription, damageDescription);
 
         }
+
+        [Test]
+        [TestCase("2d6F", "")]
+        [TestCase("2b6F", "'2b6F' is missing a d.")]
+        [TestCase("2d6f", "'6f' in '2d6f' needs to be a number.")]
+        [TestCase("2d6F +2", "")]
+        [TestCase("2d6F + 2", "'2' in '2d6F + 2' is invalid: '2' is missing a d.")]
+        [TestCase("2d6F + 2d6L", "")]
+        
+        public void DamageRollValidation(string damageRollDescription, string expectedError)
+        {
+
+            
+            string errorMessage = DamageRoll.ValidateDamageRoll(damageRollDescription);
+            string truncatedMessage = expectedError.Length == 0 ? errorMessage : errorMessage.Substring(0, expectedError.Length);
+
+            Assert.AreEqual(expectedError, truncatedMessage);
+        }
     }
 }

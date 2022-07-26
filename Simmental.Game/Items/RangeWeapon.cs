@@ -44,6 +44,10 @@ namespace Simmental.Game.Items
             : this(sp[0], sp[1], int.Parse(sp[2]), int.Parse(sp[3]), sp.ToElement(4), sp[5]) 
         { }
 
+        public static string GetSignatureFormat()
+        {
+            return "Name,Description,Count:Int32,DamageBonus:Int32,Element:ElementEnum,RangedWeaponType";
+        }
         public override string GetFullName()
         {
             string elementText = " (" + Enum.GetName(typeof(ElementEnum), Element) + ")";

@@ -22,6 +22,10 @@ namespace Simmental.Game.Items
         {
 
         }
+        public static string GetSignatureFormat()
+        {
+            return "Name,Description,RangedWeaponType,DamageRoll:DamageRoll";
+        }
 
         public IDamageRoll DamageRoll { get; private set; }
 

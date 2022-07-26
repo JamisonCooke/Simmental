@@ -20,5 +20,17 @@ namespace Simmental.Tests.Signature
 
             Assert.AreEqual(signature, rw.GetSignature());
         }
+
+        [Test]
+        [TestCase("Arrow (rw), Grisly Arrow, 12, 5, Fire, bolt", "")]
+        [TestCase("Arrow (rw), Grisly Arrow, 12, 5, Wire, bolt", "Element: Wire must be a damage type, ie: Fire, Lightning, Ice")]
+        public void BadRangedWeaponSignature(string signatureText, string expectedError)
+        {
+            var sf = new SignatureFactory();
+            string errorMessage = sf.ValidateSignature(signatureText);
+            string truncatedMessage = expectedError.Length == 0 ? errorMessage : errorMessage.Substring(0, expectedError.Length);
+
+            Assert.AreEqual(expectedError, truncatedMessage);
+        }
     }
 }

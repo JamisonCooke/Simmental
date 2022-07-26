@@ -68,18 +68,38 @@ public class SignatureParts
                 if (_parts[index].Type == null)
                 {
                     _parts[index].Type = Type.GetType("Simmental.Game.Items." + p[1]);
-                } else if (_parts[index].Type == null)
+                }
+                if (_parts[index].Type == null)
+                {
+                    _parts[index].Type = GetEnumType("Simmental.UI." + p[1]);
+                }
+                if (_parts[index].Type == null)
                 {
                     _parts[index].Type = Type.GetType("System." + p[1]);
+                }
+                if (_parts[index].Type == null)
+                {
+                    throw new Exception($"Invalid datatype: {p[1]}");
                 }
 
             }
             // Set value in _parts[] -- need index 
             // Assume _parts[] has values-- assume it might not not have enough values
             index += 1;
-
-
         }
+    }
+
+    public static Type GetEnumType(string enumName)
+    {
+        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            var type = assembly.GetType(enumName);
+            if (type == null)
+                continue;
+            if (type.IsEnum)
+                return type;
+        }
+        return null;
     }
 
     public static string Validate(string signatureText, string signatureFormat)
@@ -110,8 +130,30 @@ public class SignatureParts
             {
                 string damageRollError = DamageRoll.ValidateDamageRoll(part.Value);
                 if (!string.IsNullOrEmpty(damageRollError))
-                    errorList.Add(damageRollError);
+                    errorList.Add($"{part.Name}: {damageRollError}");
             }
+            if (part.Type == typeof(Int32))
+            {
+                if (!int.TryParse(part.Value, out int i))
+                {
+                    errorList.Add($"{part.Name}: {part.Value} must be a number");
+                }
+            }
+            if (part.Type == typeof(bool))
+            {
+                if (!bool.TryParse(part.Value, out bool j))
+                {
+                    errorList.Add($"{part.Name}: {part.Value} must be True or False");
+                }
+            }
+            if (part.Type == typeof(ElementEnum))
+            {
+                if (!Enum.TryParse(typeof(ElementEnum), part.Value, out object? e))
+                {
+                    errorList.Add($"{part.Name}: {part.Value} must be a damage type, ie: Fire, Lightning, Ice, Normal");
+                }
+            }
+
         }
         //Error: There was no name passed in, there was no damage roll, too many parts
         // MeleeWeapon: [Name] (mw), [Description], [DamageRoll : DamageRoll]

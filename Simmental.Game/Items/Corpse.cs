@@ -29,5 +29,6 @@ namespace Simmental.Game.Items
         public Corpse(SignatureParts sp)
             : base(sp) 
         { }
+
     }
 }

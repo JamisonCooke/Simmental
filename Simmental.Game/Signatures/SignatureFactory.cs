@@ -195,11 +195,11 @@ public class SignatureFactory
         switch (signatureStamp)
         {
             case "mw": return MeleeWeapon.GetSignatureFormat();
-            //case "c": return new Container.GetSignatureFormat();
-            //case "xx": return new Corpse.GetSignatureFormat();
-            //case "l": return new LightSource.GetSignatureFormat();
-            //case "pl": return new ProjectileLauncher.GetSignatureFormat();
-            //case "rw": return new RangedWeapon.GetSignatureFormat();
+            case "c": return Container.GetSignatureFormat();
+            case "xx": return Corpse.GetSignatureFormat();
+            case "l": return LightSource.GetSignatureFormat();
+            case "pl": return ProjectileLauncher.GetSignatureFormat();
+            case "rw": return RangedWeapon.GetSignatureFormat();
 
 
             default: return null;

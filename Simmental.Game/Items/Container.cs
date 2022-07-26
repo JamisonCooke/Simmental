@@ -29,6 +29,11 @@ namespace Simmental.Game.Items
         {
         }
 
+        public static string GetSignatureFormat()
+        {
+            return "Name,Description";
+        }
+
         private List<IItem> _items = new List<IItem>();
 
         public IEnumerable<IItem> Items => _items;
@@ -84,6 +89,8 @@ namespace Simmental.Game.Items
         {
             throw new NotImplementedException();
         }
+
+       
     }
 
 }

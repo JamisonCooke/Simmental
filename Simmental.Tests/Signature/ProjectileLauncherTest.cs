@@ -22,5 +22,17 @@ namespace Simmental.Tests.Signature
 
             Assert.AreEqual(signature, pl.GetSignature());
         }
+
+        [Test]
+        [TestCase("Crossbow(pl), Found it on the ground, bolt, 2d6L", "")]
+        [TestCase("Crossbow(pl), Found it on the ground,, 2d6L", "RangedWeaponType: Missing value")]
+        public void BadRangedWeaponSignature(string signatureText, string expectedError)
+        {
+            var sf = new SignatureFactory();
+            string errorMessage = sf.ValidateSignature(signatureText);
+            string truncatedMessage = expectedError.Length == 0 ? errorMessage : errorMessage.Substring(0, expectedError.Length);
+
+            Assert.AreEqual(expectedError, truncatedMessage);
+        }
     }
 }
