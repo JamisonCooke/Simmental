@@ -14,6 +14,7 @@ using Simmental.Game.Map;
 using System.IO;
 using Simmental.Helper;
 using Simmental.Game.Command;
+using Simmental.Game.Signatures;
 
 namespace Simmental
 {
@@ -777,6 +778,53 @@ namespace Simmental
 
             inventoryErrorLabel.Text = errorMessage;
 
+        }
+
+        private void UpdateSignatureFormatHelper()
+        {
+            int cursorAt = tileInventoryTextBox.SelectionStart;
+
+            // We want to find the text of text where the cursor is currently placed
+            var lines = tileInventoryTextBox.Text.Split(Environment.NewLine);
+
+            // if cursorAt 0-41, Signature1, cursorAt 42-87, Signature2, cursorAt 88-139, Signature3
+            // 42: Signature1 (ab) blah
+            // 46: Signature2 (ab) blah blah
+            // 52: Signature3 (ab) blah blah blah
+            int lineLength = 0;
+            foreach (var line in lines)
+            {
+                lineLength += line.Length + Environment.NewLine.Length;
+                if (cursorAt < lineLength)
+                {
+                    // 012345678 1 2345678 
+                    // foo (ab) bar
+
+                    int lp = line.IndexOf('(');
+                    int rp = line.IndexOf(')');
+                    if (lp < rp && lp != -1)
+                    {
+                        string stamp = line.Substring(lp + 1, rp - lp - 1);
+                        var sf = new SignatureFactory();
+                        helperBar.Text = sf.GetPrettySignatureFormat(stamp);
+                    }
+                    else
+                    {
+                        helperBar.Text = "";
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void tileInventoryTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateSignatureFormatHelper();
+        }
+
+        private void tileInventoryTextBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            UpdateSignatureFormatHelper();
         }
     }
 }

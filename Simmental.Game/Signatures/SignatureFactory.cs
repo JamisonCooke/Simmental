@@ -206,6 +206,24 @@ public class SignatureFactory
         }
     }
 
+    public string GetPrettySignatureFormat(string signatureStamp)
+    {
+        string uglySignatureFormat = GetSignatureFormat(signatureStamp);
+        if (string.IsNullOrEmpty(uglySignatureFormat))
+            return string.Empty;
+
+        StringBuilder sb = new();
+        foreach(string p in uglySignatureFormat.Split(","))
+        {
+            if (sb.Length > 0)
+                sb.Append(", ");
+
+            sb.Append($"[{p.Split(':')[0]}]");
+        }
+
+        return sb.ToString();
+    }
+
     public string ValidateMultipleSignatures(string signatureText)
     {
         int lineNumber = 0;

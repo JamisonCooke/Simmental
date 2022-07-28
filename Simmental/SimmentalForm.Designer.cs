@@ -32,6 +32,8 @@ namespace Simmental
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimmentalForm));
             this.designerPanel = new System.Windows.Forms.Panel();
+            this.helperBar = new System.Windows.Forms.Label();
+            this.inventoryErrorLabel = new System.Windows.Forms.Label();
             this.tileInventoryApplyButton = new System.Windows.Forms.Button();
             this.tileInventoryTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -81,7 +83,6 @@ namespace Simmental
             this.label5 = new System.Windows.Forms.Label();
             this.inventoryContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.moveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inventoryErrorLabel = new System.Windows.Forms.Label();
             this.designerPanel.SuspendLayout();
             this.tileDesignerToolstrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).BeginInit();
@@ -97,6 +98,7 @@ namespace Simmental
             this.designerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.designerPanel.BackColor = System.Drawing.Color.White;
+            this.designerPanel.Controls.Add(this.helperBar);
             this.designerPanel.Controls.Add(this.inventoryErrorLabel);
             this.designerPanel.Controls.Add(this.tileInventoryApplyButton);
             this.designerPanel.Controls.Add(this.tileInventoryTextBox);
@@ -108,17 +110,35 @@ namespace Simmental
             this.designerPanel.Controls.Add(this.WalkCheckBox);
             this.designerPanel.Controls.Add(this.tileTypeComboBox);
             this.designerPanel.Controls.Add(this.label1);
-            this.designerPanel.Location = new System.Drawing.Point(609, 27);
+            this.designerPanel.Location = new System.Drawing.Point(579, 27);
             this.designerPanel.Name = "designerPanel";
-            this.designerPanel.Size = new System.Drawing.Size(200, 450);
+            this.designerPanel.Size = new System.Drawing.Size(230, 450);
             this.designerPanel.TabIndex = 1;
             this.designerPanel.Visible = false;
             this.designerPanel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.descriptionPanel_PreviewKeyDown);
             // 
+            // helperBar
+            // 
+            this.helperBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.helperBar.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.helperBar.Location = new System.Drawing.Point(12, 45);
+            this.helperBar.Name = "helperBar";
+            this.helperBar.Size = new System.Drawing.Size(205, 24);
+            this.helperBar.TabIndex = 10;
+            // 
+            // inventoryErrorLabel
+            // 
+            this.inventoryErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.inventoryErrorLabel.Location = new System.Drawing.Point(12, 246);
+            this.inventoryErrorLabel.Name = "inventoryErrorLabel";
+            this.inventoryErrorLabel.Size = new System.Drawing.Size(175, 47);
+            this.inventoryErrorLabel.TabIndex = 9;
+            // 
             // tileInventoryApplyButton
             // 
             this.tileInventoryApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tileInventoryApplyButton.Location = new System.Drawing.Point(112, 202);
+            this.tileInventoryApplyButton.Location = new System.Drawing.Point(142, 220);
             this.tileInventoryApplyButton.Name = "tileInventoryApplyButton";
             this.tileInventoryApplyButton.Size = new System.Drawing.Size(75, 23);
             this.tileInventoryApplyButton.TabIndex = 8;
@@ -131,18 +151,21 @@ namespace Simmental
             // 
             this.tileInventoryTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tileInventoryTextBox.Location = new System.Drawing.Point(12, 53);
+            this.tileInventoryTextBox.Location = new System.Drawing.Point(12, 71);
             this.tileInventoryTextBox.Multiline = true;
             this.tileInventoryTextBox.Name = "tileInventoryTextBox";
             this.tileInventoryTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tileInventoryTextBox.Size = new System.Drawing.Size(175, 143);
+            this.tileInventoryTextBox.Size = new System.Drawing.Size(205, 143);
             this.tileInventoryTextBox.TabIndex = 7;
             this.tileInventoryTextBox.TabStop = false;
+            this.tileInventoryTextBox.TextChanged += new System.EventHandler(this.tileInventoryTextBox_TextChanged);
+            this.tileInventoryTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tileInventoryTextBox_TextChanged);
+            this.tileInventoryTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tileInventoryTextBox_MouseUp);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 35);
+            this.label7.Location = new System.Drawing.Point(12, 30);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(95, 15);
             this.label7.TabIndex = 6;
@@ -157,7 +180,7 @@ namespace Simmental
             this.designerFloodFill});
             this.tileDesignerToolstrip.Location = new System.Drawing.Point(0, 0);
             this.tileDesignerToolstrip.Name = "tileDesignerToolstrip";
-            this.tileDesignerToolstrip.Size = new System.Drawing.Size(200, 25);
+            this.tileDesignerToolstrip.Size = new System.Drawing.Size(230, 25);
             this.tileDesignerToolstrip.TabIndex = 5;
             this.tileDesignerToolstrip.Text = "toolStrip1";
             // 
@@ -213,7 +236,7 @@ namespace Simmental
             // OpaqueCheckBox
             // 
             this.OpaqueCheckBox.AutoSize = true;
-            this.OpaqueCheckBox.Location = new System.Drawing.Point(32, 380);
+            this.OpaqueCheckBox.Location = new System.Drawing.Point(32, 401);
             this.OpaqueCheckBox.Name = "OpaqueCheckBox";
             this.OpaqueCheckBox.Size = new System.Drawing.Size(79, 19);
             this.OpaqueCheckBox.TabIndex = 4;
@@ -225,7 +248,7 @@ namespace Simmental
             // KillCheckBox
             // 
             this.KillCheckBox.AutoSize = true;
-            this.KillCheckBox.Location = new System.Drawing.Point(32, 357);
+            this.KillCheckBox.Location = new System.Drawing.Point(32, 378);
             this.KillCheckBox.Name = "KillCheckBox";
             this.KillCheckBox.Size = new System.Drawing.Size(88, 19);
             this.KillCheckBox.TabIndex = 3;
@@ -237,7 +260,7 @@ namespace Simmental
             // FlyCheckBox
             // 
             this.FlyCheckBox.AutoSize = true;
-            this.FlyCheckBox.Location = new System.Drawing.Point(32, 332);
+            this.FlyCheckBox.Location = new System.Drawing.Point(32, 353);
             this.FlyCheckBox.Name = "FlyCheckBox";
             this.FlyCheckBox.Size = new System.Drawing.Size(84, 19);
             this.FlyCheckBox.TabIndex = 3;
@@ -249,7 +272,7 @@ namespace Simmental
             // WalkCheckBox
             // 
             this.WalkCheckBox.AutoSize = true;
-            this.WalkCheckBox.Location = new System.Drawing.Point(32, 307);
+            this.WalkCheckBox.Location = new System.Drawing.Point(32, 328);
             this.WalkCheckBox.Name = "WalkCheckBox";
             this.WalkCheckBox.Size = new System.Drawing.Size(95, 19);
             this.WalkCheckBox.TabIndex = 3;
@@ -260,6 +283,8 @@ namespace Simmental
             // 
             // tileTypeComboBox
             // 
+            this.tileTypeComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tileTypeComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.tileTypeComboBox.FormattingEnabled = true;
             this.tileTypeComboBox.Items.AddRange(new object[] {
             "Grass ",
@@ -267,7 +292,7 @@ namespace Simmental
             "Water",
             "Wall",
             "Wood"});
-            this.tileTypeComboBox.Location = new System.Drawing.Point(12, 278);
+            this.tileTypeComboBox.Location = new System.Drawing.Point(12, 299);
             this.tileTypeComboBox.Name = "tileTypeComboBox";
             this.tileTypeComboBox.Size = new System.Drawing.Size(154, 23);
             this.tileTypeComboBox.TabIndex = 2;
@@ -291,7 +316,7 @@ namespace Simmental
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mapPictureBox.Location = new System.Drawing.Point(235, 27);
             this.mapPictureBox.Name = "mapPictureBox";
-            this.mapPictureBox.Size = new System.Drawing.Size(356, 433);
+            this.mapPictureBox.Size = new System.Drawing.Size(321, 433);
             this.mapPictureBox.TabIndex = 2;
             this.mapPictureBox.TabStop = false;
             this.mapPictureBox.Click += new System.EventHandler(this.mapPictureBox_Click);
@@ -417,7 +442,7 @@ namespace Simmental
             // 
             this.vScrollBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.vScrollBar1.Location = new System.Drawing.Point(589, 27);
+            this.vScrollBar1.Location = new System.Drawing.Point(559, 24);
             this.vScrollBar1.Name = "vScrollBar1";
             this.vScrollBar1.Size = new System.Drawing.Size(17, 433);
             this.vScrollBar1.TabIndex = 12;
@@ -429,7 +454,7 @@ namespace Simmental
             | System.Windows.Forms.AnchorStyles.Right)));
             this.hScrollBar1.Location = new System.Drawing.Point(233, 460);
             this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(358, 17);
+            this.hScrollBar1.Size = new System.Drawing.Size(323, 17);
             this.hScrollBar1.TabIndex = 13;
             this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
             // 
@@ -632,14 +657,6 @@ namespace Simmental
             this.moveToToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.moveToToolStripMenuItem.Text = "Move To";
             // 
-            // inventoryErrorLabel
-            // 
-            this.inventoryErrorLabel.ForeColor = System.Drawing.Color.Red;
-            this.inventoryErrorLabel.Location = new System.Drawing.Point(12, 228);
-            this.inventoryErrorLabel.Name = "inventoryErrorLabel";
-            this.inventoryErrorLabel.Size = new System.Drawing.Size(175, 47);
-            this.inventoryErrorLabel.TabIndex = 9;
-            // 
             // SimmentalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -729,6 +746,7 @@ namespace Simmental
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button tileInventoryApplyButton;
         private System.Windows.Forms.Label inventoryErrorLabel;
+        private System.Windows.Forms.Label helperBar;
     }
 }
 
