@@ -9,6 +9,7 @@ namespace Simmental.UI
     public interface ICommandManager
     {
         public void ExecuteCommand(List<ICommandBase> doList, List<ICommandBase> undoList);
+        public void ExecuteCommand(ICommandBase doCommand, ICommandBase undoCommand);
         public void Undo();
         public void Redo();
 

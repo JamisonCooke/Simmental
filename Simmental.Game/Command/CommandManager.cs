@@ -69,5 +69,9 @@ namespace Simmental.Game.Command
             _current = _current.NextStep;
         }
 
+        public void ExecuteCommand(ICommandBase doCommand, ICommandBase undoCommand)
+        {
+            ExecuteCommand(new List<ICommandBase>() { doCommand }, new List<ICommandBase>() { undoCommand });
+        }
     }
 }

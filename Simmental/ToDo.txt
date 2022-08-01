@@ -60,6 +60,7 @@ Designer+
 [X] Signature Format helper text at top of item box
 [X] Update UI after Apply button
 [ ] Resize bar on designer panel
+[ ] TileType must have a value to draw
 
 Signature Support -- Idea: You can describe an item in D&D style text for the designer
 [X] Implement SignatureFactory
@@ -68,7 +69,7 @@ Signature Support -- Idea: You can describe an item in D&D style text for the de
 [x] Add Error handling when the format of the signature is incorrect: ie., Short Sword )mw(, Ugly sword
 [ ] Have IItem implement ISignature
 [x] Give SignatureFormat at top of editor box based on what line the | is on.
-
+[X] Add Undo and Redo 
 
 NPC Mechanics
 [ ] Pheremones
@@ -112,3 +113,4 @@ Mon 7/25 3
 Tue 7/26 2.5
 thur 7/28 2.75
 ****PAID****
+Mon 8/1 2.5

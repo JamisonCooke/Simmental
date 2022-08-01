@@ -784,15 +784,12 @@ namespace Simmental
             ITile tile = _gameFormHelper.FindCommonTileProperties();
 
             //string errorMessage = tile.SetInventorySignatures("Box (c), Golden Box\n  Long Sword (mw), Rusty sword, 2d10+2");
-
-            // Box (c) --A red ruby box
-            string parseSignature = "{name} (mw) {damageRoll}";
-            string regExParseFormat = "(name:.*)/(mw/)(damageRoll:.*)";
-
-            string errorMessage = tile.Inventory.SetInventorySignatures(tileInventoryTextBox.Text);
-
-
+            SignatureFactory sf = new();
+            string errorMessage = sf.ValidateMultipleSignatures(tileInventoryTextBox.Text);
             inventoryErrorLabel.Text = errorMessage;
+            if (string.IsNullOrEmpty(errorMessage))
+                InventorySignatureTexts.Execute(Game, Game.Designer.TopLeft, tileInventoryTextBox.Text);
+
             mapPictureBox.Refresh();
 
         }
