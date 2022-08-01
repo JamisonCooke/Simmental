@@ -57,7 +57,7 @@ Designer+
 [ ] Easy Npc adding
 [ ] Existing selection mode -- add cut/paste
 [X] Undo Tool
-[ ] Signature Format helper text at top of item box
+[X] Signature Format helper text at top of item box
 [ ] Update UI after Apply button
 [ ] Resize bar on designer panel
 
@@ -67,7 +67,7 @@ Signature Support -- Idea: You can describe an item in D&D style text for the de
 [ ] Handle Entire format better than a comma delimited list (i.e., Descriptions)
 [x] Add Error handling when the format of the signature is incorrect: ie., Short Sword )mw(, Ugly sword
 [ ] Have IItem implement ISignature
-[ ] Give SignatureFormat at top of editor box based on what line the | is on.
+[x] Give SignatureFormat at top of editor box based on what line the | is on.
 
 
 NPC Mechanics
@@ -110,3 +110,5 @@ Wen 7/13 1.5
 Mon 7/22 2
 Mon 7/25 3
 Tue 7/26 2.5
+thur 7/28 2.75
+****PAID****

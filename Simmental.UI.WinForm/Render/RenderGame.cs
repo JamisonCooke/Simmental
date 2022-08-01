@@ -75,7 +75,10 @@ namespace Simmental.UI.WinForm.Render
 
 
             using (var brush = new SolidBrush(Color.FromArgb(20, 70, 70, 70)))
+            {
                 graphics.FillRectangle(brush, rect);
+                graphics.DrawRectangle(Pens.Red, rect);
+            }
         }
     }
 }

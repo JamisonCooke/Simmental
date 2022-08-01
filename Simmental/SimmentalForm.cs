@@ -304,7 +304,21 @@ namespace Simmental
             SetDesignerTileProperties(tile);
 
             // 
-            tileInventoryTextBox.Text = tile.Inventory.GetInventorySignatures();
+            var singleTile = _gameFormHelper.Game.Designer.SelectedTile(Wayfinder);
+            if (singleTile != null)
+            {
+                tileInventoryTextBox.Text = singleTile.Inventory.GetInventorySignatures();
+                
+                tileInventoryTextBox.Enabled = true;
+                tileInventoryApplyButton.Enabled = true;
+            }
+            else
+            {
+                tileInventoryTextBox.Enabled = false;
+                tileInventoryApplyButton.Enabled = false;
+                tileInventoryTextBox.Text = "";
+                tileInventoryTextBox.Text = "";
+            }
             inventoryErrorLabel.Text = "";
         }
 
@@ -482,6 +496,7 @@ namespace Simmental
         {
             bool isAvailable = !designerToolStripMenuItem.Checked;
             AlignDesignerPanel(isAvailable);
+            UpdateDesignerControls();
         }
 
         private void AlignDesignerPanel(bool isAvailable)

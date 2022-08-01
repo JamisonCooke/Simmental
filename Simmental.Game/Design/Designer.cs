@@ -46,6 +46,19 @@ namespace Simmental.Game.Design
             }
         }
 
+        /// <summary>
+        /// Returns the Tile from the wayfinder if exactly one tile is selected. Otherwise null.
+        /// </summary>
+        /// <param name="wayfinder"></param>
+        /// <returns></returns>
+        public ITile SelectedTile(IWayfinder wayfinder)
+        {
+            if (TopLeft == BottomRight)
+                return wayfinder[TopLeft];
+
+            return null;
+        }
+
 
         /// <summary>
         /// Swap numbers n1 and n2 (by reference)
