@@ -240,6 +240,11 @@ public class SignatureFactory
 
     public string ValidateSignature(string signatureText)
     {
+        if (string.IsNullOrEmpty(signatureText.Trim()))
+        {
+            // We have no line at all! There are no errors in an empty line. A blank signature means nothing is there.
+            return "";
+        }
         var sp = new SignatureParts(signatureText);
         if (string.IsNullOrEmpty(sp.SignatureStamp))
         {

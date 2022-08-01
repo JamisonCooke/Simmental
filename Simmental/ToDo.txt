@@ -58,7 +58,7 @@ Designer+
 [ ] Existing selection mode -- add cut/paste
 [X] Undo Tool
 [X] Signature Format helper text at top of item box
-[ ] Update UI after Apply button
+[X] Update UI after Apply button
 [ ] Resize bar on designer panel
 
 Signature Support -- Idea: You can describe an item in D&D style text for the designer

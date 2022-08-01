@@ -791,7 +791,9 @@ namespace Simmental
 
             string errorMessage = tile.Inventory.SetInventorySignatures(tileInventoryTextBox.Text);
 
+
             inventoryErrorLabel.Text = errorMessage;
+            mapPictureBox.Refresh();
 
         }
 
