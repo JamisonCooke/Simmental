@@ -308,7 +308,8 @@ namespace Simmental
             if (singleTile != null)
             {
                 tileInventoryTextBox.Text = singleTile.Inventory.GetInventorySignatures();
-                
+                LoadnpcListBox();
+
                 tileInventoryTextBox.Enabled = true;
                 tileInventoryApplyButton.Enabled = true;
             }
@@ -318,8 +319,26 @@ namespace Simmental
                 tileInventoryApplyButton.Enabled = false;
                 tileInventoryTextBox.Text = "";
                 tileInventoryTextBox.Text = "";
+                npcListBox.Items.Clear();
             }
             inventoryErrorLabel.Text = "";
+        }
+
+        private void LoadnpcListBox()
+        {
+            npcListBox.Items.Clear();
+
+            // How do we find all NPC's at a position?
+            foreach(ICharacter npc in Game.NPC)
+            {
+                // The NPC is not in the red box? Skip them
+                if (!(npc.Position == Game.Designer.TopLeft))
+                    continue;
+
+                npcListBox.Items.Add(npc);
+            }
+            
+
         }
 
         private void ApplyDesignerModeToToolbar()
@@ -839,6 +858,16 @@ namespace Simmental
         private void tileInventoryTextBox_MouseUp(object sender, MouseEventArgs e)
         {
             UpdateSignatureFormatHelper();
+        }
+
+        private void npcListBox_DoubleClick(object sender, EventArgs e)
+        {
+            if (npcListBox.SelectedItem is ICharacter npc)
+            {
+                var characterForm = new CharacterSheet();
+                characterForm.SetCharacter(npc);
+                characterForm.Show();
+            }
         }
     }
 }

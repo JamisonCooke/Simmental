@@ -33,6 +33,8 @@ namespace Simmental
 
         private void LoadCharacter(ICharacter npc)
         {
+            this.Text = $"{npc.Name} - {npc.Race}";
+
             txtName.Text = npc.Name;
             txtRace.Text = $"{npc.Race}";
             txtDescription.Text = npc.Description;
@@ -46,11 +48,14 @@ namespace Simmental
             txtINT.Text = $"{npc.Intelligence}";
             txtWIS.Text = $"{npc.Wisdom}";
             txtCHR.Text = $"{npc.Charisma}";
-            txtPrimaryWeapon.Text = npc.PrimaryWeapon.GetSignature();
-            txtSecondaryWeapon.Text = npc.SecondaryWeapon.GetSignature();
+            txtPrimaryWeapon.Text = npc.PrimaryWeapon?.GetSignature();
+            txtSecondaryWeapon.Text = npc.SecondaryWeapon?.GetSignature();
             txtInventory.Text = npc.Inventory.GetInventorySignatures();
         }
 
-
+        public void SetCharacter(ICharacter npc)
+        {
+            LoadCharacter(npc);
+        }
     }
 }

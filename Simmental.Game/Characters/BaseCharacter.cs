@@ -152,5 +152,10 @@ namespace Simmental.Game.Characters
             
         }
 
+        public override string ToString()
+        {
+            return $"{this.Name} {this.Description}";
+        }
+
     }
 }
