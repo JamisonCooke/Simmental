@@ -2,6 +2,9 @@
 {
     public interface ICharacter
     {
+
+        string Name { get; set; }
+        string Description { get; set; }
         int HP { get; set; }
         int Level { get; set; }
 
@@ -11,7 +14,7 @@
         int Constitution { get; set; }
         int Dexterity { get; set; }
         int Intelligence { get; set; }
-        string Name { get; set; }
+        
         int Strength { get; set; }
         int Wisdom { get; set; }
         int AC { get; set; }

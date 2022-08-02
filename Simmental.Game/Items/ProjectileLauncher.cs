@@ -40,7 +40,7 @@ namespace Simmental.Game.Items
             return base.GetFullName() + " " + DamageRoll.GetRollDescription();
         }
 
-        public string GetSignature()
+        public override string GetSignature()
         {
             var sp = new SignatureParts(typeof(ProjectileLauncher), Name, Description, RangedWeaponType, DamageRoll.ToString());
             return sp.ToSignature();

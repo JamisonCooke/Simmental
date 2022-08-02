@@ -44,6 +44,11 @@ namespace Simmental.Game.Items
                 return $"{_name} x{Count}";
         }
 
+        public virtual string GetSignature()
+        {
+            throw new Exception("Must use the base class implmentation of GetSignature()");
+        }
+
         public virtual IEnumerable<(string menuText, Action menuAction)> GetMenuItems(IGame game)
         {
             yield break;

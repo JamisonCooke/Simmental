@@ -24,15 +24,6 @@ namespace Simmental.Game.Characters.Tasks
 
             _pathfinder.Move();
 
-            if (Math.Abs(character.Position.i - _pathfinder.CurrentPosition.i) > 1)
-            {
-                int i = 0;
-            }
-            if (Math.Abs(character.Position.j - _pathfinder.CurrentPosition.j) > 1)
-            {
-                int i = 0;
-            }
-
             game.Wayfinder.Move(character, _pathfinder.CurrentPosition);
 
             return !_pathfinder.Complete;

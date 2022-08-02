@@ -147,7 +147,7 @@ public class SignatureParts
             }
             if (part.Type == typeof(ElementEnum))
             {
-                if (!Enum.TryParse(typeof(ElementEnum), part.Value, out object? e))
+                if (!Enum.TryParse(typeof(ElementEnum), part.Value, out object e))
                 {
                     errorList.Add($"{part.Name}: {part.Value} must be a damage type, ie: Fire, Lightning, Ice, Normal");
                 }

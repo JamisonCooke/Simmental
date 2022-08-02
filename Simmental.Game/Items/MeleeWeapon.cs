@@ -25,7 +25,7 @@ namespace Simmental.Game.Items
             return "Name,Description,DamageRoll:DamageRoll";
         }
 
-        public string GetSignature()
+        public override string GetSignature()
         {
             // Valid signature for a MeleeWeapon:
             // [Name] (mw), [Description], [DamageRoll]

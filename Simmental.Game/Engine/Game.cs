@@ -136,7 +136,9 @@ namespace Simmental.Game.Engine
                 IFormatter formatter = new BinaryFormatter();
 
                 Stream stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.None);
+#pragma warning disable SYSLIB0011 // Type or member is obsolete
                 var game = formatter.Deserialize(stream) as Game;
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
                 stream.Close();
 
                 return game;
@@ -158,7 +160,9 @@ namespace Simmental.Game.Engine
             {
                 IFormatter formatter = new BinaryFormatter();
                 Stream stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None);
+                #pragma warning disable SYSLIB0011 // Type or member is obsolete
                 formatter.Serialize(stream, this);
+                #pragma warning disable SYSLIB0011 // Type or member is obsolete
                 stream.Close();
             }
             catch(Exception ex)

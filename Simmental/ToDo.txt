@@ -61,6 +61,8 @@ Designer+
 [X] Update UI after Apply button
 [ ] Resize bar on designer panel
 [ ] TileType must have a value to draw
+[ ] Cut/Paste support -- (consider transparent background)
+[ ] Copy map parts and give it a name so you can paste it by name later
 
 Signature Support -- Idea: You can describe an item in D&D style text for the designer
 [X] Implement SignatureFactory

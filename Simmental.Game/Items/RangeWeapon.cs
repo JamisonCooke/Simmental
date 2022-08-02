@@ -19,7 +19,7 @@ namespace Simmental.Game.Items
         /// </summary>
         public string RangedWeaponType { get; set; }
 
-        public string GetSignature()
+        public override string GetSignature()
         {
             // ToDo: Add custom formatting per ISignature Type
             // Arrow [12] (rw)

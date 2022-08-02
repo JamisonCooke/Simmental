@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simmental.UI
 {
-    public interface IItem
+    public interface IItem : ISignature
     {
         string Name { get; }
         string GetFullName();

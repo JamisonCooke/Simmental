@@ -20,6 +20,7 @@ namespace Simmental.Game.Characters
         /// Name of the character
         /// </summary>
         public string Name { get; set; }
+        public string Description { get; set; }
         public int HP { get; set; }
         public int Level { get; set; } = 1;
 

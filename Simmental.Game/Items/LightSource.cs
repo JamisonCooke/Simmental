@@ -55,7 +55,7 @@ namespace Simmental.Game.Items
             IsLit = false;
         }
 
-        public string GetSignature()
+        public override string GetSignature()
         {
             var sp = new SignatureParts(typeof(LightSource), Name, Description, Brightness.ToString(), Distance.ToString(), IsLit.ToString());
 

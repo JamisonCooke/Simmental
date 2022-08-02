@@ -1,4 +1,4 @@
-﻿namespace Simmental.Game.Signatures;
+﻿namespace Simmental.UI;
 
 public interface ISignature
 {

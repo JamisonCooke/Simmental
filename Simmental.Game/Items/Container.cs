@@ -48,7 +48,7 @@ namespace Simmental.Game.Items
             _items.Remove(item);
         }
 
-        public string GetSignature()
+        public override string GetSignature()
         {
             var sp = new SignatureParts(this.GetType(), Name, Description);
             return sp.ToSignature();
