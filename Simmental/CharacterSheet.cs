@@ -1,4 +1,5 @@
-﻿using Simmental.UI;
+﻿using Simmental.Game.Items;
+using Simmental.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -50,7 +51,15 @@ namespace Simmental
             txtCHR.Text = $"{npc.Charisma}";
             txtPrimaryWeapon.Text = npc.PrimaryWeapon?.GetSignature();
             txtSecondaryWeapon.Text = npc.SecondaryWeapon?.GetSignature();
-            txtInventory.Text = npc.Inventory.GetInventorySignatures();
+
+            var newInventory = new Inventory();
+            foreach(var item in npc.Inventory.Items)
+            {
+                if (item == npc.PrimaryWeapon || item == npc.SecondaryWeapon)
+                    continue;
+                newInventory.Add(item);
+            }
+            txtInventory.Text = newInventory.GetInventorySignatures();
         }
 
         public void SetCharacter(ICharacter npc)
