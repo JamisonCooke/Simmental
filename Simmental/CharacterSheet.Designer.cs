@@ -43,7 +43,7 @@
             this.lblWIS = new System.Windows.Forms.Label();
             this.txtCHR = new System.Windows.Forms.TextBox();
             this.lblCHR = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lblRace = new System.Windows.Forms.Label();
             this.txtRace = new System.Windows.Forms.TextBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.lblDescription = new System.Windows.Forms.Label();
@@ -62,8 +62,7 @@
             this.btnApply = new System.Windows.Forms.Button();
             this.txtLV = new System.Windows.Forms.TextBox();
             this.lblLV = new System.Windows.Forms.Label();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // lblName
@@ -223,14 +222,14 @@
             this.lblCHR.Text = "CHR";
             this.lblCHR.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
-            // label8
+            // lblRace
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(19, 36);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(32, 15);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "&Race";
+            this.lblRace.AutoSize = true;
+            this.lblRace.Location = new System.Drawing.Point(19, 36);
+            this.lblRace.Name = "lblRace";
+            this.lblRace.Size = new System.Drawing.Size(32, 15);
+            this.lblRace.TabIndex = 2;
+            this.lblRace.Text = "&Race";
             // 
             // txtRace
             // 
@@ -406,6 +405,7 @@
             this.btnApply.TabIndex = 32;
             this.btnApply.Text = "Apply";
             this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // txtLV
             // 
@@ -426,9 +426,13 @@
             this.lblLV.TabIndex = 10;
             this.lblLV.Text = "&LV";
             // 
-            // errorProvider1
+            // toolTip
             // 
-            this.errorProvider1.ContainerControl = this;
+            this.toolTip.AutoPopDelay = 50000;
+            this.toolTip.InitialDelay = 50;
+            this.toolTip.ReshowDelay = 100;
+            this.toolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
+            this.toolTip.ToolTipTitle = "Input Error";
             // 
             // CharacterSheet
             // 
@@ -446,7 +450,7 @@
             this.Controls.Add(this.lblLV);
             this.Controls.Add(this.lblAC);
             this.Controls.Add(this.lblHP);
-            this.Controls.Add(this.label8);
+            this.Controls.Add(this.lblRace);
             this.Controls.Add(this.txtCHR);
             this.Controls.Add(this.lblCHR);
             this.Controls.Add(this.txtWIS);
@@ -477,7 +481,6 @@
             this.Text = "CharacterSheet";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.CharacterSheet_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -499,7 +502,7 @@
         private System.Windows.Forms.Label lblWIS;
         private System.Windows.Forms.TextBox txtCHR;
         private System.Windows.Forms.Label lblCHR;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblRace;
         private System.Windows.Forms.TextBox txtRace;
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.Label lblDescription;
@@ -518,6 +521,6 @@
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.TextBox txtLV;
         private System.Windows.Forms.Label lblLV;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
