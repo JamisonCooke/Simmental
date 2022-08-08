@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Simmental.UI
+namespace Simmental.Interfaces
 {
     public enum TileEnum
     {

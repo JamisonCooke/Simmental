@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simmental.UI.WinForm.Render
+namespace Simmental.Interfaces.WinForm.Render
 {
     public class RenderCharacter
     {

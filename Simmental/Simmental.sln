@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simmental", "Simmental.cspr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simmental.Game", "..\Simmental.Game\Simmental.Game.csproj", "{CD052F95-E989-4458-A6DA-2CCC534384EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simmental.UI", "..\Simmental.UI\Simmental.UI.csproj", "{699EE9C3-9E42-403B-9889-77A49A36EA45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simmental.Interfaces", "..\Simmental.UI\Simmental.Interfaces.csproj", "{699EE9C3-9E42-403B-9889-77A49A36EA45}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simmental.UI.WinForm", "..\Simmental.UI.WinForm\Simmental.UI.WinForm.csproj", "{EB1B7933-6267-4904-81E3-75A2759909CF}"
 EndProject

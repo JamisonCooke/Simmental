@@ -1,6 +1,6 @@
 ﻿using Simmental.Game.Characters;
 using Simmental.Game.Characters.Tasks;
-using Simmental.UI;
+using Simmental.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

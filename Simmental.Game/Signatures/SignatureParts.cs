@@ -71,7 +71,7 @@ public class SignatureParts
                 }
                 if (_parts[index].Type == null)
                 {
-                    _parts[index].Type = GetEnumType("Simmental.UI." + p[1]);
+                    _parts[index].Type = GetEnumType("Simmental.Interfaces." + p[1]);
                 }
                 if (_parts[index].Type == null)
                 {

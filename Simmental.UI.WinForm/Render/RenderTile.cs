@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Simmental.UI;
+using Simmental.Interfaces;
 
-namespace Simmental.UI.WinForm.Render
+namespace Simmental.Interfaces.WinForm.Render
 {
     public class RenderTile
     {

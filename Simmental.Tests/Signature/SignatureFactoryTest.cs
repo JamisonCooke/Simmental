@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Simmental.Game.Items;
 using Simmental.Game.Signatures;
-using Simmental.UI;
+using Simmental.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

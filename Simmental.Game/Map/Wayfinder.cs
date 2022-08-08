@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Simmental.UI;
+using Simmental.Interfaces;
 
 namespace Simmental.Game.Map
 {
     [Serializable]
-    public class Wayfinder : Simmental.UI.IWayfinder
+    public class Wayfinder : Simmental.Interfaces.IWayfinder
     {
         public ITile[][] Tiles { get; private set; }
         public int Width { get; private set; }
@@ -61,7 +61,7 @@ namespace Simmental.Game.Map
                     Tiles[i][j] = new Tile()
                     {
                         Name = $"({i},{j})",
-                        TileType = UI.TileEnum.Grass,
+                        TileType = Interfaces.TileEnum.Grass,
                         TileAttribute = TileAttributeEnum.CanWalkOn,
                     };
 

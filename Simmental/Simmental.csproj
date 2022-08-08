@@ -9,7 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Simmental.Game\Simmental.Game.csproj" />
     <ProjectReference Include="..\Simmental.UI.WinForm\Simmental.UI.WinForm.csproj" />
-    <ProjectReference Include="..\Simmental.UI\Simmental.UI.csproj" />
+    <ProjectReference Include="..\Simmental.UI\Simmental.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>

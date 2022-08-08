@@ -1,11 +1,11 @@
-﻿using Simmental.UI;
+﻿using Simmental.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simmental.UI
+namespace Simmental.Interfaces
 {
     public interface IExecuteTurn
     {

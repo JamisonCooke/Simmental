@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simmental.UI
+namespace Simmental.Interfaces
 {
     public interface IRangedWeapon : IItem
     {

@@ -1,4 +1,4 @@
-﻿namespace Simmental.UI
+﻿namespace Simmental.Interfaces
 {
     public interface IMessage
     {

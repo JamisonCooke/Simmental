@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Simmental.Game.Items;
-using Simmental.UI;
+using Simmental.Interfaces;
 
 namespace Simmental.Game.Map
 {

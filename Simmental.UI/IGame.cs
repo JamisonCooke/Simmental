@@ -1,8 +1,8 @@
-﻿using Simmental.UI;
+﻿using Simmental.Interfaces;
 using System;
 using System.Collections.Generic;
 
-namespace Simmental.UI
+namespace Simmental.Interfaces
 {
     public interface IGame
     {

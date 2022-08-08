@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Simmental.UI
+namespace Simmental.Interfaces
 {
     public interface IRenderHelper
     {

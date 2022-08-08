@@ -1,7 +1,7 @@
 ﻿using Simmental.Game.Characters.Tasks;
 using Simmental.Game.Items;
 using Simmental.Game.Map;
-using Simmental.UI;
+using Simmental.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

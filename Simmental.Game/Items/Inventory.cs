@@ -1,4 +1,4 @@
-﻿using Simmental.UI;
+﻿using Simmental.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using Simmental.UI;
+﻿using Simmental.Interfaces;
 using Simmental.Game.Engine;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Simmental.UI.WinForm.Render;
+using Simmental.Interfaces.WinForm.Render;
 using Simmental.Game.Map;
 using System.IO;
 using Simmental.Helper;
@@ -87,7 +87,7 @@ namespace Simmental
                 _gameFormHelper.Game = lastGame;
             }
             _gameFormHelper.GamePictureBox = this.mapPictureBox;
-            _gameFormHelper.RenderHelper = new Simmental.UI.WinForm.Render.RenderHelper();
+            _gameFormHelper.RenderHelper = new Simmental.Interfaces.WinForm.Render.RenderHelper();
             _gameFormHelper.SetMessages = UpdateMessageText;
             _gameFormHelper.UpdateInfoPanel = UpdateInfoPanel;
             _gameFormHelper.Game.UpdateMessages = _gameFormHelper.UpdateMessages;

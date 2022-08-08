@@ -1,6 +1,6 @@
 ﻿using Simmental.Game.Command;
-using Simmental.UI;
-using Simmental.UI.WinForm.Render;
+using Simmental.Interfaces;
+using Simmental.Interfaces.WinForm.Render;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,7 +24,7 @@ namespace Simmental
         public Action<string> SetMessages { get; set; }
         public Action<bool> UpdateInfoPanel { get; set; }
 
-        public Simmental.UI.IRenderHelper RenderHelper { get; set; }
+        public Simmental.Interfaces.IRenderHelper RenderHelper { get; set; }
 
         public void RefreshScreen(Graphics graphics, int width, int height)
         {
