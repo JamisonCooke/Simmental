@@ -83,6 +83,16 @@ Technical Debt
 [ ] Refactor TileAttribute and TileType into a single class and rename for better understanding
 [ ] Stop doing commands CommandManager.Execute already does (pen, bucket)
 
+===================================
+ Video Demos
+===================================
+[ ] Assembly (Project) overview 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+
+
 ***************************************************
   HOURS (assume 2 hours unless denoted otherwise)
 ***************************************************
