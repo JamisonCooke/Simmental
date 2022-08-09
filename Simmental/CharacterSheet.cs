@@ -40,7 +40,7 @@ namespace Simmental
             txtName.Text = npc.Name;
             txtRace.Text = $"{npc.Race}";
             txtDescription.Text = npc.Description;
-            txtHPMaxHP.Text = $"{npc.HP}/{npc.GetMaxHP()}";
+            txtHPMaxHP.Text = $"{npc.HP}/{npc.MaxHP}";
             txtAC.Text = $"{npc.AC}";
             txtLV.Text = $"{npc.Level}";
             //txtEXP.Text = $"{npc}";
@@ -63,13 +63,91 @@ namespace Simmental
             txtInventory.Text = newInventory.GetInventorySignatures();
         }
 
-        public void SetCharacter(ICharacter npc)
+        /// <summary>
+        /// Returns an NPC, either the original one updated, or a new one, with all the
+        /// properties from the form applied to it.
+        /// </summary>
+        /// <returns></returns>
+        private ICharacter SaveNpc()
         {
+            ICharacter npc;
+
+            // Make sure the characters Race is reflected in the npc.
+            var race = (RaceEnum)Enum.Parse(typeof(RaceEnum), txtRace.Text);
+            var characterHelper = new Game.Characters.CharacterHelper();
+
+            if (_oldNpc != null && _oldNpc.Race == race)
+                npc = _oldNpc;
+            else
+                npc = characterHelper.FactoryCreate(race);
+
+            SaveToCharacter(npc);
+            return npc;
+        }
+
+        private void SaveToCharacter(ICharacter npc)
+        {
+            npc.Name = txtName.Text;
+
+            // The race is already set by the NPC being passed in
+            // npc.Race = (RaceEnum) Enum.Parse(typeof(RaceEnum), txtRace.Text);
+
+            npc.Description = txtDescription.Text;
+
+            npc.AC = int.Parse(txtAC.Text);
+            npc.Level = int.Parse(txtLV.Text);
+            npc.Strength = int.Parse(txtSTR.Text);
+            npc.Dexterity = int.Parse(txtDEX.Text);
+            npc.Constitution = int.Parse(txtCON.Text);
+            npc.Intelligence = int.Parse(txtINT.Text);
+            npc.Wisdom = int.Parse(txtWIS.Text);
+            npc.Charisma = int.Parse(txtCHR.Text);
+
+            npc.HP = int.Parse(txtHPMaxHP.Text.Split('/')[0]);
+            npc.MaxHP = int.Parse(txtHPMaxHP.Text.Split('/')[1]);
+
+            string signatures = "";
+            if (!string.IsNullOrEmpty(txtPrimaryWeapon.Text))
+                signatures += txtPrimaryWeapon.Text + Environment.NewLine;
+            if (!string.IsNullOrEmpty(txtSecondaryWeapon.Text))
+                signatures += txtSecondaryWeapon.Text + Environment.NewLine;
+            signatures += txtInventory.Text;
+            npc.Inventory.SetInventorySignatures(signatures);
+            if (!string.IsNullOrEmpty(txtPrimaryWeapon.Text))
+            {
+                npc.PrimaryWeapon = (IWeapon)npc.Inventory.Items.ElementAt(0);
+            }
+            if (!string.IsNullOrEmpty(txtSecondaryWeapon.Text))
+            {
+                if (!string.IsNullOrEmpty(txtPrimaryWeapon.Text))
+                {
+                    npc.SecondaryWeapon = (IWeapon)npc.Inventory.Items.ElementAt(1);
+                }
+                else
+                {
+                    npc.SecondaryWeapon = (IWeapon)npc.Inventory.Items.ElementAt(0);
+                }
+            }
+
+
+
+        }
+
+        private Action<ICharacter, ICharacter, CharacterSheet> _saveUpdateNpc;
+        private ICharacter _oldNpc;
+
+        public void SetCharacter(ICharacter npc, Action<ICharacter, ICharacter, CharacterSheet> saveUpdateNpc)
+        {
+            // void saveUpdateNpc(ICharacter oldNpc, ICharacter newNpc, CharacterSheet character)
+            _oldNpc = npc;
+            _saveUpdateNpc = saveUpdateNpc;
+
             LoadCharacter(npc);
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
+
             ResetErrors();
             ValidateForm();
 
@@ -79,7 +157,8 @@ namespace Simmental
                 return;
             }
 
-            //SaveForm();
+            var newNpc = SaveNpc();
+            _saveUpdateNpc(_oldNpc, newNpc, this);            
             this.Close();
             
         }
@@ -197,6 +276,24 @@ namespace Simmental
                     SetError(label, "Must be a number");
                 }
             }
+
+            // HP / MaxHP -- specific validation logic
+            var hpArray = txtHPMaxHP.Text.Split('/');
+            if (hpArray.Length != 2 || !ValidInt(hpArray[0]) || !ValidInt(hpArray[1]))
+            {
+                SetError(lblHP, "Enter a number for HP and a number for MaxHP divided by /");
+            }
+
+            // Check Race -- it must parse from the enum
+            //npc.Race = (RaceEnum)Enum.Parse(typeof(RaceEnum), txtRace.Text);
+            if (!Enum.TryParse(typeof(RaceEnum), txtRace.Text, out object o))
+                SetError(lblRace, $"Race must be: {string.Join(", ", Enum.GetNames(typeof(RaceEnum)))}");
+
+        }
+
+        private bool ValidInt(string text)
+        {
+            return int.TryParse(text, out int n) && n > 0;
         }
 
         private bool _formHasErrors = false;

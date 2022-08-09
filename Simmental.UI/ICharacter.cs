@@ -7,8 +7,7 @@
         string Description { get; set; }
         int HP { get; set; }
         int Level { get; set; }
-
-        int GetMaxHP();
+        int MaxHP { get; set; }
 
         int Charisma { get; set; }
         int Constitution { get; set; }

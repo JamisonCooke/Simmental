@@ -22,6 +22,7 @@ namespace Simmental.Game.Characters
         public string Name { get; set; }
         public string Description { get; set; }
         public int HP { get; set; }
+        public int MaxHP { get; set; }
         public int Level { get; set; } = 1;
 
         public int Strength { get; set; }
@@ -65,10 +66,6 @@ namespace Simmental.Game.Characters
 
         public List<ITask> Tasks = new List<ITask>();
 
-        public int GetMaxHP()
-        {
-            return 50;
-        }
 
         void ICharacter.SetPositionInternal(Position position)
         {

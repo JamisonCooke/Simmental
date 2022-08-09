@@ -98,7 +98,7 @@ namespace Simmental
 
         private void UpdateInfoPanel(bool updateInventory)
         {
-            string stats = $"HP {_gameFormHelper.Game.Player.HP} ({_gameFormHelper.Game.Player.GetMaxHP()})";
+            string stats = $"HP {_gameFormHelper.Game.Player.HP} ({_gameFormHelper.Game.Player.MaxHP})";
 
             if (_gameFormHelper.Game.Player.HP <= 0)
                 _gameFormHelper.Game.Player.HP = 50;        // Revived
@@ -322,23 +322,6 @@ namespace Simmental
                 npcListBox.Items.Clear();
             }
             inventoryErrorLabel.Text = "";
-        }
-
-        private void LoadnpcListBox()
-        {
-            npcListBox.Items.Clear();
-
-            // How do we find all NPC's at a position?
-            foreach(ICharacter npc in Game.NPC)
-            {
-                // The NPC is not in the red box? Skip them
-                if (!(npc.Position == Game.Designer.TopLeft))
-                    continue;
-
-                npcListBox.Items.Add(npc);
-            }
-            
-
         }
 
         private void ApplyDesignerModeToToolbar()
@@ -860,14 +843,72 @@ namespace Simmental
             UpdateSignatureFormatHelper();
         }
 
+        private void LoadnpcListBox()
+        {
+            npcListBox.Items.Clear();
+
+            // How do we find all NPC's at a position?
+            foreach (ICharacter npc in Game.NPC)
+            {
+                // The NPC is not in the red box? Skip them
+                if (!(npc.Position == Game.Designer.TopLeft))
+                    continue;
+
+                npcListBox.Items.Add(npc);
+            }
+        }
+
+        private Dictionary<ICharacter, CharacterSheet> _characterSheets = new();
         private void npcListBox_DoubleClick(object sender, EventArgs e)
         {
             if (npcListBox.SelectedItem is ICharacter npc)
             {
-                var characterForm = new CharacterSheet();
-                characterForm.SetCharacter(npc);
+                CharacterSheet characterForm;
+                if (_characterSheets.ContainsKey(npc))
+                {
+                    characterForm = _characterSheets[npc];
+                }
+                else
+                {
+                    characterForm = new CharacterSheet();
+                    characterForm.SetCharacter(npc, SaveUpdateNpc);
+                    _characterSheets.Add(npc, characterForm);
+                }
+                
                 characterForm.Show();
             }
+
         }
+
+        /// <summary>
+        /// Method is invoked from the CharacterSheet form to save the NPC back
+        /// </summary>
+        /// <param name="oldNpc">Original Npc being edited</param>
+        /// <param name="newNpc">The modified or new version of the NPC</param>
+        /// <param name="characterSheet">Form that did the editing</param>
+        private void SaveUpdateNpc(ICharacter oldNpc, ICharacter newNpc, CharacterSheet characterSheet)
+        {
+
+            if (oldNpc != newNpc && oldNpc != null)
+            {
+                Game.NPC.Remove(oldNpc);
+            }
+            if (oldNpc != newNpc && newNpc != null)
+            {
+                Game.NPC.Add(newNpc);
+            }
+            if (_characterSheets.ContainsKey(oldNpc))
+            {
+                _characterSheets.Remove(oldNpc);
+            }
+
+            if (newNpc != null)
+                newNpc.SetPositionInternal(Game.Designer.TopLeft);
+
+            // Make the list rebox of NPCs at the current location reflect any changes
+            LoadnpcListBox();
+            mapPictureBox.Refresh();            
+        }
+
     }
 }

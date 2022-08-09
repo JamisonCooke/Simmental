@@ -86,11 +86,19 @@ Technical Debt
 ===================================
  Video Demos
 ===================================
+[ ] Game Play Walkthrough
+[ ] Designer Walkthrough
 [ ] Assembly (Project) overview 
-[ ] 
-[ ] 
-[ ] 
-[ ] 
+[ ] Game object -- Wayfinder -- tile
+[ ] Simmental.UI.WinForm -- Rendering -- 
+[ ] AStar monster path finding
+[ ] Lighting
+[ ] Designer
+[ ] Signatures
+[ ] Character Tasks
+[ ] Command Pattern for designer changes -- do/undo lists
+[ ] ItemBase, IItem, Items -- 
+[ ] BaseCharacter, Ghost, Human, Orc -- hierachy
 
 
 ***************************************************
@@ -128,3 +136,4 @@ thur 7/28 2.75
 Mon 8/1 2.5
 Tue 8/2 3
 Thur 8/4 2.5
+Mon 8/8 2.5
