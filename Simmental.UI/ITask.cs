@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simmental.Game.Characters.Tasks
+namespace Simmental.Interfaces
 {
     public interface ITask
     {

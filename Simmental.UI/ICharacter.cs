@@ -1,4 +1,6 @@
-﻿namespace Simmental.Interfaces
+﻿using System.Collections.Generic;
+
+namespace Simmental.Interfaces
 {
     public interface ICharacter
     {
@@ -26,6 +28,8 @@
         IWeapon SecondaryWeapon { get; set; }
 
         int Attack(IGame game, ICharacter victim, IItem item);
+
+        List<ITask> Tasks { get; }
 
         ElementEnum ElementallyResistant { get; }
         ElementEnum ElementallyImmune { get; }

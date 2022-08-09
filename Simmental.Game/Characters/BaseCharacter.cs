@@ -22,7 +22,7 @@ namespace Simmental.Game.Characters
         public string Name { get; set; }
         public string Description { get; set; }
         public int HP { get; set; }
-        public int MaxHP { get; set; }
+        public int MaxHP { get; set; } = 50;
         public int Level { get; set; } = 1;
 
         public int Strength { get; set; }
@@ -64,7 +64,7 @@ namespace Simmental.Game.Characters
         protected ElementEnum _elementallyImmune = ElementEnum.Normal;
         protected ElementEnum _elementallyVulnerable = ElementEnum.Normal;
 
-        public List<ITask> Tasks = new List<ITask>();
+        public List<ITask> Tasks { get; } = new List<ITask>();
 
 
         void ICharacter.SetPositionInternal(Position position)

@@ -23,6 +23,12 @@ namespace Simmental.Game.Items
         public static string GetSignatureFormat()
         {
             return "Name,Description,DamageRoll:DamageRoll";
+
+            // Flaming Sword (mw), A fantastic sword, 2d6
+
+            // Attack Player (ap)
+            // Wonder (w), 
+
         }
 
         public override string GetSignature()

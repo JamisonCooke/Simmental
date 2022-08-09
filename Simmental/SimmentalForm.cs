@@ -889,7 +889,7 @@ namespace Simmental
         private void SaveUpdateNpc(ICharacter oldNpc, ICharacter newNpc, CharacterSheet characterSheet)
         {
 
-            if (oldNpc != newNpc && oldNpc != null)
+            if (oldNpc != newNpc && oldNpc != null && newNpc != null)
             {
                 Game.NPC.Remove(oldNpc);
             }

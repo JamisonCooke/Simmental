@@ -158,7 +158,9 @@ namespace Simmental
             }
 
             var newNpc = SaveNpc();
-            _saveUpdateNpc(_oldNpc, newNpc, this);            
+            _saveUpdateNpc(_oldNpc, newNpc, this);
+            
+            _oldNpc = null;     // Clear the oldNPC so we don't save it again later
             this.Close();
             
         }
@@ -304,5 +306,14 @@ namespace Simmental
             _formHasErrors = true;
         }
 
+        private void CharacterSheet_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (_oldNpc != null)
+            {
+                // Let the caller know we are now closed w/out changes--
+                _saveUpdateNpc(_oldNpc, null, this);
+                _oldNpc = null;
+            }
+        }
     }
 }

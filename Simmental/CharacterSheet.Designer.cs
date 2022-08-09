@@ -480,6 +480,7 @@
             this.ShowInTaskbar = false;
             this.Text = "CharacterSheet";
             this.TopMost = true;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CharacterSheet_FormClosed);
             this.Load += new System.EventHandler(this.CharacterSheet_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
