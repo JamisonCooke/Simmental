@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Simmental.Game.Characters.Tasks
 {
     [Serializable]
-    internal class AttackPlayer : ITask
+    internal class AttackPlayer : ITask, ISignature
     {
         int _turnCount = 0;
         Pathfinder _pathfinder;
@@ -38,6 +38,17 @@ namespace Simmental.Game.Characters.Tasks
                 _pathfinder = null;
 
             return _pathfinder != null;
+        }
+
+        public string GetSignature()
+        {
+            var sp = new SignatureParts(typeof(AttackPlayer));
+            return sp.ToString();
+        }
+
+        public static string GetSignatureFormat()
+        {
+            return "TaskName";
         }
     }
 }

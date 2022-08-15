@@ -137,7 +137,7 @@ namespace Simmental
             this.helperBar.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.helperBar.Location = new System.Drawing.Point(12, 45);
             this.helperBar.Name = "helperBar";
-            this.helperBar.Size = new System.Drawing.Size(205, 24);
+            this.helperBar.Size = new System.Drawing.Size(215, 24);
             this.helperBar.TabIndex = 10;
             // 
             // inventoryErrorLabel

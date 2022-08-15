@@ -15,4 +15,29 @@ public class SignatureParts : PartsBase
     {
     }
 
+    public override void InitializeFromSignature(string signatureText)
+    {
+        _parts = new List<Part>();
+        string[] parts = signatureText.Split(",");
+        foreach (string part in parts)
+        {
+            _parts.Add(new Part(part.Trim()));
+        }
+
+        string p0 = _parts[0].Value;
+        // p0.IndexOf('(') return 12
+        // p0.Substring(12, 1) returns "(";
+        // p0.Substring(13, 2) returns "mw";
+        //       012345678 1 2345
+        // p[0]: Short Sword (mw)
+        int lp = p0.IndexOf('(');
+        int rp = p0.IndexOf(')');
+
+        if (lp != -1 && lp < rp)
+        {
+            // remove the signature stamp in ()'s from p[0]
+            SignatureStamp = p0.Substring(lp + 1, rp - lp - 1);
+            _parts[0].Value = p0.Substring(0, lp - 1).Trim();
+        }
+    }
 }

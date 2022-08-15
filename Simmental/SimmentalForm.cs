@@ -813,8 +813,7 @@ namespace Simmental
                 lineLength += line.Length + Environment.NewLine.Length;
                 if (cursorAt < lineLength)
                 {
-                    // 012345678 1 2345678 
-                    // foo (ab) bar
+                    
 
                     int lp = line.IndexOf('(');
                     int rp = line.IndexOf(')');
