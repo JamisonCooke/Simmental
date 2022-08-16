@@ -38,6 +38,11 @@ public class SignatureFactory
         return _stampToType.ContainsKey(stamp);
     }
 
+    public static bool IsValidType(Type type)
+    {
+        return _typeToStamp.ContainsKey(type);
+    }
+
     public static string StampFromType(Type type)
     {
         return _typeToStamp[type];

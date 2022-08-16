@@ -8,7 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Simmental
@@ -61,6 +61,9 @@ namespace Simmental
                 newInventory.Add(item);
             }
             txtInventory.Text = newInventory.GetInventorySignatures();
+
+            var tf = new TaskFactory();
+            txtTasks.Text = tf.GetTaskSignatures(npc.Tasks);
         }
 
         /// <summary>
@@ -128,8 +131,12 @@ namespace Simmental
                     npc.SecondaryWeapon = (IWeapon)npc.Inventory.Items.ElementAt(0);
                 }
             }
-
-
+            var tf = new TaskFactory();
+            npc.Tasks.Clear();
+            foreach (ITask task in tf.CreateTasks(txtTasks.Text))
+            {
+                npc.Tasks.Add(task);
+            }
 
         }
 

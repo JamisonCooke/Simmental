@@ -14,6 +14,10 @@ namespace Simmental.Game.Characters.Tasks
         int _turnCount = 0;
         Pathfinder _pathfinder;
 
+        public AttackPlayer() { }
+
+        public AttackPlayer(TaskParts tp) { }
+
         public bool ExecuteTask(IGame game, ICharacter character)
         {
             if (game.Player.Position.AdjacentTo(character.Position))
@@ -42,8 +46,8 @@ namespace Simmental.Game.Characters.Tasks
 
         public string GetSignature()
         {
-            var sp = new SignatureParts(typeof(AttackPlayer));
-            return sp.ToString();
+            var tp = new TaskParts(typeof(AttackPlayer));
+            return tp.ToString();
         }
 
         public static string GetSignatureFormat()

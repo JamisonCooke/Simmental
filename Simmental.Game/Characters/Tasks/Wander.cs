@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 namespace Simmental.Game.Characters.Tasks
 {
     [Serializable]
-    internal class Wander : ITask
+    internal class Wander : ITask, ISignature
     {
 
         private Pathfinder _pathfinder;
+        public Wander() { }
+        public Wander(TaskParts tp) { }
+
         public bool ExecuteTask(IGame game, ICharacter character)
         {
             if (_pathfinder == null || _pathfinder.Complete || !_pathfinder.CurrentPosition.Equals(character.Position))
@@ -27,6 +30,16 @@ namespace Simmental.Game.Characters.Tasks
             game.Wayfinder.Move(character, _pathfinder.CurrentPosition);
 
             return !_pathfinder.Complete;
+        }
+
+        public string GetSignature()
+        {
+            var tp = new TaskParts(typeof(Wander));
+            return tp.ToString();
+        }
+        public static string GetSignatureFormat()
+        {
+            return "Wander";
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Simmental.Interfaces
 {
-    public interface ITask
+    public interface ITask : ISignature
     {
 
         bool ExecuteTask(IGame game, ICharacter character);

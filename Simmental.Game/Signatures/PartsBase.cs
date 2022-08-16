@@ -24,6 +24,12 @@ public abstract class PartsBase
     public abstract void InitializeFromSignature(string signatureText);
 
     /// <summary>
+    /// Returns a signature for the Task that could be parsed later by InitializeFromSignature().
+    /// </summary>
+    /// <returns></returns>
+    public abstract string ToSignature();
+
+    /// <summary>
     /// Number of Parts (or parameters) there are in the signature
     /// </summary>
     public int PartsCount => _parts.Count;
@@ -177,13 +183,17 @@ public abstract class PartsBase
     // var p = new SignatureParts(Name, RollDice, Description);
     public PartsBase(Type type, params string[] textParts)
     {
-        this.SignatureStamp = SignatureFactory.StampFromType(type);
+        this.SignatureStamp = StampFromType(type);
+
         _parts = new List<Part>();
         foreach (string part in textParts)
         {
             _parts.Add(new Part(part));
         }
     }
+
+    public abstract string StampFromType(Type type);
+    public abstract Type TypeFromStamp(string signatureStamp);
 
     public string SignatureStamp { get; set; }
 
@@ -195,33 +205,7 @@ public abstract class PartsBase
         }
     }
 
-    /// <summary>
-    /// Returns the full signature based on the SignatureStamp and the _parts[]
-    /// </summary>
-    /// <returns></returns>
-    public string ToSignature()
-    {
-        StringBuilder sb = new StringBuilder();
-
-        // Always get the name w/ the signature stamp
-        sb.Append($"{_parts[0].Value} ({SignatureStamp})");
-
-        // Loop over the rest of the paramters and comma delimit them on the end
-        bool firstTime = true;
-        foreach (Part part in _parts)
-        {
-            if (firstTime)
-            {
-                firstTime = false;
-                continue;
-            }
-
-            sb.Append(", ");
-            sb.Append(part.Value);
-        }
-
-        return sb.ToString();
-    }
+  
 
     public override string ToString()
     {

@@ -66,5 +66,44 @@ namespace Simmental.Game.Signatures
             parts.Add(partText.Length);
             return parts;
         }
+
+        /// <summary>
+        /// Returns the full signature based on the SignatureStamp and the _parts[]
+        /// </summary>
+        /// <returns></returns>
+        public override string ToSignature()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            // Always get the name w/ the signature stamp
+            sb.Append($"{SignatureStamp}");
+
+            // Loop over the rest of the paramters and comma delimit them on the end
+            bool firstTime = true;
+            foreach (Part part in _parts)
+            {
+                if (firstTime)
+                {
+                    firstTime = false;
+                    sb.Append(" ");
+                }
+                else
+                {
+                    sb.Append(", ");
+                }                
+                sb.Append(part.Value);
+            }
+            return sb.ToString();
+        }
+
+        public override string StampFromType(Type type)
+        {
+            return TaskFactory.StampFromType(type);
+        }
+
+        public override Type TypeFromStamp(string signatureStamp)
+        {
+            return TaskFactory.TypeFromStamp(signatureStamp);
+        }
     }
 }
