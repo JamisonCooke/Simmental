@@ -52,7 +52,7 @@ namespace Simmental.Game.Characters.Tasks
 
         public static string GetSignatureFormat()
         {
-            return "TaskName";
+            return "";
         }
     }
 }

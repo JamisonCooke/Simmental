@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Simmental.Tests.Signature
 {
@@ -22,19 +22,19 @@ namespace Simmental.Tests.Signature
             Assert.AreEqual(signature, l.GetSignature());
         }
 
-        //[Test]
-        //[TestCase("Short Sword (l), it glows now, 2, 6, True", "")]
-        //[TestCase("Short Sword (l), it glows now, 2, 6, Ture", "IsLit: Ture must be True or False")]
-        //[TestCase("Short Sword (l), 2, 6, True", "Distance: True must be a number, IsLit: Missing value, IsLit:")]
-        //[TestCase("Short Sword (l), it glows now, -2, 6, True", "")]
-        //[TestCase("Short Sword (l), it glows now, 2lkl, 6.555, True", "Brightness: 2lkl must be a number, Distance: 6.555 must be a number")]
-        //public void BadLightSourceSignature(string signatureText, string expectedError)
-        //{
-        //    var sf = new SignatureFactory();
-        //    string errorMessage = sf.ValidateSignature(signatureText);
-        //    string truncatedMessage = expectedError.Length == 0 ? errorMessage : errorMessage.Substring(0, expectedError.Length);
+        [Test]
+        [TestCase("Sleep 5", "The first word must be one of these: AttackPlayer, Wait, Wander.")]
+        [TestCase("Wait hold on", "WaitTurns: hold on must be a number")]
+        [TestCase("Wait 5, 55, 555", "Too many paramaters. Unexpected: 55")]
+        [TestCase("AttackPlayer", "")]
 
-        //    Assert.AreEqual(expectedError, truncatedMessage);
-        //}
+        public void BadLightSourceSignature(string signatureText, string expectedError)
+        {
+            var tf = new TaskFactory();
+            string errorMessage = tf.ValidateSignature(signatureText);
+            string truncatedMessage = expectedError.Length == 0 ? errorMessage : errorMessage.Substring(0, expectedError.Length);
+
+            Assert.AreEqual(expectedError, truncatedMessage);
+        }
     }
 }

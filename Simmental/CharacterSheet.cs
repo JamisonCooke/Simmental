@@ -206,10 +206,38 @@ namespace Simmental
                 [lblCHR] = txtCHR,
                 [lblPrimaryWeapon] = txtPrimaryWeapon,
                 [lblSecondaryWeapon] = txtSecondaryWeapon,
-                [lblInventory] = txtInventory
+                [lblInventory] = txtInventory,
+                [lblTasks] = txtTasks,
             };
 
             return textBoxFromLabel;
+        }
+        private void UpdateSignatureFormatHelper()
+        {
+            var tf = new TaskFactory();
+
+            // We want to find the text of text where the cursor is currently placed
+            int cursorAt = txtTasks.SelectionStart;
+            var lines = txtTasks.Text.Split(Environment.NewLine);
+
+            // if cursorAt 0-41, Signature1, cursorAt 42-87, Signature2, cursorAt 88-139, Signature3
+            // 42: Signature1 (ab) blah
+            // 46: Signature2 (ab) blah blah
+            // 52: Signature3 (ab) blah blah blah
+            int lineLength = 0;
+            foreach (var line in lines)
+            {
+                lineLength += line.Length + Environment.NewLine.Length;
+                if (cursorAt < lineLength)
+                {
+                    string stamp = line.Split(' ')[0];
+                    if (TaskFactory.IsValidStamp(stamp))
+                        lblTaskHelper.Text = tf.GetPrettySignatureFormat(stamp);
+                    else
+                        lblTaskHelper.Text = TaskFactory.AllTasksNames;
+                    return;
+                }
+            }
         }
 
         private void ValidateForm()
@@ -298,6 +326,13 @@ namespace Simmental
             if (!Enum.TryParse(typeof(RaceEnum), txtRace.Text, out object o))
                 SetError(lblRace, $"Race must be: {string.Join(", ", Enum.GetNames(typeof(RaceEnum)))}");
 
+            var tf = new TaskFactory();
+            string error = tf.ValidateMultipleSignatures(txtTasks.Text);
+            if (!string.IsNullOrEmpty(error))
+            {
+                SetError(lblTasks, error);
+            }
+
         }
 
         private bool ValidInt(string text)
@@ -321,6 +356,21 @@ namespace Simmental
                 _saveUpdateNpc(_oldNpc, null, this);
                 _oldNpc = null;
             }
+        }
+
+        private void txtTasks_TextChanged(object sender, EventArgs e)
+        {
+            UpdateSignatureFormatHelper();
+        }
+
+        private void txtTasks_KeyUp(object sender, KeyEventArgs e)
+        {
+            UpdateSignatureFormatHelper();
+        }
+
+        private void txtTasks_MouseUp(object sender, MouseEventArgs e)
+        {
+            UpdateSignatureFormatHelper();
         }
     }
 }

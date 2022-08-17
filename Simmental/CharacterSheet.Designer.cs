@@ -65,6 +65,8 @@
             this.lblPrimaryWeapon = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lblTaskHelper = new System.Windows.Forms.Label();
+            this.lblTasks = new System.Windows.Forms.Label();
             this.txtTasks = new System.Windows.Forms.TextBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
@@ -483,6 +485,8 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Silver;
+            this.tabPage2.Controls.Add(this.lblTaskHelper);
+            this.tabPage2.Controls.Add(this.lblTasks);
             this.tabPage2.Controls.Add(this.txtTasks);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
@@ -491,18 +495,42 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Tasks";
             // 
+            // lblTaskHelper
+            // 
+            this.lblTaskHelper.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTaskHelper.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblTaskHelper.Location = new System.Drawing.Point(46, 3);
+            this.lblTaskHelper.Name = "lblTaskHelper";
+            this.lblTaskHelper.Size = new System.Drawing.Size(314, 14);
+            this.lblTaskHelper.TabIndex = 2;
+            this.lblTaskHelper.Text = "Helper bar here for the tasks";
+            this.lblTaskHelper.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // lblTasks
+            // 
+            this.lblTasks.AutoSize = true;
+            this.lblTasks.Location = new System.Drawing.Point(3, 3);
+            this.lblTasks.Name = "lblTasks";
+            this.lblTasks.Size = new System.Drawing.Size(37, 15);
+            this.lblTasks.TabIndex = 1;
+            this.lblTasks.Text = "Tasks:";
+            // 
             // txtTasks
             // 
             this.txtTasks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTasks.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtTasks.Location = new System.Drawing.Point(0, 0);
+            this.txtTasks.Location = new System.Drawing.Point(0, 21);
             this.txtTasks.Multiline = true;
             this.txtTasks.Name = "txtTasks";
             this.txtTasks.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtTasks.Size = new System.Drawing.Size(362, 455);
+            this.txtTasks.Size = new System.Drawing.Size(362, 434);
             this.txtTasks.TabIndex = 0;
+            this.txtTasks.TextChanged += new System.EventHandler(this.txtTasks_TextChanged);
+            this.txtTasks.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtTasks_KeyUp);
+            this.txtTasks.MouseUp += new System.Windows.Forms.MouseEventHandler(this.txtTasks_MouseUp);
             // 
             // btnApply
             // 
@@ -579,5 +607,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.TextBox txtTasks;
+        private System.Windows.Forms.Label lblTasks;
+        private System.Windows.Forms.Label lblTaskHelper;
     }
 }

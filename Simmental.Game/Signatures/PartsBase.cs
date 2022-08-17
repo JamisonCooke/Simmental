@@ -40,6 +40,10 @@ public abstract class PartsBase
     /// <param name="partNames"></param>
     public void SetSignatureFormat(string partNames)
     {
+        if (string.IsNullOrEmpty(partNames))
+        {
+            return;
+        }
         // partNames eg: "Name,Description,DamageRoll:DamageRoll"
         string[] parts = partNames.Split(',');
 

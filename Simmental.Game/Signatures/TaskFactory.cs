@@ -28,25 +28,13 @@ namespace Simmental.Game.Signatures
             foreach (string stamp in _stampToType.Keys)
                 _typeToStamp[_stampToType[stamp]] = stamp;
         }
-        public static Type TypeFromStamp(string stamp)
-        {
-            //(rw)
-            return _stampToType[stamp];
-        }
 
-        public static bool IsValidStamp(string stamp)
-        {
-            return _stampToType.ContainsKey(stamp);
-        }
+        public static Type TypeFromStamp(string stamp) => _stampToType[stamp];
+        public static bool IsValidStamp(string stamp) => _stampToType.ContainsKey(stamp);
+        public static string StampFromType(Type type) => _typeToStamp[type];
+        public static bool IsValidType(Type type) => _typeToStamp.ContainsKey(type);
+        public static string AllTasksNames => string.Join(", ", _stampToType.Keys);
 
-        public static string StampFromType(Type type)
-        {
-            return _typeToStamp[type];
-        }
-        public static bool IsValidType(Type type)
-        {
-            return _typeToStamp.ContainsKey(type);
-        }
 
         public IEnumerable<ITask> CreateTasks(string taskSignatures)
         {
@@ -88,6 +76,76 @@ namespace Simmental.Game.Signatures
                 default: return null;
             }
         }
+        public string ValidateMultipleSignatures(string signatureText)
+        {
+            int lineNumber = 0;
+            foreach (string signature in signatureText.Split(Environment.NewLine))
+            {
+                lineNumber++;
+                string errors = ValidateSignature(signature.Trim());
+                if (!string.IsNullOrEmpty(errors))
+                    return $"{lineNumber}: {errors}";
 
+            }
+            return "";
+        }
+
+        public string ValidateSignature(string signatureText)
+        {
+            if (string.IsNullOrEmpty(signatureText.Trim()))
+            {
+                // We have no line at all! There are no errors in an empty line. A blank signature means nothing is there.
+                return "";
+            }
+            var tp = new TaskParts(signatureText);
+            if (string.IsNullOrEmpty(tp.SignatureStamp) || !IsValidStamp(tp.SignatureStamp))
+            {
+                // We are missing a signature stamp! This is the only error we can report
+                return $"The first word must be one of these: {string.Join(", ", _stampToType.Keys)}.";
+            }
+
+
+            string signatureFormat = GetSignatureFormat(tp.SignatureStamp);
+            tp.SetSignatureFormat(signatureFormat);
+
+            return tp.GetErrorText();
+
+        }
+
+        public string GetSignatureFormat(string signatureStamp)
+        {
+            switch (signatureStamp)
+            {
+                case "AttackPlayer": return AttackPlayer.GetSignatureFormat();
+                case "Wait": return Wait.GetSignatureFormat();
+                case "Wander": return Wander.GetSignatureFormat();
+
+                default: return null;
+            }
+        }
+
+        public string GetPrettySignatureFormat(string signatureStamp)
+        {
+            string uglySignatureFormat = GetSignatureFormat(signatureStamp);
+            if (uglySignatureFormat == null)
+                return string.Empty;
+            else if (uglySignatureFormat == "")
+                return signatureStamp;
+
+            StringBuilder sb = new();
+            sb.Append(signatureStamp + " ");
+            bool firstItem = true;
+            foreach (string p in uglySignatureFormat.Split(","))
+            {
+                if (firstItem)
+                    firstItem = false;
+                else
+                    sb.Append(", ");
+
+                sb.Append($"[{p.Split(':')[0]}]");
+            }
+
+            return sb.ToString();
+        }
     }
 }

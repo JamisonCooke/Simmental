@@ -45,7 +45,7 @@ namespace Simmental.Game.Characters.Tasks
         }
         public static string GetSignatureFormat()
         {
-            return "Wait WaitTurns:Int32";
+            return "WaitTurns:Int32";
         }
     }
 }
