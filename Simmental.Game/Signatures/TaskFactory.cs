@@ -23,6 +23,7 @@ namespace Simmental.Game.Signatures
             _stampToType["AttackPlayer"] = typeof(AttackPlayer);
             _stampToType["Wait"] = typeof(Wait);
             _stampToType["Wander"] = typeof(Wander);
+            _stampToType["Patrol"] = typeof(Patrol);
 
             _typeToStamp = new();
             foreach (string stamp in _stampToType.Keys)
@@ -72,6 +73,7 @@ namespace Simmental.Game.Signatures
                 case "AttackPlayer": return new AttackPlayer(tp);
                 case "Wander": return new Wander(tp);
                 case "Wait": return new Wait(tp);
+                case "Patrol": return new Patrol(tp);
 
                 default: return null;
             }
@@ -119,6 +121,7 @@ namespace Simmental.Game.Signatures
                 case "AttackPlayer": return AttackPlayer.GetSignatureFormat();
                 case "Wait": return Wait.GetSignatureFormat();
                 case "Wander": return Wander.GetSignatureFormat();
+                case "Patrol": return Patrol.GetSignatureFormat();
 
                 default: return null;
             }

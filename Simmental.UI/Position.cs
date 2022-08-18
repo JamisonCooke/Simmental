@@ -45,6 +45,54 @@ namespace Simmental.Interfaces
         }
 
         /// <summary>
+        /// Initializes from text "i,j" or "[i,j]"
+        /// </summary>
+        /// <param name="positionText"></param>
+        public Position(string positionText)
+        {
+            try
+            {
+                string[] parts = positionText.Replace("[", "").Replace("]", "").Split(',');
+
+                // Code
+                this.i = int.Parse(parts[0]);
+                this.j = int.Parse(parts[1]);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Unable to create Position object from string '{positionText}'.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Returns a human readable error message if the passed positionText is valid. 
+        /// Null or empty of it is valid
+        /// </summary>
+        /// <param name="positionText"></param>
+        /// <returns></returns>
+        public static string IsValid(string positionText)
+        {
+            string[] parts = positionText.Replace("[", "").Replace("]", "").Split(',');
+
+            if (parts.Length != 2)
+            {
+                return $"Position in wrong format '{positionText}'. Expecting [i,j]";
+            }
+
+            if (!int.TryParse(parts[0], out int part))
+            {
+                return $"Unable to create position object from string: invalid input {parts[0]}";
+            }
+
+            if (!int.TryParse(parts[1], out int part2))
+            {
+                return $"Unable to create position object from string: invalid input {parts[1]}";
+            }
+
+            return "";
+        }
+
+        /// <summary>
         /// Is true when the position being passed in is only unit away from this position.
         /// </summary>
         /// <param name="position"></param>
@@ -77,6 +125,14 @@ namespace Simmental.Interfaces
             return !p1.Equals(p2);
         }
 
+        /// <summary>
+        /// Allows a string to be cast into a Position object
+        /// </summary>
+        /// <param name="text"></param>
+        public static implicit operator Position(string text)
+        {
+            return new Position(text);
+        }
 
         public override int GetHashCode()
         {
@@ -85,7 +141,7 @@ namespace Simmental.Interfaces
 
         public override string ToString()
         {
-            return $"{i}, {j}";
+            return $"[{i},{j}]";
         }
 
     }

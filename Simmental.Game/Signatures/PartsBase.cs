@@ -1,4 +1,6 @@
-﻿namespace Simmental.Game.Signatures;
+﻿using Simmental.Game.Map;
+
+namespace Simmental.Game.Signatures;
 
 /// <summary>
 /// Wraps up all the parameters from a signature into a single string. Also can unwrap them.
@@ -68,6 +70,10 @@ public abstract class PartsBase
                 if (_parts[index].Type == null)
                 {
                     _parts[index].Type = Type.GetType("Simmental.Game.Items." + p[1]);
+                }
+                if (_parts[index].Type == null)
+                {
+                    _parts[index].Type = Type.GetType("Simmental.Game.Map." + p[1]);
                 }
                 if (_parts[index].Type == null)
                 {
@@ -152,6 +158,12 @@ public abstract class PartsBase
                     errorList.Add($"{part.Name}: {part.Value} must be a damage type, ie: Fire, Lightning, Ice, Normal");
                 }
             }
+            if (part.Type == typeof(Route) && !string.IsNullOrEmpty(part.Value))
+            {
+                string routeError = Route.ValidateRoute(part.Value);
+                if (!string.IsNullOrEmpty(routeError))
+                    errorList.Add($"{part.Name}: {routeError}");
+            }
 
         }
         //Error: There was no name passed in, there was no damage roll, too many parts
@@ -234,6 +246,11 @@ public abstract class PartsBase
     public bool ToBool(int index)
     {
         return bool.Parse(_parts[index].Value);
+    }
+
+    public Route ToRoute(int index)
+    {
+        return new Route(_parts[index].Value);
     }
 
 }

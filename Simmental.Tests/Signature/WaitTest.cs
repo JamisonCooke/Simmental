@@ -23,7 +23,7 @@ namespace Simmental.Tests.Signature
         }
 
         [Test]
-        [TestCase("Sleep 5", "The first word must be one of these: AttackPlayer, Wait, Wander.")]
+        [TestCase("Sleep 5", "The first word must be one of these: AttackPlayer, Wait, Wander, Patrol.")]
         [TestCase("Wait hold on", "WaitTurns: hold on must be a number")]
         [TestCase("Wait 5, 55, 555", "Too many paramaters. Unexpected: 55")]
         [TestCase("AttackPlayer", "")]
