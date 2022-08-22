@@ -43,8 +43,8 @@ namespace Simmental.Game.Map
         public Position From { get; }
         public Position To { get; }
         public Position CurrentPosition { get; private set; }
-        public bool Complete => CurrentPosition.i == To.i && CurrentPosition.j == To.j;
-
+        public bool Complete => (CurrentPosition.i == To.i && CurrentPosition.j == To.j) || !PathExists;
+        public bool PathExists => _steps.Length > 0;
         public Pathfinder(IWayfinder wayfinder, Position from, Position to)
         {
             Wayfinder = wayfinder;

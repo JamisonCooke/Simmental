@@ -870,7 +870,7 @@ namespace Simmental
                 else
                 {
                     characterForm = new CharacterSheet();
-                    characterForm.SetCharacter(npc, SaveUpdateNpc);
+                    characterForm.SetCharacter(npc, SaveUpdateNpc, Game.Designer.TopLeft);
                     _characterSheets.Add(npc, characterForm);
                 }
                 
@@ -887,27 +887,16 @@ namespace Simmental
         /// <param name="characterSheet">Form that did the editing</param>
         private void SaveUpdateNpc(ICharacter oldNpc, ICharacter newNpc, CharacterSheet characterSheet)
         {
+            var doCommand = new UpdateNpc(oldNpc, newNpc, LoadnpcListBox);
+            var undoCommand = new UpdateNpc(newNpc, oldNpc, LoadnpcListBox);
 
-            if (oldNpc != newNpc && oldNpc != null && newNpc != null)
-            {
-                Game.NPC.Remove(oldNpc);
-            }
-            if (oldNpc != newNpc && newNpc != null)
-            {
-                Game.NPC.Add(newNpc);
-            }
+            Game.CommandManager.ExecuteCommand(doCommand, undoCommand);
+
             if (_characterSheets.ContainsKey(oldNpc))
             {
                 _characterSheets.Remove(oldNpc);
             }
-
-            if (newNpc != null)
-                newNpc.SetPositionInternal(Game.Designer.TopLeft);
-
-            // Make the list rebox of NPCs at the current location reflect any changes
-            LoadnpcListBox();
-            mapPictureBox.Refresh();            
+            mapPictureBox.Refresh();
         }
-
     }
 }

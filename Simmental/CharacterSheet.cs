@@ -79,10 +79,7 @@ namespace Simmental
             var race = (RaceEnum)Enum.Parse(typeof(RaceEnum), txtRace.Text);
             var characterHelper = new Game.Characters.CharacterHelper();
 
-            if (_oldNpc != null && _oldNpc.Race == race)
-                npc = _oldNpc;
-            else
-                npc = characterHelper.FactoryCreate(race);
+            npc = characterHelper.FactoryCreate(race);
 
             SaveToCharacter(npc);
             return npc;
@@ -90,6 +87,7 @@ namespace Simmental
 
         private void SaveToCharacter(ICharacter npc)
         {
+            npc.SetPositionInternal(_position);
             npc.Name = txtName.Text;
 
             // The race is already set by the NPC being passed in
@@ -142,13 +140,14 @@ namespace Simmental
 
         private Action<ICharacter, ICharacter, CharacterSheet> _saveUpdateNpc;
         private ICharacter _oldNpc;
+        private Position _position;
 
-        public void SetCharacter(ICharacter npc, Action<ICharacter, ICharacter, CharacterSheet> saveUpdateNpc)
+        public void SetCharacter(ICharacter npc, Action<ICharacter, ICharacter, CharacterSheet> saveUpdateNpc, Position position)
         {
             // void saveUpdateNpc(ICharacter oldNpc, ICharacter newNpc, CharacterSheet character)
             _oldNpc = npc;
             _saveUpdateNpc = saveUpdateNpc;
-
+            _position = new Position(position);
             LoadCharacter(npc);
         }
 

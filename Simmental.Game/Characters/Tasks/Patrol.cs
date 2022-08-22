@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Simmental.Game.Characters.Tasks
 {
+    [Serializable]
     public class Patrol : ITask
     {
         private Pathfinder _pathfinder;
@@ -31,10 +32,9 @@ namespace Simmental.Game.Characters.Tasks
             }
 
             _pathfinder.Move();
-
             game.Wayfinder.Move(character, _pathfinder.CurrentPosition);
 
-            return !_pathfinder.Complete;
+            return true;
         }
 
         public string GetSignature()
