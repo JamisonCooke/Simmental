@@ -35,6 +35,8 @@ namespace Simmental
 
         private void LoadCharacter(ICharacter npc)
         {
+            if (npc == null) return;
+
             this.Text = $"{npc.Name} - {npc.Race}";
 
             txtName.Text = npc.Name;

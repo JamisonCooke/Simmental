@@ -32,6 +32,8 @@ namespace Simmental
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimmentalForm));
             this.designerPanel = new System.Windows.Forms.Panel();
+            this.DeleteNpcButton = new System.Windows.Forms.LinkLabel();
+            this.AddNpcButton = new System.Windows.Forms.LinkLabel();
             this.npcListBox = new System.Windows.Forms.ListBox();
             this.helperBar = new System.Windows.Forms.Label();
             this.inventoryErrorLabel = new System.Windows.Forms.Label();
@@ -99,6 +101,8 @@ namespace Simmental
             this.designerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.designerPanel.BackColor = System.Drawing.Color.White;
+            this.designerPanel.Controls.Add(this.DeleteNpcButton);
+            this.designerPanel.Controls.Add(this.AddNpcButton);
             this.designerPanel.Controls.Add(this.npcListBox);
             this.designerPanel.Controls.Add(this.helperBar);
             this.designerPanel.Controls.Add(this.inventoryErrorLabel);
@@ -119,8 +123,38 @@ namespace Simmental
             this.designerPanel.Visible = false;
             this.designerPanel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.descriptionPanel_PreviewKeyDown);
             // 
+            // DeleteNpcButton
+            // 
+            this.DeleteNpcButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DeleteNpcButton.AutoSize = true;
+            this.DeleteNpcButton.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.DeleteNpcButton.LinkColor = System.Drawing.Color.Black;
+            this.DeleteNpcButton.Location = new System.Drawing.Point(163, 343);
+            this.DeleteNpcButton.Name = "DeleteNpcButton";
+            this.DeleteNpcButton.Size = new System.Drawing.Size(54, 12);
+            this.DeleteNpcButton.TabIndex = 14;
+            this.DeleteNpcButton.TabStop = true;
+            this.DeleteNpcButton.Text = "Delete NPC";
+            this.DeleteNpcButton.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DeleteNpcButton_LinkClicked);
+            // 
+            // AddNpcButton
+            // 
+            this.AddNpcButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddNpcButton.AutoSize = true;
+            this.AddNpcButton.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.AddNpcButton.LinkColor = System.Drawing.Color.Black;
+            this.AddNpcButton.Location = new System.Drawing.Point(112, 343);
+            this.AddNpcButton.Name = "AddNpcButton";
+            this.AddNpcButton.Size = new System.Drawing.Size(45, 12);
+            this.AddNpcButton.TabIndex = 14;
+            this.AddNpcButton.TabStop = true;
+            this.AddNpcButton.Text = "Add NPC";
+            this.AddNpcButton.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AddNpcButton_LinkClicked);
+            // 
             // npcListBox
             // 
+            this.npcListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.npcListBox.FormattingEnabled = true;
             this.npcListBox.ItemHeight = 15;
             this.npcListBox.Location = new System.Drawing.Point(12, 291);
@@ -761,6 +795,8 @@ namespace Simmental
         private System.Windows.Forms.Label inventoryErrorLabel;
         private System.Windows.Forms.Label helperBar;
         private System.Windows.Forms.ListBox npcListBox;
+        private System.Windows.Forms.LinkLabel DeleteNpcButton;
+        private System.Windows.Forms.LinkLabel AddNpcButton;
     }
 }
 

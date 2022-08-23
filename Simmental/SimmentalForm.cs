@@ -887,16 +887,42 @@ namespace Simmental
         /// <param name="characterSheet">Form that did the editing</param>
         private void SaveUpdateNpc(ICharacter oldNpc, ICharacter newNpc, CharacterSheet characterSheet)
         {
-            var doCommand = new UpdateNpc(oldNpc, newNpc, LoadnpcListBox);
-            var undoCommand = new UpdateNpc(newNpc, oldNpc, LoadnpcListBox);
+            // Gotta be a new one to save
+            if (newNpc != null)
+            {
+                var doCommand = new UpdateNpc(oldNpc, newNpc, LoadnpcListBox);
+                var undoCommand = new UpdateNpc(newNpc, oldNpc, LoadnpcListBox);
 
-            Game.CommandManager.ExecuteCommand(doCommand, undoCommand);
+                Game.CommandManager.ExecuteCommand(doCommand, undoCommand);
+            }
 
-            if (_characterSheets.ContainsKey(oldNpc))
+            // Make sure the form is closed on the old guy
+            if (oldNpc != null && _characterSheets.ContainsKey(oldNpc))
             {
                 _characterSheets.Remove(oldNpc);
             }
             mapPictureBox.Refresh();
+        }
+
+        private void DeleteNpcButton_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ICharacter npc = (ICharacter)npcListBox.SelectedItem;
+            if (npc == null)
+                return;
+            var doCommand = new UpdateNpc(npc, null, LoadnpcListBox);
+            var undoCommand = new UpdateNpc(null, npc, LoadnpcListBox);
+
+            Game.CommandManager.ExecuteCommand(doCommand, undoCommand);
+            mapPictureBox.Refresh();
+
+        }
+
+        private void AddNpcButton_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            CharacterSheet characterForm;
+            characterForm = new CharacterSheet();
+            characterForm.SetCharacter(null, SaveUpdateNpc, Game.Designer.TopLeft);
+            characterForm.Show();
         }
     }
 }
