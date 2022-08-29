@@ -21,7 +21,6 @@ Handle ground inventory
 
 [ ] Better graphics
 
-[ ] Monster mechanics -- attacking / sentry mode / noticing
 [x] Orc cannot walk through walls
 [ ] Concept of larger objects (i.e. container objects)
 [ ] Damage types with resistances and vulernabilities
@@ -54,8 +53,7 @@ Designer+
 [x] Eyedropper tool
 [ ] Redisgn tile color dropdown()
 [x] Flood Bucket Feature
-[ ] Easy Npc adding
-[ ] Existing selection mode -- add cut/paste
+[x] Easy Npc adding
 [X] Undo Tool
 [X] Signature Format helper text at top of item box
 [X] Update UI after Apply button
@@ -69,7 +67,7 @@ Signature Support -- Idea: You can describe an item in D&D style text for the de
 [X] Handle containers 
 [ ] Handle Entire format better than a comma delimited list (i.e., Descriptions)
 [x] Add Error handling when the format of the signature is incorrect: ie., Short Sword )mw(, Ugly sword
-[ ] Have IItem implement ISignature
+[x] Have IItem implement ISignature
 [x] Give SignatureFormat at top of editor box based on what line the | is on.
 [X] Add Undo and Redo 
 
@@ -77,7 +75,8 @@ NPC Mechanics
 [ ] Pheremones
 [ ] Monster coordinations
 [ ] Guard Function
-[ ] Seek and Destroy Function
+[ ] Seek and Destroy Function -- with a good search pattern
+[ ] EncirclePlayer
 
 Technical Debt
 [ ] Refactor TileAttribute and TileType into a single class and rename for better understanding
@@ -143,3 +142,5 @@ Wens 8/17 2
 Thurs 8/18 2.5
 Mon 8/22 1.5
 ****PAID****
+Tues 8/23 2
+Wens 8/24
