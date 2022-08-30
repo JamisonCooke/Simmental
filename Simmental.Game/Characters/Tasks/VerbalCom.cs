@@ -12,7 +12,17 @@ namespace Simmental.Game.Characters.Tasks
 
         private ITask _subtask;
 
-        private object _communications;
+        private IComms _comms;
+        public void Start(IGame game, ICharacter character)
+        {
+            _comms = game.GetComms(character.Race.ToString());
+            _comms.StartListening(character, Listen);
+        }
+
+        public void Stop(IGame game, ICharacter character) 
+        {
+            _comms.StopListening(character, Listen);
+        }
 
         public bool ExecuteTask(IGame game, ICharacter character)
         {
@@ -20,9 +30,10 @@ namespace Simmental.Game.Characters.Tasks
             //if (CanSee(game.Player))
             //    _communications.Yell(CanSeePlayerAt game.Player.Position);
 
+            
+
 
             return _subtask.ExecuteTask(game, character);
-
         }
 
         ICommsMessage _lastMessage;

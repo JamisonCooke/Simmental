@@ -68,8 +68,8 @@ namespace Simmental.Game.Items
             monster.Name = "Angry Monster";
             monster.HP = 25;
             game.Wayfinder.Move(monster, _position);
-            monster.Tasks.Add(new AttackPlayer());
-            monster.Tasks.Add(new Wander());
+            monster.AddTask(game, new AttackPlayer());
+            monster.AddTask(game, new Wander());
             monster.Inventory.Add(new LightSource("Torch", "a Stick with fabric and tar fixed at the end", 70, 7, true));
             game.NPC.Add(monster);
 

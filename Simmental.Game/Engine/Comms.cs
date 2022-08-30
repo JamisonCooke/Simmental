@@ -9,18 +9,12 @@ namespace Simmental.Game.Engine
     /// <summary>
     /// Allows Npcs to register themselves, then send messages to eachother 
     /// </summary>
-    public class CommsManager
+    [Serializable]
+    public class Comms : IComms
     {
-        #region Singleton
-
-        private CommsManager() { }
-        private static CommsManager _instance = new();
-        public static CommsManager Instance => _instance;
-
-        #endregion
-
         #region NpcInfo wrapper class (Npc, listen)
 
+        [Serializable]
         private class NpcInfo
         {
             public ICharacter Npc { get; }
@@ -42,14 +36,16 @@ namespace Simmental.Game.Engine
             _npcs.Add(new NpcInfo(npc, listener));
         }
 
-        public void StopListening(ICharacter npc)
+        public void StopListening(ICharacter npc, Action<ICommsMessage> listener)
         {
             // Better way w/ lambdas
-            _npcs.RemoveAll((info) => info.Npc == npc);
+            _npcs.RemoveAll((info) => info.Npc == npc && info.Listener == listener);
         }
 
         public void Yell(ICommsMessage message, ICharacter speaker)
         {
+            // ToDo: Have channel specific yells funnel into an eavesdropping channel
+
             var yellTo = CanHear(speaker, message);
             foreach(var npcInfo in yellTo)
             {

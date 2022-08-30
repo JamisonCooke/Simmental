@@ -97,7 +97,7 @@ namespace Simmental.Game.Engine
             orc1.Name = "Angry Orc";
             orc1.HP = 25;
             this.Wayfinder.Move(orc1, new Position(10, 10));
-            orc1.Tasks.Add(new AttackPlayer());
+            orc1.AddTask(this, new AttackPlayer());
             NPC.Add(orc1);
 
             //// Create a new orc portal            
@@ -295,6 +295,19 @@ namespace Simmental.Game.Engine
                     }
                 }
             }
+        }
+
+        private Dictionary<string, IComms> _idToComms = new();
+
+
+        public IComms GetComms(string groupId)
+        {
+            if (!_idToComms.ContainsKey(groupId))
+            {
+                _idToComms.Add(groupId, new Comms());  
+            }
+
+            return _idToComms[groupId];
         }
 
 

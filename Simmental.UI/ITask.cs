@@ -12,5 +12,9 @@ namespace Simmental.Interfaces
 
         bool ExecuteTask(IGame game, ICharacter character);
 
+        void Start(IGame game, ICharacter character);
+        void Stop(IGame game, ICharacter character);
+
+
     }
 }

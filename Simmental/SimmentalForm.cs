@@ -870,7 +870,7 @@ namespace Simmental
                 else
                 {
                     characterForm = new CharacterSheet();
-                    characterForm.SetCharacter(npc, SaveUpdateNpc, Game.Designer.TopLeft);
+                    characterForm.SetCharacter(Game, npc, SaveUpdateNpc, Game.Designer.TopLeft);
                     _characterSheets.Add(npc, characterForm);
                 }
                 
@@ -921,7 +921,7 @@ namespace Simmental
         {
             CharacterSheet characterForm;
             characterForm = new CharacterSheet();
-            characterForm.SetCharacter(null, SaveUpdateNpc, Game.Designer.TopLeft);
+            characterForm.SetCharacter(Game, null, SaveUpdateNpc, Game.Designer.TopLeft);
             characterForm.Show();
         }
     }

@@ -18,6 +18,9 @@ namespace Simmental.Game.Characters.Tasks
 
         public AttackPlayer(TaskParts tp) { }
 
+        public void Start(IGame game, ICharacter character) { }
+        public void Stop(IGame game, ICharacter character) { }
+
         public bool ExecuteTask(IGame game, ICharacter character)
         {
             if (game.Player.Position.AdjacentTo(character.Position))

@@ -64,7 +64,30 @@ namespace Simmental.Game.Characters
         protected ElementEnum _elementallyImmune = ElementEnum.Normal;
         protected ElementEnum _elementallyVulnerable = ElementEnum.Normal;
 
-        public List<ITask> Tasks { get; } = new List<ITask>();
+        private List<ITask> _tasks = new();
+        public IEnumerable<ITask> Tasks => _tasks;
+
+        public void ClearTasks(IGame game)
+        {
+            foreach (var task in _tasks)
+            {
+                task.Stop(game, this);
+            }
+
+            _tasks.Clear();
+        }
+
+        public void AddTask(IGame game, ITask task)
+        {
+            _tasks.Add(task);
+            task.Start(game, this);
+        }
+
+        public void RemoveTask(IGame game, ITask task)
+        {
+            _tasks.Remove(task);
+            task.Stop(game, this);
+        }
 
 
         void ICharacter.SetPositionInternal(Position position)

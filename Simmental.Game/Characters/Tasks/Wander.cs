@@ -15,6 +15,8 @@ namespace Simmental.Game.Characters.Tasks
         private Pathfinder _pathfinder;
         public Wander() { }
         public Wander(TaskParts tp) { }
+        public void Start(IGame game, ICharacter character) { }
+        public void Stop(IGame game, ICharacter character) { }
 
         public bool ExecuteTask(IGame game, ICharacter character)
         {

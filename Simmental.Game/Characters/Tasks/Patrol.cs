@@ -20,7 +20,10 @@ namespace Simmental.Game.Characters.Tasks
         public Patrol(TaskParts tp)
             : this(tp.ToRoute(0))
         { }
-        
+
+        public void Start(IGame game, ICharacter character) { }
+        public void Stop(IGame game, ICharacter character) { }
+
         public bool ExecuteTask(IGame game, ICharacter character)
         {
             if (_pathfinder == null || _pathfinder.Complete || !_pathfinder.CurrentPosition.Equals(character.Position))

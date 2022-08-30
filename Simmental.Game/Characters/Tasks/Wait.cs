@@ -17,6 +17,8 @@ namespace Simmental.Game.Characters.Tasks
         public Wait(TaskParts tp)
         : this(tp.ToInt(0))
         { }
+        public void Start(IGame game, ICharacter character) { }
+        public void Stop(IGame game, ICharacter character) { }
 
         bool _firstTime = true;
         int _wakeUpTurn;

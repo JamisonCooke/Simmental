@@ -132,10 +132,10 @@ namespace Simmental
                 }
             }
             var tf = new TaskFactory();
-            npc.Tasks.Clear();
+            npc.ClearTasks(_game);
             foreach (ITask task in tf.CreateTasks(txtTasks.Text))
             {
-                npc.Tasks.Add(task);
+                npc.AddTask(_game, task);
             }
 
         }
@@ -143,10 +143,12 @@ namespace Simmental
         private Action<ICharacter, ICharacter, CharacterSheet> _saveUpdateNpc;
         private ICharacter _oldNpc;
         private Position _position;
+        private IGame _game;
 
-        public void SetCharacter(ICharacter npc, Action<ICharacter, ICharacter, CharacterSheet> saveUpdateNpc, Position position)
+        public void SetCharacter(IGame game, ICharacter npc, Action<ICharacter, ICharacter, CharacterSheet> saveUpdateNpc, Position position)
         {
             // void saveUpdateNpc(ICharacter oldNpc, ICharacter newNpc, CharacterSheet character)
+            _game = game;
             _oldNpc = npc;
             _saveUpdateNpc = saveUpdateNpc;
             _position = new Position(position);

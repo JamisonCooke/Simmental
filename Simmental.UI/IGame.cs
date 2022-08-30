@@ -22,6 +22,8 @@ namespace Simmental.Interfaces
         static Random Random { get; }
         IEnumerable<(ILightSource LightSource, Position Position)> GetLightSources();
         ICommandManager CommandManager { get; }
+        IComms GetComms(string groupId);
+
     }
 
 }

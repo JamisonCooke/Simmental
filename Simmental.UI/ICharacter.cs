@@ -29,7 +29,10 @@ namespace Simmental.Interfaces
 
         int Attack(IGame game, ICharacter victim, IItem item);
 
-        List<ITask> Tasks { get; }
+        IEnumerable<ITask> Tasks { get; }
+        void ClearTasks(IGame game);
+        void AddTask(IGame game, ITask task);
+        void RemoveTask(IGame game, ITask task);
 
         ElementEnum ElementallyResistant { get; }
         ElementEnum ElementallyImmune { get; }
