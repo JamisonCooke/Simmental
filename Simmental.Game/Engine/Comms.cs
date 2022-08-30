@@ -74,9 +74,9 @@ namespace Simmental.Game.Engine
         {
             // a^2 + b^2 = c^2
             // (x diff)^2 + (y diff)^2 <? message.volume^2
-            double distance = Math.Pow(2, speaker.Position.i - listener.Position.i) + Math.Pow(2, speaker.Position.j - listener.Position.j);
+            double distance = Math.Pow(speaker.Position.i - listener.Position.i, 2) + Math.Pow(speaker.Position.j - listener.Position.j, 2);
 
-            return distance <= Math.Pow(2, message.Volume);            
+            return distance <= Math.Pow(message.Volume, 2);            
         }
 
 
