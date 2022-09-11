@@ -15,6 +15,7 @@ using System.IO;
 using Simmental.Game.Characters.Tasks;
 using System.Xml.Serialization;
 using Simmental.Game.Command;
+using System.Linq.Expressions;
 
 namespace Simmental.Game.Engine
 {
@@ -27,7 +28,9 @@ namespace Simmental.Game.Engine
 
         public List<ICharacter> NPC { get; private set; }
         public List<IExecuteTurn> RequiresATurn { get; private set; } = new List<IExecuteTurn>();
-        
+        public string SaveFileName => Path.GetFileNameWithoutExtension(FullSaveFileName);
+        public string FullSaveFileName { get; set; }
+
         [NonSerialized]
         private CommandManager _commandManager;
         public ICommandManager CommandManager 
@@ -109,7 +112,6 @@ namespace Simmental.Game.Engine
 
             this.Designer.TopLeft = new Position(2, 2);
             this.Designer.BottomRight = new Position(5, 3);
-
         }
 
         public void NPCTurn()
@@ -140,7 +142,7 @@ namespace Simmental.Game.Engine
                 var game = formatter.Deserialize(stream) as Game;
 #pragma warning restore SYSLIB0011 // Type or member is obsolete
                 stream.Close();
-
+                game.FullSaveFileName = FileNameWithOutVersion(filename);
                 return game;
             }
             catch(Exception ex)
@@ -152,20 +154,38 @@ namespace Simmental.Game.Engine
             }
         }
 
+        private static string FileNameWithOutVersion(string filename)
+        {
+            // 0 2345678 1 2345678 2
+            // foobar.sav.001
+            // 
+
+            int i = filename.ToLower().LastIndexOf(".sav");
+            if (i < 0)
+                return filename;
+            else
+                return filename.Substring(0, i + 4);       // Include everything through and including .sav
+        }
 
 
+        /// <summary>
+        /// Binary Serializes the current state of this Game object to disk as filename
+        /// </summary>
         public void SaveTo(string filename, bool ignoreErrors = false)
         {
             try
             {
+                this.FullSaveFileName = FileNameWithOutVersion(filename);
                 IFormatter formatter = new BinaryFormatter();
-                Stream stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None);
+                Stream stream = new FileStream($"{filename}.temp", FileMode.Create, FileAccess.Write, FileShare.None);
                 #pragma warning disable SYSLIB0011 // Type or member is obsolete
                 formatter.Serialize(stream, this);
                 #pragma warning disable SYSLIB0011 // Type or member is obsolete
                 stream.Close();
+
+                CreateBackupsAndRenameTemp(filename);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (ignoreErrors)
                     return;
@@ -173,6 +193,39 @@ namespace Simmental.Game.Engine
                     throw new Exception($"Error saving file '{filename}'.", ex);
             }
         }
+
+        /// <summary>
+        /// This function assumes filename + ".temp" saved properly. It will create backup copies of
+        /// prior versions of the saved game. .001 is the most recent backup, .002, etc. Latest copy
+        /// be filename (it will rename the .temp)
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="backupMax"></param>
+        private void CreateBackupsAndRenameTemp(string filename, int backupMax = 5)
+        {
+            for (int i = backupMax; i >= 0; i--)
+            {
+                string saveFileName = GetSaveFileName(filename, i);
+                if (File.Exists(saveFileName))
+                {
+                    if (i == backupMax)
+                        File.Delete(saveFileName);
+                    else
+                        File.Move(saveFileName, GetSaveFileName(filename, i + 1));
+
+                }
+            }
+            File.Move($"{filename}.temp", filename);
+        }
+
+        private string GetSaveFileName(string filename, int versionNo)
+        {
+            if (versionNo == 0)
+                return filename;
+
+            return $"{filename}.{versionNo.ToString("000")}";
+        }
+
 
         public void SaveToJson(string filename)
         {

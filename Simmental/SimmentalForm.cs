@@ -81,6 +81,7 @@ namespace Simmental
                 // No saved game? New up a random game
                 _gameFormHelper.Game = new Simmental.Game.Engine.Game();
                 _gameFormHelper.Game.InitalizeRandom();
+                _gameFormHelper.Game.FullSaveFileName = AutoSaveFilename;
             }
             else 
             {
@@ -94,6 +95,8 @@ namespace Simmental
 
             UpdateMessageText(_gameFormHelper.CompileMessages());
             UpdateInfoPanel(true);
+
+            this.Text = $"{_gameFormHelper.Game.SaveFileName} - Simmental";
         }
 
         private void UpdateInfoPanel(bool updateInventory)
@@ -164,6 +167,7 @@ namespace Simmental
                 string filename = openFileDialog1.FileName;
                 _gameFormHelper.Game = Simmental.Game.Engine.Game.LoadFrom(filename);
                 mapPictureBox.Refresh();
+                this.Text = $"{_gameFormHelper.Game.SaveFileName} - Simmental";
             }
 
 
@@ -183,7 +187,8 @@ namespace Simmental
             {
                 string filename = saveFileDialog1.FileName;
                 var game = _gameFormHelper.Game as Simmental.Game.Engine.Game;
-                game.SaveTo(filename); 
+                game.SaveTo(filename);
+                this.Text = $"{game.SaveFileName} - Simmental";
             }
         }
 
@@ -923,6 +928,14 @@ namespace Simmental
             characterForm = new CharacterSheet();
             characterForm.SetCharacter(Game, null, SaveUpdateNpc, Game.Designer.TopLeft);
             characterForm.Show();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Overwrite the file we loaded from with updated information (Game object)
+            var game = _gameFormHelper.Game as Simmental.Game.Engine.Game;
+            game.SaveTo(game.FullSaveFileName);
+
         }
     }
 }
