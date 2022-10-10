@@ -9,6 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\txGround.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\txGround.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Simmental.UI\Simmental.Interfaces.csproj" />
   </ItemGroup>
 

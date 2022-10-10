@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.PropertyGridInternal;
 using Simmental.Interfaces;
+using Simmental.UI.WinForm.Embedded;
 
-namespace Simmental.Interfaces.WinForm.Render
+namespace Simmental.UI.WinForm.Render
 {
     public class RenderTile
     {
@@ -16,9 +20,9 @@ namespace Simmental.Interfaces.WinForm.Render
             _graphics = g;
 
         }
+
         public void Render(ITile tile, Rectangle rectangle, bool isVisible)
         {
-
             if (tile == null)
             {
                 // Draw a dark gray fill
@@ -26,11 +30,15 @@ namespace Simmental.Interfaces.WinForm.Render
                 return;
             }
 
-            // We can draw our tile based on what it looks like into the rectanle
-            Pen pen = new Pen(GetColorForTile(tile.TileType));
+            if (tile.TileType == TileEnum.Grass)
+            {
+                DrawResourceTile(tile, rectangle, 29 + (tile.GetHashCode() % 4));
+            }
+            else
+            {
+                DrawSolidColorTile(tile, rectangle);
+            }
 
-            //_graphics.DrawRectangle(pen, rectangle);
-            _graphics.FillRectangle(new SolidBrush(GetColorForTile(tile.TileType)), rectangle);
             if (isVisible && tile.LightLevel > 0)
             {
                 foreach (var item in tile.Inventory.Items)
@@ -43,12 +51,27 @@ namespace Simmental.Interfaces.WinForm.Render
             {
                 const int brightLevel = 40;     // when tile.LightLevel = 100
                 const int darkLevel = 5;        // when tile.LightLevel = 0
-                int alpha = (int)((brightLevel - darkLevel) * (tile.LightLevel/100.0) + darkLevel);
+                int alpha = (int)((brightLevel - darkLevel) * (tile.LightLevel / 100.0) + darkLevel);
                 using (var brush = new SolidBrush(Color.FromArgb(alpha, 255, 255, 0)))
                     _graphics.FillRectangle(brush, rectangle);
 
             }
 
+        }
+
+        private void DrawResourceTile(ITile tile, Rectangle rectangle, int tileNo)
+        {
+            TileManager.Tiles(GraphicNameEnum.txGround).BitBltTile(_graphics, rectangle, tileNo);
+
+        }
+
+        private void DrawSolidColorTile(ITile tile, Rectangle rectangle)
+        {
+            // We can draw our tile based on what it looks like into the rectanle
+            Pen pen = new Pen(GetColorForTile(tile.TileType));
+
+            //_graphics.DrawRectangle(pen, rectangle);
+            _graphics.FillRectangle(new SolidBrush(GetColorForTile(tile.TileType)), rectangle);
         }
 
         private Color GetColorForTile(TileEnum tileType)

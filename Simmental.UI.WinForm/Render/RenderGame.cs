@@ -4,8 +4,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Simmental.Interfaces;
 
-namespace Simmental.Interfaces.WinForm.Render
+
+namespace Simmental.UI.WinForm.Render
 {
     public class RenderGame
     {
