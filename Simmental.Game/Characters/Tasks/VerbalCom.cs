@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Simmental.Game.Characters.Tasks
 {
     [Serializable]
-    internal class VerbalCom : ITask
+    internal class VerbalCom : ITask, IListen
     {
 
         private ITask _subtask;
@@ -16,12 +16,12 @@ namespace Simmental.Game.Characters.Tasks
         public void Start(IGame game, ICharacter character)
         {
             _comms = game.GetComms(character.Race.ToString());
-            _comms.StartListening(character, Listen);
+            _comms.StartListening(character, this);
         }
 
         public void Stop(IGame game, ICharacter character) 
         {
-            _comms.StopListening(character, Listen);
+            _comms.StopListening(character, this);
         }
 
         public bool ExecuteTask(IGame game, ICharacter character)
@@ -38,7 +38,7 @@ namespace Simmental.Game.Characters.Tasks
 
         ICommsMessage _lastMessage;
 
-        private void Listen(ICommsMessage message)
+        public void Listen(ICommsMessage message)
         {
             if (message == _lastMessage)
                 return;

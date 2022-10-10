@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Simmental.Game.Characters.Tasks
 {
     [Serializable]
-    public class RageAttack : ITask
+    public class RageAttack : ITask, IListen
     {
 
         int _turnCount = 0;
@@ -27,11 +27,11 @@ namespace Simmental.Game.Characters.Tasks
             _game = game;
             _character = character;
             _comms = game.GetComms(character.Race.ToString());
-            _comms.StartListening(character, Listen);
+            _comms.StartListening(character, this);
         }
         public void Stop(IGame game, ICharacter character) 
         {
-            _comms.StopListening(character, Listen);
+            _comms.StopListening(character, this);
         }
 
         public bool ExecuteTask(IGame game, ICharacter character)
@@ -62,7 +62,7 @@ namespace Simmental.Game.Characters.Tasks
 
             return _pathfinder != null;
         }
-        private void Listen(ICommsMessage message) 
+        public void Listen(ICommsMessage message) 
         { 
             if (message is SawTarget sawTarget)
             {

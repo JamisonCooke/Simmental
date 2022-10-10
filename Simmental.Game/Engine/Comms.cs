@@ -18,9 +18,9 @@ namespace Simmental.Game.Engine
         private class NpcInfo
         {
             public ICharacter Npc { get; }
-            public Action<ICommsMessage> Listener { get; }
+            public IListen Listener { get; }
 
-            public NpcInfo(ICharacter npc, Action<ICommsMessage> listener)
+            public NpcInfo(ICharacter npc, IListen listener)
             {
                 Npc = npc;
                 Listener = listener;
@@ -31,12 +31,12 @@ namespace Simmental.Game.Engine
 
         private List<NpcInfo> _npcs = new();
 
-        public void StartListening(ICharacter npc, Action<ICommsMessage> listener)
+        public void StartListening(ICharacter npc, IListen listener)
         {
             _npcs.Add(new NpcInfo(npc, listener));
         }
 
-        public void StopListening(ICharacter npc, Action<ICommsMessage> listener)
+        public void StopListening(ICharacter npc, IListen listener)
         {
             // Better way w/ lambdas
             _npcs.RemoveAll((info) => info.Npc == npc && info.Listener == listener);
@@ -50,7 +50,7 @@ namespace Simmental.Game.Engine
             foreach(var npcInfo in yellTo)
             {
                 message.HeardAlready.Add(npcInfo.Npc);
-                npcInfo.Listener(message);
+                npcInfo.Listener.Listen(message);
             }
         }
 

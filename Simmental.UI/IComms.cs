@@ -9,8 +9,8 @@ namespace Simmental.Interfaces
     public interface IComms
     {
 
-        public void StartListening(ICharacter npc, Action<ICommsMessage> listener);
-        public void StopListening(ICharacter npc, Action<ICommsMessage> listener);
+        public void StartListening(ICharacter npc, IListen listener);
+        public void StopListening(ICharacter npc, IListen listener);
         public void Yell(ICommsMessage message, ICharacter speaker);
     }
 }
