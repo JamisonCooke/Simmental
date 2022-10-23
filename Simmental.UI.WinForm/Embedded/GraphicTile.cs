@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Simmental.UI.WinForm.Embedded
             TilesPerRow = Image.Width / tileWidth;
         }
 
-        public void BitBltTile(Graphics graphics, Rectangle destRect, int tileNo)
+        public void BitBltTile(Graphics graphics, Rectangle destRect, int tileNo, double zoom = 1.0)
         {
             // TileNo in a 4 x 4 grapic would be laid out:
             //  0 | 1 | 2 | 3  4, 5, 6, 7, 8, 9, 10, 
@@ -40,8 +41,15 @@ namespace Simmental.UI.WinForm.Embedded
             int x = (tileNo % TilesPerRow) * TileWidth;
             int y = (tileNo / TilesPerRow) * TileWidth;
             Rectangle srcRect = new Rectangle(x, y, TileWidth, TileHeight);
+            Rectangle targetRect = destRect;
+            if (zoom != 1.0)
+            {
+                int zoomWidth = (int)(destRect.Width * zoom);
+                int zoomHeight = (int)(destRect.Height * zoom);
+                targetRect = new Rectangle(destRect.X - (zoomWidth - destRect.Width) / 2, destRect.Y - (zoomHeight - destRect.Height) / 2, zoomWidth, zoomHeight);
+            }
 
-            graphics.DrawImage(Image, destRect, srcRect, GraphicsUnit.Pixel);
+            graphics.DrawImage(Image, targetRect, srcRect, GraphicsUnit.Pixel);
         }
 
         private Bitmap LoadGraphic()

@@ -32,7 +32,20 @@ namespace Simmental.UI.WinForm.Render
 
             if (tile.TileType == TileEnum.Grass)
             {
-                DrawResourceTile(tile, rectangle, 29 + (tile.GetHashCode() % 4));
+                DrawResourceTile(GraphicNameEnum.txGround, rectangle, 0 + (tile.GetHashCode() % 32));
+            }
+            else if (tile.TileType == TileEnum.Stone)
+            {
+                // DrawResourceTile(GraphicNameEnum.txGround, rectangle, 32 + (tile.GetHashCode() % 30));
+                DrawResourceTile(GraphicNameEnum.txStone, rectangle, 27);
+            }
+            else if (tile.TileType == TileEnum.Wall)
+            {
+                DrawResourceTile(GraphicNameEnum.txWall, rectangle, 161);
+            }
+            else if (tile.TileType == TileEnum.Wood)
+            {
+                DrawResourceTile(GraphicNameEnum.txWall, rectangle, 145);
             }
             else
             {
@@ -59,9 +72,9 @@ namespace Simmental.UI.WinForm.Render
 
         }
 
-        private void DrawResourceTile(ITile tile, Rectangle rectangle, int tileNo)
+        private void DrawResourceTile(GraphicNameEnum graphicName, Rectangle rectangle, int tileNo)
         {
-            TileManager.Tiles(GraphicNameEnum.txGround).BitBltTile(_graphics, rectangle, tileNo);
+            TileManager.Tiles(graphicName).BitBltTile(_graphics, rectangle, tileNo);
 
         }
 

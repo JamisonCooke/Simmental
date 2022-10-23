@@ -9,15 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\gregRun.png" />
     <None Remove="Resources\txGround.png" />
+    <None Remove="Resources\txStone.png" />
+    <None Remove="Resources\txWall.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\gregRun.png" />
     <EmbeddedResource Include="Resources\txGround.png" />
+    <EmbeddedResource Include="Resources\txStone.png" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Simmental.UI\Simmental.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\txWall.png" />
   </ItemGroup>
 
 </Project>

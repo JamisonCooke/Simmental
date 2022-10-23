@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Simmental.Interfaces;
-
+using Simmental.UI.WinForm.Embedded;
 
 namespace Simmental.UI.WinForm.Render
 {
@@ -21,8 +21,8 @@ namespace Simmental.UI.WinForm.Render
             switch(character.Race)
             {
                 case RaceEnum.Human:
-                    color = Brushes.Blue;
-                    break;
+                    TileManager.Tiles(GraphicNameEnum.gregRun).BitBltTile(graphics, rectangle, 0, 1.8);
+                    return;
 
                 case RaceEnum.Orc:
                     color = Brushes.Gray;

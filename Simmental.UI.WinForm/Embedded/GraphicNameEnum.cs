@@ -10,5 +10,8 @@ namespace Simmental.UI.WinForm.Embedded
     {
         Undefined = 0,
         txGround = 1,
+        txWall = 2,
+        txStone = 3,
+        gregRun = 4,
     }
 }
