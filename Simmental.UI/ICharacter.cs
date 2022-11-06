@@ -38,5 +38,6 @@ namespace Simmental.Interfaces
         ElementEnum ElementallyImmune { get; }
         ElementEnum ElementallyVulnerable { get; }
 
+        IAnimations Animations { get; set; }
     }
 }

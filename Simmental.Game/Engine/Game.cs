@@ -16,6 +16,7 @@ using Simmental.Game.Characters.Tasks;
 using System.Xml.Serialization;
 using Simmental.Game.Command;
 using System.Linq.Expressions;
+using Simmental.Game.Animate;
 
 namespace Simmental.Game.Engine
 {
@@ -83,6 +84,9 @@ namespace Simmental.Game.Engine
             Player.Inventory.Add(arrows);
             Player.SecondaryWeapon = crossbow;
             
+            Player.Animations = new Animations();
+            Player.Animations.DefaultAnimation = new Animation();
+
 
             NPC = new List<ICharacter>();
 
@@ -112,6 +116,8 @@ namespace Simmental.Game.Engine
 
             this.Designer.TopLeft = new Position(2, 2);
             this.Designer.BottomRight = new Position(5, 3);
+
+            this.RestoredIntoRAM();
         }
 
         public void NPCTurn()
@@ -143,6 +149,9 @@ namespace Simmental.Game.Engine
 #pragma warning restore SYSLIB0011 // Type or member is obsolete
                 stream.Close();
                 game.FullSaveFileName = FileNameWithOutVersion(filename);
+
+                game.RestoredIntoRAM();
+
                 return game;
             }
             catch(Exception ex)
@@ -151,6 +160,20 @@ namespace Simmental.Game.Engine
                     return null;
                 else
                     throw new Exception($"Error loading from file '{filename}'.", ex);
+            }
+        }
+
+        private void RestoredIntoRAM()
+        {
+            // Sometimes we add properties and default values that were not set in the past. 
+            // This code adds a place to set some of those default values if they hadn't been prior
+            if (Player.Animations == null || true)
+            {
+                // Set up default player animations
+                Player.Animations = new Animations();
+                Player.Animations.DefaultAnimation = new Animation(GraphicNameEnum.gregIdle, DateTime.MinValue, TimeSpan.MaxValue, new int[] { 0, 1, 2, 3 }, new TimeSpan(0, 0, 0, 0, 250));
+
+                Player.Animations = null;
             }
         }
 

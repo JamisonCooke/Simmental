@@ -14,6 +14,8 @@ namespace Simmental.UI.WinForm.Render
 
         public void Render(IWayfinder wayfinder, ICharacter character, Graphics graphics)
         {
+            if (character.Animations?.Current != null) return;
+
             var renderHelper = new RenderHelper();
             Rectangle rectangle = renderHelper.GetTileRect(wayfinder, character.Position.i, character.Position.j);
             Brush color = Brushes.Black;
@@ -21,7 +23,7 @@ namespace Simmental.UI.WinForm.Render
             switch(character.Race)
             {
                 case RaceEnum.Human:
-                    TileManager.Tiles(GraphicNameEnum.gregRun).BitBltTile(graphics, rectangle, 0, 1.8);
+                    TileManager.Tiles(GraphicNameEnum.gregRun).BitBltTile(graphics, rectangle, 0, 1);
                     return;
 
                 case RaceEnum.Orc:

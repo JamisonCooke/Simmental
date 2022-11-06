@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simmental.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -18,6 +19,10 @@ namespace Simmental.UI.WinForm.Embedded
 
             // Load up odd sizes first
             _graphicTiles[(int)GraphicNameEnum.gregRun] = new GraphicTile(GraphicNameEnum.gregRun, 80, 80);
+            _graphicTiles[(int)GraphicNameEnum.gregAttack] = new GraphicTile(GraphicNameEnum.gregAttack, 96, 80);
+            _graphicTiles[(int)GraphicNameEnum.gregDead] = new GraphicTile(GraphicNameEnum.gregDead, 64, 80);
+            _graphicTiles[(int)GraphicNameEnum.gregIdle] = new GraphicTile(GraphicNameEnum.gregIdle, 64, 80);
+            _graphicTiles[(int)GraphicNameEnum.gregJump] = new GraphicTile(GraphicNameEnum.gregJump, 64, 80);
 
             // Load up every enum not loaded yet
             foreach (GraphicNameEnum graphicName in (GraphicNameEnum[]) Enum.GetValues(typeof(GraphicNameEnum)))

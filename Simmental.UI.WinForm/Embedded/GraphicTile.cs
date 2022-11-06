@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simmental.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -54,7 +55,6 @@ namespace Simmental.UI.WinForm.Embedded
 
         private Bitmap LoadGraphic()
         {
-
             Assembly myAssembly = Assembly.GetExecutingAssembly();
             string resourceName = $"Simmental.UI.WinForm.Resources.{GraphicName}.png";
             Stream myStream = myAssembly.GetManifestResourceStream(resourceName);

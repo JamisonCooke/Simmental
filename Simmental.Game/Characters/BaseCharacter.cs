@@ -67,6 +67,8 @@ namespace Simmental.Game.Characters
         private List<ITask> _tasks = new();
         public IEnumerable<ITask> Tasks => _tasks;
 
+        public IAnimations Animations { get; set; }
+
         public void ClearTasks(IGame game)
         {
             foreach (var task in _tasks)

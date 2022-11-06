@@ -1,4 +1,5 @@
-﻿using Simmental.Game.Command;
+﻿using Simmental.Game.Animate;
+using Simmental.Game.Command;
 using Simmental.Interfaces;
 using Simmental.UI.WinForm.Render;
 using System;
@@ -26,12 +27,12 @@ namespace Simmental
 
         public Simmental.Interfaces.IRenderHelper RenderHelper { get; set; }
 
-        public void RefreshScreen(Graphics graphics, int width, int height)
+        public void RefreshScreen(Graphics graphics, PictureBox pictureBox, int width, int height)
         {
             Game.Wayfinder.CameraWidth = width / Game.Wayfinder.TilePixelWidth + 1;
             Game.Wayfinder.CameraHeight = height / Game.Wayfinder.TilePixelHeight + 1;
             RenderGame renderer = new RenderGame();
-            renderer.Render(Game, graphics);
+            renderer.Render(Game, graphics, pictureBox);
         }
 
         public void RefreshTile(Graphics graphics, int i, int j)
@@ -129,11 +130,13 @@ namespace Simmental
                 default:    // Runs when no above cases are hit
                     return;
             }
+            //Game.Player.Animations.Add(new Animation(GraphicNameEnum.gregRun, DateTime.Now, new TimeSpan(0, 0, 0, 0, 350), new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new TimeSpan(0, 0, 0, 0, 50), new Position(Game.Player.Position), new Position(i, j)));
             Game.Wayfinder.Move(Game.Player, new Position(i, j));
 
             if (npc != null)
             {
                 //Attack the npc!
+                //Game.Player.Animations.Add(new Animation(GraphicNameEnum.gregAttack, DateTime.Now, new TimeSpan(0, 0, 0, 0, 350), new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new TimeSpan(0, 0, 0, 0, 50), new Position(Game.Player.Position), new Position(i, j)));
                 Game.Player.Attack(Game, npc, Game.Player.PrimaryWeapon);
                 //MOVE ME
             }

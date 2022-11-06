@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\gregAttack.png" />
+    <None Remove="Resources\gregDead.png" />
+    <None Remove="Resources\gregIdle.png" />
+    <None Remove="Resources\gregJump.png" />
     <None Remove="Resources\gregRun.png" />
     <None Remove="Resources\txGround.png" />
     <None Remove="Resources\txStone.png" />
@@ -16,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\gregAttack.png" />
+    <EmbeddedResource Include="Resources\gregDead.png" />
+    <EmbeddedResource Include="Resources\gregIdle.png" />
+    <EmbeddedResource Include="Resources\gregJump.png" />
     <EmbeddedResource Include="Resources\gregRun.png" />
     <EmbeddedResource Include="Resources\txGround.png" />
     <EmbeddedResource Include="Resources\txStone.png" />

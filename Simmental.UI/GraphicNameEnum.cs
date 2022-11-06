@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simmental.UI.WinForm.Embedded
+namespace Simmental.Interfaces
 {
     public enum GraphicNameEnum
     {
@@ -13,5 +13,9 @@ namespace Simmental.UI.WinForm.Embedded
         txWall = 2,
         txStone = 3,
         gregRun = 4,
+        gregAttack = 5,
+        gregDead = 6,
+        gregIdle = 7,
+        gregJump = 8,
     }
 }

@@ -143,7 +143,8 @@ namespace Simmental
 
         private void mapPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            _gameFormHelper.RefreshScreen(e.Graphics, mapPictureBox.Width, mapPictureBox.Height);
+            
+            _gameFormHelper.RefreshScreen(e.Graphics, mapPictureBox, mapPictureBox.Width, mapPictureBox.Height);
 
         }
 

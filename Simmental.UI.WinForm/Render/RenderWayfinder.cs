@@ -43,7 +43,7 @@ namespace Simmental.UI.WinForm.Render
             RenderSingleTile(wayfinder, playerPosition, renderTile, renderHelper, i, j);
         }
 
-        private static void RenderSingleTile(IWayfinder wayfinder, Position playerPosition, RenderTile renderTile, RenderHelper renderHelper, int i, int j)
+        public static void RenderSingleTile(IWayfinder wayfinder, Position playerPosition, RenderTile renderTile, RenderHelper renderHelper, int i, int j)
         {
             ITile tile = wayfinder[i, j];
             Rectangle rectangle = renderHelper.GetTileRect(wayfinder, i, j);
