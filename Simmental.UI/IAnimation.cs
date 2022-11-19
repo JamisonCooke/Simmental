@@ -15,5 +15,8 @@ namespace Simmental.Interfaces
         int GetSlideNo(DateTime time);
 
         double PercentComplete(DateTime time);
+        int CameraI { get; set; }
+        int CameraJ { get; set; }
+
     }
 }

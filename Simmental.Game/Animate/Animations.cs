@@ -33,7 +33,7 @@ namespace Simmental.Game.Animate
 
         private void ExpireAnimations()
         {
-            _animationList.RemoveAll(a => DateTime.Now > a.StartTime + a.Duration);
+            _animationList.RemoveAll(a => a is null || DateTime.Now > a.StartTime + a.Duration);
         }
 
     }

@@ -21,6 +21,25 @@ namespace Simmental.UI.WinForm.Render
 
         }
 
+        public void Render(IGame game, ITile tile, Rectangle rectangle, bool isVisible, bool includeNPCs)
+        {
+            if (tile == null) return;
+            Render(tile, rectangle, isVisible);
+            if (!includeNPCs)
+                return;
+
+            RenderCharacter renderCharacter = new RenderCharacter();
+            renderCharacter.Render(game.Wayfinder, game.Player, _graphics);
+
+            foreach (ICharacter npc in tile.NPCs)
+            {
+                if (game.Wayfinder.IsVisible(game.Player.Position, npc.Position))
+                    renderCharacter.Render(game.Wayfinder, npc, _graphics);
+            }
+
+        }
+
+
         public void Render(ITile tile, Rectangle rectangle, bool isVisible)
         {
             if (tile == null)

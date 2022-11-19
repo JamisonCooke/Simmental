@@ -32,6 +32,7 @@ namespace Simmental
             Game.Wayfinder.CameraWidth = width / Game.Wayfinder.TilePixelWidth + 1;
             Game.Wayfinder.CameraHeight = height / Game.Wayfinder.TilePixelHeight + 1;
             RenderGame renderer = new RenderGame();
+            //graphics.FillRectangle(Brushes.Black, new Rectangle(0, 0, pictureBox.Width, pictureBox.Height));
             renderer.Render(Game, graphics, pictureBox);
         }
 
@@ -130,13 +131,26 @@ namespace Simmental
                 default:    // Runs when no above cases are hit
                     return;
             }
-            //Game.Player.Animations.Add(new Animation(GraphicNameEnum.gregRun, DateTime.Now, new TimeSpan(0, 0, 0, 0, 350), new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new TimeSpan(0, 0, 0, 0, 50), new Position(Game.Player.Position), new Position(i, j)));
-            Game.Wayfinder.Move(Game.Player, new Position(i, j));
+
+            if (Game.Player.Position.i != i || Game.Player.Position.j != j)
+            {
+                if (KeepCameraOnPlayer(new Position(i, j)))
+                {
+                    using (Graphics g = GamePictureBox.CreateGraphics())
+                    {
+                        RefreshScreen(g, GamePictureBox, GamePictureBox.Width, GamePictureBox.Height);
+                    }                        
+                }
+
+                Game.Player.Animations.Add(new Animation(Game, GraphicNameEnum.gregRun, DateTime.Now, new TimeSpan(0, 0, 0, 0, 350), new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new TimeSpan(0, 0, 0, 0, 50), new Position(Game.Player.Position), new Position(i, j)));
+                Game.Wayfinder.Move(Game.Player, new Position(i, j));
+
+            }
 
             if (npc != null)
             {
                 //Attack the npc!
-                //Game.Player.Animations.Add(new Animation(GraphicNameEnum.gregAttack, DateTime.Now, new TimeSpan(0, 0, 0, 0, 350), new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new TimeSpan(0, 0, 0, 0, 50), new Position(Game.Player.Position), new Position(i, j)));
+                Game.Player.Animations.Add(new Animation(Game, GraphicNameEnum.gregAttack, DateTime.Now, new TimeSpan(0, 0, 0, 0, 350), new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new TimeSpan(0, 0, 0, 0, 50), new Position(Game.Player.Position), new Position(i, j)));
                 Game.Player.Attack(Game, npc, Game.Player.PrimaryWeapon);
                 //MOVE ME
             }
@@ -152,8 +166,8 @@ namespace Simmental
             Game.CompleteTurn();
             UpdateInfoPanel(updateInventory);
 
-            KeepCameraOnPlayer();
-            GamePictureBox.Refresh();
+            if (KeepCameraOnPlayer(Game.Player.Position))
+                GamePictureBox.Refresh();
         }
 
         public void UpdateMessages()
@@ -207,10 +221,13 @@ namespace Simmental
             sb.AppendLine();
         }
 
-        public void KeepCameraOnPlayer()
+        public bool KeepCameraOnPlayer(Position p)
         {
-            Game.Wayfinder.CameraI = Game.Player.Position.i - Game.Wayfinder.CameraWidth / 2;
-            Game.Wayfinder.CameraJ = Game.Player.Position.j - Game.Wayfinder.CameraHeight / 2;
+            int startI = Game.Wayfinder.CameraI;
+            int startJ = Game.Wayfinder.CameraJ;
+
+            Game.Wayfinder.CameraI = p.i - Game.Wayfinder.CameraWidth / 2;
+            Game.Wayfinder.CameraJ = p.j - Game.Wayfinder.CameraHeight / 2;
             if (Game.Wayfinder.CameraI < 0)
                 Game.Wayfinder.CameraI = 0;
             if (Game.Wayfinder.CameraJ < 0)
@@ -220,7 +237,8 @@ namespace Simmental
                 Game.Wayfinder.CameraI = Game.Wayfinder.Width - Game.Wayfinder.CameraWidth + 1;
             if (Game.Wayfinder.CameraJ > Game.Wayfinder.Height - Game.Wayfinder.CameraHeight + 1)
                 Game.Wayfinder.CameraJ = Game.Wayfinder.Height - Game.Wayfinder.CameraHeight + 1;
-            
+
+            return (startI != Game.Wayfinder.CameraI || startJ != Game.Wayfinder.CameraJ);
         }
 
         /// <summary>
@@ -369,7 +387,7 @@ namespace Simmental
         {
             Game.Wayfinder.TilePixelHeight = value;
             Game.Wayfinder.TilePixelWidth = value;
-            KeepCameraOnPlayer();
+            KeepCameraOnPlayer(Game.Player.Position);
             GamePictureBox.Refresh();
 
         }

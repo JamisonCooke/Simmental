@@ -171,9 +171,7 @@ namespace Simmental.Game.Engine
             {
                 // Set up default player animations
                 Player.Animations = new Animations();
-                Player.Animations.DefaultAnimation = new Animation(GraphicNameEnum.gregIdle, DateTime.MinValue, TimeSpan.MaxValue, new int[] { 0, 1, 2, 3 }, new TimeSpan(0, 0, 0, 0, 250));
-
-                Player.Animations = null;
+                Player.Animations.DefaultAnimation = new Animation(this, GraphicNameEnum.gregIdle, DateTime.MinValue, TimeSpan.MaxValue, new int[] { 0, 1, 2, 3 }, new TimeSpan(0, 0, 0, 0, 250));
             }
         }
 

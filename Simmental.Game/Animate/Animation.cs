@@ -19,6 +19,9 @@ namespace Simmental.Game.Animate
         public TimeSpan SlideDuration { get; set; }
         public Position StartPosition { get; set; }
         public Position EndPosition { get; set; }
+        public int CameraI { get; set; }
+        public int CameraJ { get; set; }
+
         public int GetSlideNo(DateTime time)
         {
             if (time < StartTime || (Duration != TimeSpan.MaxValue && time > StartTime + Duration))
@@ -35,8 +38,11 @@ namespace Simmental.Game.Animate
         }
 
         public Animation() { }
-        public Animation(GraphicNameEnum graphicName, DateTime startTime, TimeSpan duration, int[] slideNos, TimeSpan slideDuration, Position startPosition = null, Position endPosition = null)
+        public Animation(IGame game, GraphicNameEnum graphicName, DateTime startTime, TimeSpan duration, int[] slideNos, TimeSpan slideDuration, Position startPosition = null, Position endPosition = null)
         {
+            CameraI = game.Wayfinder.CameraI;
+            CameraJ = game.Wayfinder.CameraJ;
+
             GraphicName = graphicName;
             StartTime = startTime;
             Duration = duration;

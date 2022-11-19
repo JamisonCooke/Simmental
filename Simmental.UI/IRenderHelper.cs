@@ -5,6 +5,6 @@ namespace Simmental.Interfaces
     public interface IRenderHelper
     {
         bool GetTileIndex(IWayfinder wayfinder, int x, int y, out int i, out int j);
-        Rectangle GetTileRect(IWayfinder wayfinder, int i, int j);
+        Rectangle GetTileRect(IWayfinder wayfinder, int i, int j, int cameraI = int.MinValue, int cameraJ = int.MinValue);
     }
 }

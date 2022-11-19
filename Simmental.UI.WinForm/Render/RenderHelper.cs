@@ -11,12 +11,18 @@ namespace Simmental.UI.WinForm.Render
 {
     public class RenderHelper : IRenderHelper
     {
-        public Rectangle GetTileRect(IWayfinder wayfinder, int i, int j)
+        public Rectangle GetTileRect(IWayfinder wayfinder, int i, int j, int cameraI = int.MinValue, int cameraJ = int.MinValue)
         {
             int tileWidth = wayfinder.TilePixelWidth;
             int tileHeight = wayfinder.TilePixelHeight;
 
-                Rectangle rectangle = new Rectangle((i - wayfinder.CameraI) * tileWidth, (j - wayfinder.CameraJ) * tileHeight, tileWidth, tileHeight);
+            if (cameraI == int.MinValue)
+            {
+                cameraI = wayfinder.CameraI;
+                cameraJ = wayfinder.CameraJ;
+            }
+
+            Rectangle rectangle = new Rectangle((i - cameraI) * tileWidth, (j - cameraJ) * tileHeight, tileWidth, tileHeight);
             return rectangle;
         }
         public bool GetTileIndex(IWayfinder wayfinder, int x, int y, out int i, out int j)
