@@ -23,7 +23,7 @@ namespace Simmental.UI.WinForm.Render
             switch(character.Race)
             {
                 case RaceEnum.Human:
-                    TileManager.Tiles(GraphicNameEnum.gregRun).BitBltTile(graphics, rectangle, 0, 1);
+                    TileManager.Tiles(GraphicNameEnum.gregRun).BitBltTile(graphics, rectangle, 0, character.IsLookingLeft);
                     return;
 
                 case RaceEnum.Orc:

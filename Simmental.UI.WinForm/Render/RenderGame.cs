@@ -89,7 +89,7 @@ namespace Simmental.UI.WinForm.Render
             int dx = (int)((endRectangle.X - startRectangle.X) * percentDone);
             int dy = (int)((endRectangle.Y - startRectangle.Y) * percentDone);
             
-            TileManager.Tiles(animation.GraphicName).BitBltTile(offscreenGraphics, new Rectangle(tw + dx, th + dy, tw, th), slideNo, 1);
+            TileManager.Tiles(animation.GraphicName).BitBltTile(offscreenGraphics, new Rectangle(tw + dx, th + dy, tw, th), slideNo, game.Player.IsLookingLeft);
             graphics.DrawImage(offscreenBitmap, offsetRectangle.X, offsetRectangle.Y);
 
             offscreenGraphics.Dispose();
@@ -177,7 +177,7 @@ namespace Simmental.UI.WinForm.Render
                 // if it has a start position, then use the cameraI/J from the animation
                 rectangle = renderHelper.GetTileRect(game.Wayfinder, p.i - 1, p.j - 1, animation.CameraI, animation.CameraJ);
             }
-            TileManager.Tiles(animation.GraphicName).BitBltTile(offscreenGraphics, new Rectangle(tw + dx, th + dy, tw, th), slideNo, 1);
+            TileManager.Tiles(animation.GraphicName).BitBltTile(offscreenGraphics, new Rectangle(tw + dx, th + dy, tw, th), slideNo, game.Player.IsLookingLeft);
             graphics.DrawImage(offscreenBitmap, rectangle.X, rectangle.Y);
 
             offscreenGraphics.Dispose();

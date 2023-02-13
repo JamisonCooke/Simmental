@@ -120,11 +120,13 @@ namespace Simmental
                 case Keys.A:
                     if (CanWalkOn(i - 1, j, out npc))
                         i--;
+                    Game.Player.IsLookingLeft = true;
                     break;
 
                 case Keys.D:
                     if (CanWalkOn(i + 1, j, out npc))
                         i++;
+                    Game.Player.IsLookingLeft = false;
                     break;
 
                 case Keys.J:

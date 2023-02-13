@@ -39,5 +39,6 @@ namespace Simmental.Interfaces
         ElementEnum ElementallyVulnerable { get; }
 
         IAnimations Animations { get; set; }
+        bool IsLookingLeft { get; set; }
     }
 }

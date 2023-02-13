@@ -35,6 +35,7 @@ namespace Simmental.Game.Characters
         public Position Position { get; private set; } = new Position();
         public IWeapon PrimaryWeapon { get; set; }
         public IWeapon SecondaryWeapon { get; set; }
+        public bool IsLookingLeft { get; set; }
         //public IItem Armor { get; set; }
 
         public virtual RaceEnum Race
