@@ -15,6 +15,10 @@ namespace Simmental.UI.WinForm.Render
         {
             Render(wayfinder, g, playerPosition);
         }
+        public RenderWayfinder(IWayfinder wayfinder, Graphics g, Position playerPosition, int leftTile, int rightTile, int topTile, int bottomTile)
+        {
+            Render(wayfinder, g, playerPosition, leftTile, rightTile, topTile, bottomTile);
+        }
 
         public RenderWayfinder(IWayfinder wayfinder, Graphics g, Position playerPosition, int i, int j)
         {
@@ -26,15 +30,39 @@ namespace Simmental.UI.WinForm.Render
             var renderTile = new RenderTile(g);
             var renderHelper = new RenderHelper();
 
-            for (int i = wayfinder.CameraI; i < wayfinder.CameraWidth + wayfinder.CameraI; i++)
+            int leftTile = wayfinder.CameraI;
+            if (wayfinder.XOffset != 0) 
+                leftTile -= ((wayfinder.XOffset + wayfinder.TilePixelWidth - 1) / wayfinder.TilePixelWidth);
+
+            int rightTile = wayfinder.CameraWidth + leftTile;
+            if ((wayfinder.XOffset % wayfinder.TilePixelWidth) != 0)
+                rightTile++;
+            int topTile = wayfinder.CameraJ;
+            if (wayfinder.YOffset != 0)
+                topTile -= ((wayfinder.YOffset + wayfinder.TilePixelHeight - 1) / wayfinder.TilePixelHeight);
+            int bottomTile = wayfinder.CameraHeight + wayfinder.CameraJ;
+            if ((wayfinder.YOffset % wayfinder.TilePixelHeight) != 0)
+                bottomTile++;
+
+            Render(wayfinder, g, playerPosition, leftTile, rightTile, topTile, bottomTile);
+        }
+
+        private static void Render(IWayfinder wayfinder, Graphics g, Position playerPosition, int leftTile, int rightTile, int topTile, int bottomTile)
+        {
+            var renderTile = new RenderTile(g);
+            var renderHelper = new RenderHelper();
+
+            for (int i = leftTile; i < rightTile; i++)
             {
-                for (int j = wayfinder.CameraJ; j < wayfinder.CameraHeight + wayfinder.CameraJ; j++)
+                for (int j = topTile; j < bottomTile; j++)
                 {
                     RenderSingleTile(wayfinder, playerPosition, renderTile, renderHelper, i, j);
                 }
 
             }
         }
+
+
         public static void RenderTile(IWayfinder wayfinder, Graphics g, Position playerPosition, int i, int j)
         {
             var renderTile = new RenderTile(g);

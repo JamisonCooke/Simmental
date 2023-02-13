@@ -22,6 +22,10 @@ namespace Simmental.Game.Animate
         public int CameraI { get; set; }
         public int CameraJ { get; set; }
 
+        public IDisposable CacheObject { get; set; }
+
+
+
         public int GetSlideNo(DateTime time)
         {
             if (time < StartTime || (Duration != TimeSpan.MaxValue && time > StartTime + Duration))

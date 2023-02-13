@@ -46,76 +46,142 @@ namespace Simmental.UI.WinForm.Render
             _animationTimer = new System.Threading.Timer(AnimationTimerCallback, gameGraphicsTuple, 1, 100);
         }
 
-        private void AnimationTimerCallback(object state) 
+        private void AnimationMove(IGame game, PictureBox pictureBox, IAnimation animation)
         {
-            try
+            DateTime now = DateTime.Now;
+            var renderHelper = new RenderHelper();
+            var wayfinder = game.Wayfinder;
+            if (!pictureBox.Visible || game.Player.Animations is null) return;
+
+            int tw = game.Wayfinder.TilePixelWidth;
+            int th = game.Wayfinder.TilePixelHeight;
+
+            Graphics graphics = pictureBox.CreateGraphics();
+
+            // Draw the base square/tile to clear whatever was there in the past.
+            Position p = new Position(animation.StartPosition);
+
+            // We need to render the entire screen minus the player to the extenal cache graphic
+            Bitmap wayfinderBuffer;
+            Rectangle offsetRectangle = renderHelper.GetTileRect(game.Wayfinder, p.i - 1, p.j - 1);       // Top left when we're rendering
+
+            if (animation.CacheObject == null)
             {
+                wayfinderBuffer = new Bitmap(wayfinder.TilePixelWidth * 3, wayfinder.TilePixelHeight * 3);
+                var wfGraphics = Graphics.FromImage(wayfinderBuffer);
+                animation.CacheObject = wayfinderBuffer;        // Remember it for nex ttime
+                (wayfinder.XOffset, wayfinder.YOffset) = (-offsetRectangle.Left, -offsetRectangle.Top);
+                var renderWayfinder = new RenderWayfinder(game.Wayfinder, wfGraphics, p, p.i - 1, p.i + 1, p.j - 1, p.j + 1);
+                (wayfinder.XOffset, wayfinder.YOffset) = (0, 0);
+            }
+            wayfinderBuffer = animation.CacheObject as Bitmap;
 
-                lock (_lockObject)
+            Bitmap offscreenBitmap = new Bitmap(tw * 3, th * 3);
+            Graphics offscreenGraphics = Graphics.FromImage(offscreenBitmap);
+            offscreenGraphics.DrawImage(wayfinderBuffer, 0, 0);
+
+            // Add player to wayfinderGraphics
+            int slideNo = animation.GetSlideNo(now);
+            double percentDone = animation.PercentComplete(now);
+
+            Rectangle startRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.StartPosition.i, animation.StartPosition.j);
+            Rectangle endRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.EndPosition.i, animation.EndPosition.j);
+            int dx = (int)((endRectangle.X - startRectangle.X) * percentDone);
+            int dy = (int)((endRectangle.Y - startRectangle.Y) * percentDone);
+            
+            TileManager.Tiles(animation.GraphicName).BitBltTile(offscreenGraphics, new Rectangle(tw + dx, th + dy, tw, th), slideNo, 1);
+            graphics.DrawImage(offscreenBitmap, offsetRectangle.X, offsetRectangle.Y);
+
+            offscreenGraphics.Dispose();
+            graphics.Dispose();
+        }
+
+
+        private void AnimationTimerCallback(object state)
+        {
+            (IGame game, PictureBox pictureBox) = (Tuple<IGame, PictureBox>)state;
+
+            IAnimation animation = game.Player.Animations.Current;
+            lock (_lockObject)
+            {
+                try
                 {
-                    DateTime now = DateTime.Now;
-                    var renderHelper = new RenderHelper();
-                    (IGame game, PictureBox pictureBox) = (Tuple<IGame, PictureBox>)state;
-                    if (!pictureBox.Visible || game.Player.Animations is null) return;
 
-                    int tw = game.Wayfinder.TilePixelWidth;
-                    int th = game.Wayfinder.TilePixelHeight;
-
-                    Graphics graphics = pictureBox.CreateGraphics();
-
-                    IAnimation animation = game.Player.Animations.Current;
-
-                    // Draw the base square/tile to clear whatever was there in the past.
-                    Position p = new Position(game.Player.Position);
                     if (animation.StartPosition is not null)
-                        p = new Position(animation.StartPosition);
-
-                    Rectangle offscreenRectangle = new Rectangle(0, 0, tw * 3, th * 3);
-                    Bitmap offscreenBitmap = new Bitmap(offscreenRectangle.Width, offscreenRectangle.Height);
-                    Graphics offscreenGraphics = Graphics.FromImage(offscreenBitmap);
-                    var renderTile = new RenderTile(offscreenGraphics);
-
-                    renderTile.Render(game, game.Wayfinder[p.i - 1, p.j - 1], new Rectangle(tw * 0, 0, tw, th), true, true);
-                    renderTile.Render(game, game.Wayfinder[p.i + 0, p.j - 1], new Rectangle(tw * 1, 0, tw, th), true, true);
-                    renderTile.Render(game, game.Wayfinder[p.i + 1, p.j - 1], new Rectangle(tw * 2, 0, tw, th), true, true);
-
-                    renderTile.Render(game, game.Wayfinder[p.i - 1, p.j], new Rectangle(tw * 0, th, tw, th), true, true);
-                    renderTile.Render(game, game.Wayfinder[p.i + 0, p.j], new Rectangle(tw * 1, th, tw, th), true, false);
-                    renderTile.Render(game, game.Wayfinder[p.i + 1, p.j], new Rectangle(tw * 2, th, tw, th), true, true);
-
-                    renderTile.Render(game, game.Wayfinder[p.i - 1, p.j + 1], new Rectangle(tw * 0, th * 2, tw, th), true, true);
-                    renderTile.Render(game, game.Wayfinder[p.i + 0, p.j + 1], new Rectangle(tw * 1, th * 2, tw, th), true, true);
-                    renderTile.Render(game, game.Wayfinder[p.i + 1, p.j + 1], new Rectangle(tw * 2, th * 2, tw, th), true, true);
-
-                    int slideNo = animation.GetSlideNo(now);
-                    double percentDone = animation.PercentComplete(now);
-
-
-                    int dx = 0;
-                    int dy = 0;
-
-                    Rectangle rectangle = renderHelper.GetTileRect(game.Wayfinder, p.i - 1, p.j - 1);
-
-                    if (animation.StartPosition is not null && animation.EndPosition is not null)
                     {
-                        Rectangle startRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.StartPosition.i, animation.StartPosition.j);
-                        Rectangle endRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.EndPosition.i, animation.EndPosition.j);
-                        dx = (int)((endRectangle.X - startRectangle.X) * percentDone);
-                        dy = (int)((endRectangle.Y - startRectangle.Y) * percentDone);
-                        // if it has a start position, then use the cameraI/J from the animation
-                        rectangle = renderHelper.GetTileRect(game.Wayfinder, p.i - 1, p.j - 1, animation.CameraI, animation.CameraJ);
+                        // Moving
+                        AnimationMove(game, pictureBox, animation);
                     }
-                    TileManager.Tiles(animation.GraphicName).BitBltTile(offscreenGraphics, new Rectangle(tw + dx, th + dy, tw, th), slideNo, 1);
-                    graphics.DrawImage(offscreenBitmap, rectangle.X, rectangle.Y);
-
-                    offscreenGraphics.Dispose();
-                    graphics.Dispose();
+                    else
+                    {
+                        // Still
+                        AnimationStill(game, pictureBox, animation);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
                 }
             }
-            catch(Exception ex)
+        }
+
+
+        private void AnimationStill(IGame game, PictureBox pictureBox, IAnimation animation) 
+        {
+            DateTime now = DateTime.Now;
+            var renderHelper = new RenderHelper();
+            if (!pictureBox.Visible || game.Player.Animations is null) return;
+
+            int tw = game.Wayfinder.TilePixelWidth;
+            int th = game.Wayfinder.TilePixelHeight;
+
+            Graphics graphics = pictureBox.CreateGraphics();
+
+            // Draw the base square/tile to clear whatever was there in the past.
+            Position p = new Position(game.Player.Position);
+            if (animation.StartPosition is not null)
+                p = new Position(animation.StartPosition);
+
+            Rectangle offscreenRectangle = new Rectangle(0, 0, tw * 3, th * 3);
+            Bitmap offscreenBitmap = new Bitmap(offscreenRectangle.Width, offscreenRectangle.Height);
+            Graphics offscreenGraphics = Graphics.FromImage(offscreenBitmap);
+            var renderTile = new RenderTile(offscreenGraphics);
+
+            renderTile.Render(game, game.Wayfinder[p.i - 1, p.j - 1], new Rectangle(tw * 0, 0, tw, th), true, true);
+            renderTile.Render(game, game.Wayfinder[p.i + 0, p.j - 1], new Rectangle(tw * 1, 0, tw, th), true, true);
+            renderTile.Render(game, game.Wayfinder[p.i + 1, p.j - 1], new Rectangle(tw * 2, 0, tw, th), true, true);
+
+            renderTile.Render(game, game.Wayfinder[p.i - 1, p.j], new Rectangle(tw * 0, th, tw, th), true, true);
+            renderTile.Render(game, game.Wayfinder[p.i + 0, p.j], new Rectangle(tw * 1, th, tw, th), true, false);
+            renderTile.Render(game, game.Wayfinder[p.i + 1, p.j], new Rectangle(tw * 2, th, tw, th), true, true);
+
+            renderTile.Render(game, game.Wayfinder[p.i - 1, p.j + 1], new Rectangle(tw * 0, th * 2, tw, th), true, true);
+            renderTile.Render(game, game.Wayfinder[p.i + 0, p.j + 1], new Rectangle(tw * 1, th * 2, tw, th), true, true);
+            renderTile.Render(game, game.Wayfinder[p.i + 1, p.j + 1], new Rectangle(tw * 2, th * 2, tw, th), true, true);
+
+            int slideNo = animation.GetSlideNo(now);
+            double percentDone = animation.PercentComplete(now);
+
+
+            int dx = 0;
+            int dy = 0;
+
+            Rectangle rectangle = renderHelper.GetTileRect(game.Wayfinder, p.i - 1, p.j - 1);
+
+            if (animation.StartPosition is not null && animation.EndPosition is not null)
             {
-                // boom
+                Rectangle startRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.StartPosition.i, animation.StartPosition.j);
+                Rectangle endRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.EndPosition.i, animation.EndPosition.j);
+                dx = (int)((endRectangle.X - startRectangle.X) * percentDone);
+                dy = (int)((endRectangle.Y - startRectangle.Y) * percentDone);
+                // if it has a start position, then use the cameraI/J from the animation
+                rectangle = renderHelper.GetTileRect(game.Wayfinder, p.i - 1, p.j - 1, animation.CameraI, animation.CameraJ);
             }
+            TileManager.Tiles(animation.GraphicName).BitBltTile(offscreenGraphics, new Rectangle(tw + dx, th + dy, tw, th), slideNo, 1);
+            graphics.DrawImage(offscreenBitmap, rectangle.X, rectangle.Y);
+
+            offscreenGraphics.Dispose();
+            graphics.Dispose();
         }
 
         public void RenderTile(IGame game, Graphics graphics, int i, int j)

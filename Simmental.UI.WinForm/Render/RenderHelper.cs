@@ -22,7 +22,7 @@ namespace Simmental.UI.WinForm.Render
                 cameraJ = wayfinder.CameraJ;
             }
 
-            Rectangle rectangle = new Rectangle((i - cameraI) * tileWidth, (j - cameraJ) * tileHeight, tileWidth, tileHeight);
+            Rectangle rectangle = new Rectangle((i - cameraI) * tileWidth + wayfinder.XOffset, (j - cameraJ) * tileHeight + wayfinder.YOffset, tileWidth, tileHeight);
             return rectangle;
         }
         public bool GetTileIndex(IWayfinder wayfinder, int x, int y, out int i, out int j)

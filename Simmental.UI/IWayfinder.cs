@@ -14,6 +14,8 @@
         ITile this[Position position] { get; }
         int CameraI { get; set; }
         int CameraJ { get; set; }
+        int XOffset { get; set; }
+        int YOffset { get; set; }
         int CameraWidth { get; set; }
         int CameraHeight { get; set; }
         int TilePixelWidth { get; set; }

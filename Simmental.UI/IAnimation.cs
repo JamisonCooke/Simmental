@@ -17,6 +17,7 @@ namespace Simmental.Interfaces
         double PercentComplete(DateTime time);
         int CameraI { get; set; }
         int CameraJ { get; set; }
-
+        
+        public IDisposable CacheObject { get; set; }
     }
 }

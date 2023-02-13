@@ -1,5 +1,6 @@
 ﻿using Simmental.Game.Animate;
 using Simmental.Game.Command;
+using Simmental.Game.Map;
 using Simmental.Interfaces;
 using Simmental.UI.WinForm.Render;
 using System;
@@ -125,6 +126,20 @@ namespace Simmental
                     if (CanWalkOn(i + 1, j, out npc))
                         i++;
                     break;
+
+                case Keys.J:
+                    Game.Wayfinder.XOffset--; GamePictureBox.Refresh();
+                    break;
+                case Keys.K:
+                    Game.Wayfinder.XOffset++; GamePictureBox.Refresh();
+                    break;
+                case Keys.I:
+                    Game.Wayfinder.YOffset--; GamePictureBox.Refresh();
+                    break;
+                case Keys.M:
+                    Game.Wayfinder.YOffset++; GamePictureBox.Refresh();
+                    break;
+
                 case Keys.Space:
                     break; //Give the monsters a free turn
 

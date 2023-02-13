@@ -33,7 +33,20 @@ namespace Simmental.Game.Animate
 
         private void ExpireAnimations()
         {
-            _animationList.RemoveAll(a => a is null || DateTime.Now > a.StartTime + a.Duration);
+            _animationList.RemoveAll(a => {
+                if (a is null) return true; 
+                if (DateTime.Now > a.StartTime + a.Duration)
+                {
+                    if (a.CacheObject != null)
+                    {
+                        a.CacheObject.Dispose();
+                        a.CacheObject = null;
+                    }
+                    return true;
+                }
+
+                return false;
+            });
         }
 
     }

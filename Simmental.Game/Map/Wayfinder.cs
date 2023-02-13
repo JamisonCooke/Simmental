@@ -19,6 +19,8 @@ namespace Simmental.Game.Map
         public int CameraHeight { get; set; }
         public int TilePixelWidth { get; set; } = 20;
         public int TilePixelHeight { get; set; } = 19;
+        public int XOffset { get; set; }
+        public int YOffset { get; set; }
 
         /// <summary>
         /// Returns the Tile at [i,j]
