@@ -1,6 +1,7 @@
 ﻿using Simmental.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Packaging;
@@ -48,7 +49,14 @@ namespace Simmental.UI.WinForm.Embedded
             Rectangle srcRect = new Rectangle(x, y, TileWidth, TileHeight);
             Rectangle targetRect = destRect;
 
-            graphics.DrawImage(Image, targetRect, srcRect, GraphicsUnit.Pixel);
+            try
+            {
+                graphics.DrawImage(Image, targetRect, srcRect, GraphicsUnit.Pixel);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine($"BitBltTile Error: {ex.Message}");
+            }
         }
         
         public void BitBltTile(Graphics graphics, Rectangle destRect, int tileNo, bool isHorizontallyFlipped)

@@ -5,6 +5,7 @@ using Simmental.Interfaces;
 using Simmental.UI.WinForm.Render;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -151,12 +152,13 @@ namespace Simmental
 
             if (Game.Player.Position.i != i || Game.Player.Position.j != j)
             {
+                int cameraI = Game.Wayfinder.CameraI;
+                int cameraJ = Game.Wayfinder.CameraJ;
                 if (KeepCameraOnPlayer(new Position(i, j)))
                 {
-                    using (Graphics g = GamePictureBox.CreateGraphics())
-                    {
-                        RefreshScreen(g, GamePictureBox, GamePictureBox.Width, GamePictureBox.Height);
-                    }                        
+                    // Scroll the screen to keep it on the player
+                    var renderGame = new RenderGame();
+                    renderGame.RenderScroll(Game, cameraI, cameraJ, GamePictureBox);
                 }
 
                 Game.Player.Animations.Add(new Animation(Game, GraphicNameEnum.gregRun, DateTime.Now, new TimeSpan(0, 0, 0, 0, 350), new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, new TimeSpan(0, 0, 0, 0, 50), new Position(Game.Player.Position), new Position(i, j)));
@@ -287,9 +289,16 @@ namespace Simmental
 
         public void SetCamera(int i, int j)
         {
+            int oldCameraI = Game.Wayfinder.CameraI;
+            int oldCameraJ = Game.Wayfinder.CameraJ;
+
             Game.Wayfinder.CameraI = i;
             Game.Wayfinder.CameraJ = j;
-            GamePictureBox.Refresh();
+
+            // GamePictureBox.Refresh();
+
+            RenderGame renderer = new RenderGame();
+            renderer.RenderScroll(Game, oldCameraI, oldCameraJ, GamePictureBox);
 
         }
 

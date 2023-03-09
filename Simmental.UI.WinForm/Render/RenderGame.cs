@@ -15,28 +15,41 @@ namespace Simmental.UI.WinForm.Render
     {
         private static Object _lockObject = new Object();
         private static System.Threading.Timer _animationTimer;
+        private static Image _screenImage;
 
-        public void Render(IGame game, Graphics graphics, PictureBox pictureBox)
+        public void Render(IGame game, Graphics pictureBoxGraphics, PictureBox pictureBox)
         {
             if (_animationTimer == null)
                 ConfigureAnimationTimer(game, pictureBox);
 
             lock (_lockObject)
             {
-                var renderWayfinder = new RenderWayfinder(game.Wayfinder, graphics, game.Player.Position);
+                // See if we need to reinitialize screen image
+                if (_screenImage == null || _screenImage.Width != pictureBox.Width || _screenImage.Height != pictureBox.Height)
+                {
+                    if (_screenImage != null) _screenImage.Dispose();
+                    _screenImage = new Bitmap(pictureBox.Width, pictureBox.Height);
+                }
+
+                Graphics graphicsScreenImage = Graphics.FromImage(_screenImage);
+
+                var renderWayfinder = new RenderWayfinder(game.Wayfinder, graphicsScreenImage, game.Player.Position);
 
                 // Render the guys
                 RenderCharacter renderCharacter = new RenderCharacter();
-                renderCharacter.Render(game.Wayfinder, game.Player, graphics);
+                renderCharacter.Render(game.Wayfinder, game.Player, graphicsScreenImage);
 
                 foreach (ICharacter npc in game.NPC)
                 {
                     if (game.Wayfinder.IsVisible(game.Player.Position, npc.Position))
-                        renderCharacter.Render(game.Wayfinder, npc, graphics);
+                        renderCharacter.Render(game.Wayfinder, npc, graphicsScreenImage);
                 }
 
                 if (game.Designer.HighlightRange)
-                    HighlightSelectedRanged(game, graphics);
+                    HighlightSelectedRanged(game, graphicsScreenImage);
+
+                pictureBoxGraphics.DrawImage(_screenImage, 0, 0);
+
             }
         }
 
@@ -46,61 +59,18 @@ namespace Simmental.UI.WinForm.Render
             _animationTimer = new System.Threading.Timer(AnimationTimerCallback, gameGraphicsTuple, 1, 100);
         }
 
-        private void AnimationMove(IGame game, PictureBox pictureBox, IAnimation animation)
-        {
-            DateTime now = DateTime.Now;
-            var renderHelper = new RenderHelper();
-            var wayfinder = game.Wayfinder;
-            if (!pictureBox.Visible || game.Player.Animations is null) return;
-
-            int tw = game.Wayfinder.TilePixelWidth;
-            int th = game.Wayfinder.TilePixelHeight;
-
-            Graphics graphics = pictureBox.CreateGraphics();
-
-            // Draw the base square/tile to clear whatever was there in the past.
-            Position p = new Position(animation.StartPosition);
-
-            // We need to render the entire screen minus the player to the extenal cache graphic
-            Bitmap wayfinderBuffer;
-            Rectangle offsetRectangle = renderHelper.GetTileRect(game.Wayfinder, p.i - 1, p.j - 1);       // Top left when we're rendering
-
-            if (animation.CacheObject == null)
-            {
-                wayfinderBuffer = new Bitmap(wayfinder.TilePixelWidth * 3, wayfinder.TilePixelHeight * 3);
-                var wfGraphics = Graphics.FromImage(wayfinderBuffer);
-                animation.CacheObject = wayfinderBuffer;        // Remember it for nex ttime
-                (wayfinder.XOffset, wayfinder.YOffset) = (-offsetRectangle.Left, -offsetRectangle.Top);
-                var renderWayfinder = new RenderWayfinder(game.Wayfinder, wfGraphics, p, p.i - 1, p.i + 1, p.j - 1, p.j + 1);
-                (wayfinder.XOffset, wayfinder.YOffset) = (0, 0);
-            }
-            wayfinderBuffer = animation.CacheObject as Bitmap;
-
-            Bitmap offscreenBitmap = new Bitmap(tw * 3, th * 3);
-            Graphics offscreenGraphics = Graphics.FromImage(offscreenBitmap);
-            offscreenGraphics.DrawImage(wayfinderBuffer, 0, 0);
-
-            // Add player to wayfinderGraphics
-            int slideNo = animation.GetSlideNo(now);
-            double percentDone = animation.PercentComplete(now);
-
-            Rectangle startRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.StartPosition.i, animation.StartPosition.j);
-            Rectangle endRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.EndPosition.i, animation.EndPosition.j);
-            int dx = (int)((endRectangle.X - startRectangle.X) * percentDone);
-            int dy = (int)((endRectangle.Y - startRectangle.Y) * percentDone);
-            
-            TileManager.Tiles(animation.GraphicName).BitBltTile(offscreenGraphics, new Rectangle(tw + dx, th + dy, tw, th), slideNo, game.Player.IsLookingLeft);
-            graphics.DrawImage(offscreenBitmap, offsetRectangle.X, offsetRectangle.Y);
-
-            offscreenGraphics.Dispose();
-            graphics.Dispose();
-        }
+        
 
 
         private void AnimationTimerCallback(object state)
         {
             (IGame game, PictureBox pictureBox) = (Tuple<IGame, PictureBox>)state;
-
+            var expired = game.Player.Animations.ExpireAnimations();
+            foreach(IAnimation expiredAnimation in expired)
+            {
+                var dispose = new RenderAnimation(expiredAnimation);
+                dispose.AnimationCancel(game, pictureBox);
+            }
             IAnimation animation = game.Player.Animations.Current;
             lock (_lockObject)
             {
@@ -110,12 +80,15 @@ namespace Simmental.UI.WinForm.Render
                     if (animation.StartPosition is not null)
                     {
                         // Moving
-                        AnimationMove(game, pictureBox, animation);
+                        RenderAnimation renderAnimation = new(animation);
+                        renderAnimation.AnimationMove(game, pictureBox);
+                        
                     }
                     else
                     {
                         // Still
-                        AnimationStill(game, pictureBox, animation);
+                        RenderAnimation renderAnimation = new(animation);
+                        renderAnimation.AnimationStill(game, pictureBox);
                     }
                 }
                 catch(Exception ex)
@@ -126,63 +99,7 @@ namespace Simmental.UI.WinForm.Render
         }
 
 
-        private void AnimationStill(IGame game, PictureBox pictureBox, IAnimation animation) 
-        {
-            DateTime now = DateTime.Now;
-            var renderHelper = new RenderHelper();
-            if (!pictureBox.Visible || game.Player.Animations is null) return;
-
-            int tw = game.Wayfinder.TilePixelWidth;
-            int th = game.Wayfinder.TilePixelHeight;
-
-            Graphics graphics = pictureBox.CreateGraphics();
-
-            // Draw the base square/tile to clear whatever was there in the past.
-            Position p = new Position(game.Player.Position);
-            if (animation.StartPosition is not null)
-                p = new Position(animation.StartPosition);
-
-            Rectangle offscreenRectangle = new Rectangle(0, 0, tw * 3, th * 3);
-            Bitmap offscreenBitmap = new Bitmap(offscreenRectangle.Width, offscreenRectangle.Height);
-            Graphics offscreenGraphics = Graphics.FromImage(offscreenBitmap);
-            var renderTile = new RenderTile(offscreenGraphics);
-
-            renderTile.Render(game, game.Wayfinder[p.i - 1, p.j - 1], new Rectangle(tw * 0, 0, tw, th), true, true);
-            renderTile.Render(game, game.Wayfinder[p.i + 0, p.j - 1], new Rectangle(tw * 1, 0, tw, th), true, true);
-            renderTile.Render(game, game.Wayfinder[p.i + 1, p.j - 1], new Rectangle(tw * 2, 0, tw, th), true, true);
-
-            renderTile.Render(game, game.Wayfinder[p.i - 1, p.j], new Rectangle(tw * 0, th, tw, th), true, true);
-            renderTile.Render(game, game.Wayfinder[p.i + 0, p.j], new Rectangle(tw * 1, th, tw, th), true, false);
-            renderTile.Render(game, game.Wayfinder[p.i + 1, p.j], new Rectangle(tw * 2, th, tw, th), true, true);
-
-            renderTile.Render(game, game.Wayfinder[p.i - 1, p.j + 1], new Rectangle(tw * 0, th * 2, tw, th), true, true);
-            renderTile.Render(game, game.Wayfinder[p.i + 0, p.j + 1], new Rectangle(tw * 1, th * 2, tw, th), true, true);
-            renderTile.Render(game, game.Wayfinder[p.i + 1, p.j + 1], new Rectangle(tw * 2, th * 2, tw, th), true, true);
-
-            int slideNo = animation.GetSlideNo(now);
-            double percentDone = animation.PercentComplete(now);
-
-
-            int dx = 0;
-            int dy = 0;
-
-            Rectangle rectangle = renderHelper.GetTileRect(game.Wayfinder, p.i - 1, p.j - 1);
-
-            if (animation.StartPosition is not null && animation.EndPosition is not null)
-            {
-                Rectangle startRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.StartPosition.i, animation.StartPosition.j);
-                Rectangle endRectangle = renderHelper.GetTileRect(game.Wayfinder, animation.EndPosition.i, animation.EndPosition.j);
-                dx = (int)((endRectangle.X - startRectangle.X) * percentDone);
-                dy = (int)((endRectangle.Y - startRectangle.Y) * percentDone);
-                // if it has a start position, then use the cameraI/J from the animation
-                rectangle = renderHelper.GetTileRect(game.Wayfinder, p.i - 1, p.j - 1, animation.CameraI, animation.CameraJ);
-            }
-            TileManager.Tiles(animation.GraphicName).BitBltTile(offscreenGraphics, new Rectangle(tw + dx, th + dy, tw, th), slideNo, game.Player.IsLookingLeft);
-            graphics.DrawImage(offscreenBitmap, rectangle.X, rectangle.Y);
-
-            offscreenGraphics.Dispose();
-            graphics.Dispose();
-        }
+       
 
         public void RenderTile(IGame game, Graphics graphics, int i, int j)
         {
@@ -236,6 +153,71 @@ namespace Simmental.UI.WinForm.Render
                 graphics.FillRectangle(brush, rect);
                 graphics.DrawRectangle(Pens.Red, rect);
             }
+        }
+
+        /// <summary>
+        /// This method copies the old visible part of the screen over from scrolling, then calls DrawTile to 
+        /// Render the newly exposed part of the screen
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="oldCameraI">Prior I value- WayFinder.CameraI has the new value</param>
+        /// <param name="oldCameraJ">Prior J value- WayFinder.CameraJ has the new value</param>
+        /// <param name="gamePictureBox"></param>
+        public void RenderScroll(IGame game, int oldCameraI, int oldCameraJ, PictureBox gamePictureBox)
+        {
+
+            
+
+            Graphics screenGraphics = gamePictureBox.CreateGraphics();
+
+            Bitmap offscreenBitmap = new Bitmap(gamePictureBox.Width, gamePictureBox.Height);
+            Graphics offscreenGraphics = Graphics.FromImage(offscreenBitmap);
+
+            // Copy the reusuable part of the game screen to the offscreen value
+            int tw = game.Wayfinder.TilePixelWidth;
+            int th = game.Wayfinder.TilePixelHeight;
+
+            // Copy the image from the screenGraphics to the offscreenGraphics
+            offscreenGraphics.DrawImage(_screenImage, (oldCameraI - game.Wayfinder.CameraI) * tw, (oldCameraJ - game.Wayfinder.CameraJ) * th);
+
+            // var renderWayfinder = new RenderWayfinder(game.Wayfinder, wfGraphics, p, p.i - 1, p.i + 2, p.j - 1, p.j + 2);
+            if (oldCameraI < game.Wayfinder.CameraI)
+            {
+                int leftTile = oldCameraI + game.Wayfinder.CameraWidth -1;
+                int rightTile = game.Wayfinder.CameraI + game.Wayfinder.CameraWidth +1;
+                new RenderWayfinder(game.Wayfinder, offscreenGraphics, game.Player.Position, leftTile, rightTile + 1, game.Wayfinder.CameraJ, game.Wayfinder.CameraJ + game.Wayfinder.CameraHeight);
+            }
+
+            if (oldCameraI > game.Wayfinder.CameraI)
+            {
+                int leftTile = game.Wayfinder.CameraI;
+                int rightTile = oldCameraI;
+                new RenderWayfinder(game.Wayfinder, offscreenGraphics, game.Player.Position, leftTile, rightTile + 1, game.Wayfinder.CameraJ, game.Wayfinder.CameraJ + game.Wayfinder.CameraHeight);
+            }
+
+            if (oldCameraJ < game.Wayfinder.CameraJ)
+            {
+                int topTile = oldCameraJ + game.Wayfinder.CameraHeight - 1;
+                int bottomTile = game.Wayfinder.CameraJ + game.Wayfinder.CameraHeight + 1;
+                new RenderWayfinder(game.Wayfinder, offscreenGraphics, game.Player.Position, game.Wayfinder.CameraI, game.Wayfinder.CameraI + game.Wayfinder.CameraWidth, topTile, bottomTile + 1);
+            }
+
+            if (oldCameraJ > game.Wayfinder.CameraJ)
+            {
+                int topTile = game.Wayfinder.CameraJ;
+                int bottomTile = oldCameraJ;
+                new RenderWayfinder(game.Wayfinder, offscreenGraphics, game.Player.Position, game.Wayfinder.CameraI, game.Wayfinder.CameraI + game.Wayfinder.CameraWidth, topTile, bottomTile + 1);
+            }
+
+            // Copy the offscreen bitmap to the screen
+            _screenImage.Dispose();
+            _screenImage = offscreenBitmap;
+
+            screenGraphics.DrawImage(offscreenBitmap, 0, 0);
+
+            offscreenGraphics.Dispose();
+            screenGraphics.Dispose();
+
         }
     }
 }

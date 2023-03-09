@@ -18,7 +18,7 @@ namespace Simmental.Game.Animate
         {
             get
             {
-                ExpireAnimations();
+                
 
                 if (_animationList.Count == 0)
                     return DefaultAnimation;
@@ -31,22 +31,21 @@ namespace Simmental.Game.Animate
         public void AddFirst(IAnimation animation) => _animationList.Insert(0, animation);
         public void Add(IAnimation animation) => _animationList.Add(animation);
 
-        private void ExpireAnimations()
+        public List<IAnimation> ExpireAnimations()
         {
+            var result = new List<IAnimation>();
+
             _animationList.RemoveAll(a => {
                 if (a is null) return true; 
                 if (DateTime.Now > a.StartTime + a.Duration)
                 {
-                    if (a.CacheObject != null)
-                    {
-                        a.CacheObject.Dispose();
-                        a.CacheObject = null;
-                    }
+                    result.Add(a);
                     return true;
                 }
 
                 return false;
             });
+            return result;
         }
 
     }
